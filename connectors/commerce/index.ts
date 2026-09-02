@@ -1131,6 +1131,18 @@ function filterAndRank(products: JsonObject[], input: JsonObject, intent: Commer
     for (const constraint of semanticUnknownConstraints(product)) semanticUncertainConstraints[constraint] = Number(semanticUncertainConstraints[constraint] ?? 0) + 1;
     if (Array.isArray(product.semantic_conflicts)) for (const conflict of product.semantic_conflicts) if (typeof conflict === "string") semanticConflictSet.add(conflict);
   }
+  // A hard request must not present an item whose requested audience, colour,
+  // size, or stock state is still unknown as an exact result. Keep those
+  // records eligible for closest-match diagnostics, but require positive
+  // semantic evidence before they enter the ranked result set.
+  const semanticallyConstrained = constrained.filter((product) => {
+    const unknown = relevantSemanticUncertainty(product, intent);
+    if (!intent.hard_constraints || !unknown.length) return true;
+    const provider = String(product.provider);
+    constraintExcludedByProvider[provider] = Number(constraintExcludedByProvider[provider] ?? 0) + 1;
+    closestCandidates.push({ product, failed_constraints: unknown });
+    return false;
+  });
   const explicitCurrency = typeof input.currency === "string" && /^[A-Za-z]{3}$/.test(input.currency.trim()) ? input.currency.trim().toUpperCase() : null;
   const verifiedCurrency = (product: JsonObject): string | null => {
     const price = priceBounds(product.price);
@@ -1139,8 +1151,8 @@ function filterAndRank(products: JsonObject[], input: JsonObject, intent: Commer
     const verified = product.currency_verified === true || (!dynamic && price.currency.length === 3);
     return verified ? price.currency.toUpperCase() : null;
   };
-  const targetCurrency = explicitCurrency ?? constrained.map(verifiedCurrency).find((value): value is string => Boolean(value)) ?? null;
-  const output = constrained.filter((product) => {
+  const targetCurrency = explicitCurrency ?? semanticallyConstrained.map(verifiedCurrency).find((value): value is string => Boolean(value)) ?? null;
+  const output = semanticallyConstrained.filter((product) => {
     const price = priceBounds(product.price);
     const failed: string[] = [];
     if (requiresComparablePrice && (!price || !verifiedCurrency(product) || !targetCurrency || price.currency?.toUpperCase() !== targetCurrency)) failed.push("price_unverifiable");

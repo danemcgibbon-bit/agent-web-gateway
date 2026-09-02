@@ -206,6 +206,10 @@ function rentalCouplesRequired(goal: string): boolean {
   return /\b(?:accepts?|allows?|suitable\s+for|welcomes?)\s+couples?\b|\bcouples?\s+(?:allowed|welcome|accepted|permitted)\b/i.test(goal);
 }
 
+function rentalFamiliesRequired(goal: string): boolean {
+  return /\b(?:accepts?|allows?|suitable\s+for|welcomes?)\s+famil(?:y|ies)\b|\bfamil(?:y|ies)\s+(?:allowed|welcome|accepted|permitted)\b/i.test(goal);
+}
+
 function rentalProviderFromSite(site: PublicSite | null): "openrent" | "onthemarket" | null {
   if (!site) return null;
   if (/^openrent\.co\.uk$/i.test(site.domain)) return "openrent";
@@ -310,11 +314,13 @@ export function planGatewayTask(input: JsonObject): GatewayTaskPlan {
   const bedrooms = rentalBedrooms(goal);
   const propertyType = rentalPropertyType(goal);
   const couplesRequired = rentalCouplesRequired(goal);
+  const familiesRequired = rentalFamiliesRequired(goal);
   const argumentsValue: JsonObject = { location, response_format: responseFormat, ...bedrooms };
   const maxPrice = budgetFrom(goal);
   if (maxPrice !== null) argumentsValue.max_price_pcm = maxPrice;
   if (propertyType) argumentsValue.property_type = propertyType;
   if (couplesRequired) argumentsValue.couples_required = true;
+  if (familiesRequired) argumentsValue.families_required = true;
   if (targetedRentalProvider) argumentsValue.providers = [targetedRentalProvider];
   // Housing queries conventionally mean the whole dwelling.  Keep room
   // searches opt-in so a flat priced per room cannot satisfy a property query.
@@ -330,7 +336,7 @@ export function planGatewayTask(input: JsonObject): GatewayTaskPlan {
       tool: "search_properties",
       arguments: argumentsValue,
       site: null,
-      extracted: { vertical, location, ...bedrooms, ...(propertyType ? { property_type: propertyType } : {}), ...(maxPrice !== null ? { max_price_pcm: maxPrice } : {}), ...(couplesRequired ? { couples_required: true } : {}), ...(targetedRentalProvider ? { provider: targetedRentalProvider } : {}), ...(argumentsValue.whole_property_only ? { whole_property_only: true } : {}), ...(argumentsValue.sort_by ? { sort_by: argumentsValue.sort_by } : {}) },
+      extracted: { vertical, location, ...bedrooms, ...(propertyType ? { property_type: propertyType } : {}), ...(maxPrice !== null ? { max_price_pcm: maxPrice } : {}), ...(couplesRequired ? { couples_required: true } : {}), ...(familiesRequired ? { families_required: true } : {}), ...(targetedRentalProvider ? { provider: targetedRentalProvider } : {}), ...(argumentsValue.whole_property_only ? { whole_property_only: true } : {}), ...(argumentsValue.sort_by ? { sort_by: argumentsValue.sort_by } : {}) },
     },
   };
 }

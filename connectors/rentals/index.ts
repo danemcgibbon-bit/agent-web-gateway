@@ -65,6 +65,9 @@ export const RENTAL_FIELD_AUTHORITY: Record<string, RentalFieldAuthority> = {
   max_occupants: "detail",
   occupancy: "detail",
   couples_allowed: "detail",
+  families_allowed: "detail",
+  families_confidence: "detail",
+  families_source: "detail",
   availability: "detail",
   availability_details: "detail",
   listed_at: "detail",
@@ -476,6 +479,19 @@ function couplesEvidence(value: unknown, text: string, maxOccupants: number | nu
   return null;
 }
 
+function familiesEvidence(value: unknown, text: string, maxOccupants: number | null): RentalEvidence<boolean> | null {
+  const explicit = parseBooleanValue(value);
+  if (explicit !== null) return { value: explicit, confidence: "high", source: "structured_families_field" };
+  if (/(?:no|not|cannot|can't|won't)\s+(?:accommodate\s+)?famil(?:y|ies)|famil(?:y|ies)\s+(?:not\s+allowed|prohibited)|no\s+children|adults?\s+only/i.test(text)) {
+    return { value: false, confidence: "high", source: "explicit_listing_preference" };
+  }
+  if (/(?:famil(?:y|ies)|children?)\s+(?:allowed|welcome|accepted|considered|permitted)|suitable\s+for\s+famil(?:y|ies)|famil(?:y|ies)[- ]friendly/i.test(text)) {
+    return { value: true, confidence: "high", source: "explicit_listing_preference" };
+  }
+  if (maxOccupants !== null && maxOccupants < 2) return { value: false, confidence: "high", source: "maximum_occupants" };
+  return null;
+}
+
 function comparable(value: unknown): string {
   if (value === null || value === undefined) return "";
   if (typeof value === "number") return String(value);
@@ -502,7 +518,7 @@ function mergeDefined(...values: Array<JsonObject | null | undefined>): JsonObje
 export function normalizeRentalListing(value: RentalRecord, options: { locationVerified?: boolean } = {}): RentalRecord {
   const listing = { ...value };
   const searchScope = record(listing.search_scope);
-  const rawText = [listing.title, listing.address, listing.description, listing.availability, listing.available_from, listing.available, listing.listed_text, listing.last_updated_text, searchScope?.requested_location, searchScope?.provider_location_scope, Array.isArray(listing.features) ? listing.features.join(" ") : "", listing.listing_mode, listing.property_type].filter(Boolean).join(" ");
+  const rawText = [listing.title, listing.address, listing.description, listing.availability, listing.available_from, listing.available, listing.listed_text, listing.last_updated_text, searchScope?.requested_location, searchScope?.provider_location_scope, Array.isArray(listing.features) ? listing.features.join(" ") : "", listing.listing_mode, listing.property_type, listing.families_allowed, record(listing.occupancy)?.families_allowed].filter(Boolean).join(" ");
   const dwellingType = inferDwellingType(listing.dwelling_type ?? listing.property_type, rawText);
   const listingMode = inferListingMode(listing.listing_mode, rawText, dwellingType, listing.shared_property);
   const rentObject = record(listing.rent);
@@ -531,6 +547,7 @@ export function normalizeRentalListing(value: RentalRecord, options: { locationV
   if (bathroomParsed.status === "invalid" && !occupancyParseFailures.includes("bathrooms")) occupancyParseFailures.push("bathrooms");
   const occupancyObject = record(listing.occupancy);
   const couples = couplesEvidence(listing.couples_allowed ?? occupancyObject?.couples_allowed, rawText, occupantParsed.value);
+  const families = familiesEvidence(listing.families_allowed ?? occupancyObject?.families_allowed, rawText, occupantParsed.value);
   const availability = availabilityEvidence(listing.available ?? listing.availability ?? listing.availability_available, rawText);
   const locationObject = record(listing.location);
   const locationDisplay = textValue(locationObject?.display ?? listing.location_display ?? listing.area ?? listing.address, 300);
@@ -560,10 +577,15 @@ export function normalizeRentalListing(value: RentalRecord, options: { locationV
       max_occupants: occupantParsed.value,
       couples_allowed: couples?.value ?? null,
       ...(couples ? { couples_confidence: couples.confidence, couples_source: couples.source } : {}),
+      families_allowed: families?.value ?? null,
+      ...(families ? { families_confidence: families.confidence, families_source: families.source } : {}),
     },
     couples_allowed: couples?.value ?? null,
     couples_confidence: couples?.confidence ?? "unknown",
     couples_source: couples?.source ?? null,
+    families_allowed: families?.value ?? null,
+    families_confidence: families?.confidence ?? "unknown",
+    families_source: families?.source ?? null,
     availability: textValue(listing.availability, 180) ?? availableFrom,
     availability_details: {
       available: availability.available,
@@ -649,6 +671,7 @@ function commonRecord(
     billsText?: unknown;
     maxOccupants?: unknown;
     couplesAllowed?: unknown;
+    familiesAllowed?: unknown;
     available?: unknown;
     listingMode?: unknown;
     sharedProperty?: unknown;
@@ -683,6 +706,7 @@ function commonRecord(
   const listingMode = inferListingMode(values.listingMode, fullText, inferDwellingType(propertyType, fullText), values.sharedProperty);
   const dwellingType = inferDwellingType(propertyType, fullText);
   const couples = couplesEvidence(values.couplesAllowed, fullText, occupants.value);
+  const families = familiesEvidence(values.familiesAllowed, fullText, occupants.value);
   const availabilityText = [textValue(values.availability, 240), fullText].filter(Boolean).join(" ");
   const availability = availabilityEvidence(values.available ?? values.availability, availabilityText);
   const recordValue: RentalRecord = {
@@ -720,10 +744,15 @@ function commonRecord(
       max_occupants: occupants.value,
       couples_allowed: couples?.value ?? null,
       ...(couples ? { couples_confidence: couples.confidence, couples_source: couples.source } : {}),
+      families_allowed: families?.value ?? null,
+      ...(families ? { families_confidence: families.confidence, families_source: families.source } : {}),
     },
     couples_allowed: couples?.value ?? null,
     couples_confidence: couples?.confidence ?? "unknown",
     couples_source: couples?.source ?? null,
+    families_allowed: families?.value ?? null,
+    families_confidence: families?.confidence ?? "unknown",
+    families_source: families?.source ?? null,
     ...(parseFailures.length ? { parse_failures: parseFailures } : {}),
     station_proximity_signal: stationSignal(fullText),
     description,
@@ -765,6 +794,7 @@ function parseOtmItem(value: unknown, sourceUrl: string): RentalRecord | null {
     billsText: [description, features, labels, object],
     maxOccupants: object.maxOccupants ?? object.maxTenants ?? object.maximumTenants ?? object.maximumOccupants ?? object.maxResidents ?? object.tenantCapacity,
     couplesAllowed: object.couplesAllowed ?? object.couples ?? object.coupleAllowed,
+    familiesAllowed: object.familiesAllowed ?? object.familyAllowed ?? object.childrenAllowed,
     available: object.available,
   });
 }
@@ -869,7 +899,7 @@ function parseOpenRentCard(link: { href: string; index: number; html: string }):
 
 function labelValue(text: string, label: string): string | null {
   const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const match = new RegExp(`${escaped}\\s*[:\\-]?\\s*([^|;]{1,100}?)(?=\\b(?:Property Address|Available From|Preferred Minimum Tenancy|Furnishing|Pets Allowed|Student Friendly|Maximum Tenants|Max Tenants|Couples Allowed|Features|Bills Included|Last Updated|Listed|Added)\\b|$)`, "i").exec(text);
+  const match = new RegExp(`${escaped}\\s*[:\\-]?\\s*([^|;]{1,100}?)(?=\\b(?:Property Address|Available From|Preferred Minimum Tenancy|Furnishing|Pets Allowed|Student Friendly|Maximum Tenants|Max Tenants|Couples Allowed|Families Allowed|Children Allowed|Features|Bills Included|Last Updated|Listed|Added)\\b|$)`, "i").exec(text);
   return sanitizeText(match?.[1], 120);
 }
 
@@ -889,6 +919,7 @@ function parseOpenRentDetail(html: string, sourceUrl: string, listingId: string)
   const billsIncluded = htmlRowSignal(html, "Bills Included");
   const petsAllowed = htmlRowSignal(html, "Pets Allowed");
   const couplesAllowed = htmlRowSignal(html, "Couples Allowed") ?? htmlRowSignal(html, "Couples Welcome");
+  const familiesAllowed = htmlRowSignal(html, "Families Allowed") ?? htmlRowSignal(html, "Children Allowed");
   const rentPcm = /Rent\s+PCM\s*£\s*[\d,]+(?:\.\d{1,2})?/i.exec(text)?.[0];
   return commonRecord("openrent", listingId, canonical, {
     title,
@@ -905,11 +936,12 @@ function parseOpenRentDetail(html: string, sourceUrl: string, listingId: string)
     updatedText: /last\s+updated[^.;]{0,100}/i.exec(text)?.[0],
     features,
     description,
-    extraText: [text, pets, billsIncluded === false ? "bills not included" : billsIncluded === true ? "bills included" : "", petsAllowed === false ? "no pets" : petsAllowed === true ? "pets allowed" : ""],
+    extraText: [text, pets, billsIncluded === false ? "bills not included" : billsIncluded === true ? "bills included" : "", petsAllowed === false ? "no pets" : petsAllowed === true ? "pets allowed" : "", familiesAllowed === false ? "families not allowed" : familiesAllowed === true ? "families allowed" : ""],
     imageUrl: extractMeta(html, "og:image"),
     billsText: [text, billsIncluded === false ? "bills not included" : billsIncluded === true ? "bills included" : ""],
     maxOccupants: maxTenants,
     couplesAllowed,
+    familiesAllowed,
     available,
   });
 }
@@ -1062,7 +1094,8 @@ function providerSearchUrl(provider: RentalProvider, input: NormalRentalInput, p
 }
 
 function paginationUrl(value: unknown, baseUrl: string, provider: RentalProvider): string | null {
-  const candidate = absoluteUrl(value, baseUrl);
+  const decoded = typeof value === "string" ? decodeHtmlEntities(value) : value;
+  const candidate = absoluteUrl(decoded, baseUrl);
   if (!candidate) return null;
   try {
     const url = new URL(candidate);
@@ -1086,15 +1119,35 @@ function nextPageUrl(provider: RentalProvider, html: string, currentUrl: string,
     const clean = paginationUrl(link.href, currentUrl, provider);
     if (clean && normaliseUrlForComparison(clean) !== normaliseUrlForComparison(currentUrl)) return clean;
   }
+  let currentSkip = 0;
+  try {
+    currentSkip = Number(new URL(currentUrl).searchParams.get("skip") ?? 0);
+  } catch {
+    currentSkip = 0;
+  }
+  let bestSkip: { skip: number; url: string } | null = null;
+  let bestPage: { page: number; url: string } | null = null;
   for (const link of links) {
     try {
-      const parsed = new URL(link.href, currentUrl);
+      const parsed = new URL(decodeHtmlEntities(link.href), currentUrl);
+      const skipValue = parsed.searchParams.get("skip");
+      const skip = skipValue === null ? null : Number(skipValue);
+      if (Number.isInteger(skip) && skip > currentSkip) {
+        const clean = paginationUrl(parsed.toString(), currentUrl, provider);
+        if (clean && (!bestSkip || skip < bestSkip.skip)) bestSkip = { skip, url: clean };
+        continue;
+      }
       const page = Number(parsed.searchParams.get("page") ?? parsed.searchParams.get("p") ?? parsed.pathname.match(/\/page\/(\d+)/i)?.[1]);
-      if (Number.isInteger(page) && page > pageNumber) return paginationUrl(parsed.toString(), currentUrl, provider);
+      if (Number.isInteger(page) && page > pageNumber) {
+        const clean = paginationUrl(parsed.toString(), currentUrl, provider);
+        if (clean && (!bestPage || page < bestPage.page)) bestPage = { page, url: clean };
+      }
     } catch {
       // Ignore malformed provider links.
     }
   }
+  if (bestSkip) return bestSkip.url;
+  if (bestPage) return bestPage.url;
   if (new RegExp(`(?:has[_-]?next(?:page)?|next[_-]?page)\\s*["']?\\s*[:=]\\s*(?:true|${pageNumber + 1})`, "i").test(html)) {
     const next = new URL(currentUrl);
     next.searchParams.set("page", String(pageNumber + 1));
@@ -1212,6 +1265,7 @@ type NormalRentalInput = {
   available_before?: string;
   freshness_days?: number;
   couples_required: boolean;
+  families_required: boolean;
   available_now: boolean;
   whole_property_only: boolean;
   sort_by: string;
@@ -1250,7 +1304,7 @@ function normaliseInput(input: JsonObject): NormalRentalInput {
         ? "newest_listing"
         : "none";
   const implicitWholeProperty = propertyType !== "room"
-    && (input.couples_required === true || Boolean(propertyType && /^(?:flat|apartment|house|maisonette|studio|bungalow)$/i.test(propertyType)));
+    && (input.couples_required === true || input.families_required === true || Boolean(propertyType && /^(?:flat|apartment|house|maisonette|studio|bungalow)$/i.test(propertyType)));
   return {
     location: String(input.location).trim(),
     max_results: typeof input.max_results === "number" ? Math.min(20, Math.max(1, input.max_results)) : 10,
@@ -1266,6 +1320,7 @@ function normaliseInput(input: JsonObject): NormalRentalInput {
     ...(typeof input.available_before === "string" ? { available_before: input.available_before } : {}),
     ...(typeof input.freshness_days === "number" ? { freshness_days: input.freshness_days } : {}),
     couples_required: input.couples_required === true,
+    families_required: input.families_required === true,
     available_now: input.available_now === true,
     whole_property_only: input.whole_property_only === true || implicitWholeProperty,
     sort_by: sortBy,
@@ -1333,6 +1388,7 @@ export function evaluateRentalConstraints(listingValue: RentalRecord, rawInput: 
   if (input.min_price_pcm !== undefined) states.min_price_pcm = priceBasisState === "MATCH" ? stateForBound(rentAmount, input.min_price_pcm, "min") : priceBasisState;
   if (input.max_price_pcm !== undefined) states.max_price_pcm = priceBasisState === "MATCH" ? stateForBound(rentAmount, input.max_price_pcm, "max") : priceBasisState;
   if (input.couples_required) states.couples = stateForBoolean(listing.couples_allowed, true);
+  if (input.families_required) states.families = stateForBoolean(listing.families_allowed, true);
   if (input.available_now) states.available = rentalAvailabilityState(listing);
   if (input.furnishing) states.furnishing = listing.furnishing === "unknown" ? "UNKNOWN" : listing.furnishing === input.furnishing ? "MATCH" : "NO_MATCH";
   if (input.bills_included !== undefined) {
@@ -1557,6 +1613,7 @@ function serializableRentalInput(input: NormalRentalInput): JsonObject {
     ...(input.available_before ? { available_before: input.available_before } : {}),
     ...(input.freshness_days !== undefined ? { freshness_days: input.freshness_days } : {}),
     couples_required: input.couples_required,
+    families_required: input.families_required,
     available_now: input.available_now,
     whole_property_only: input.whole_property_only,
     sort_by: input.sort_by,

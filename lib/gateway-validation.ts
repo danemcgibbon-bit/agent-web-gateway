@@ -19,9 +19,9 @@ export function validateToolInput(tool: ToolDefinition, value: unknown): JsonObj
       // Rental intent aliases are accepted by the gateway task and direct
       // callers without changing the frozen WebMCP tool schema. This keeps
       // older ChatGPT/OpenClaw registrations byte-compatible while allowing
-      // the canonical rental evaluator to receive explicit couples and
-      // availability requirements.
-      const rentalAlias = tool.name === "rentals_search_properties" && ["couples_required", "available_now"].includes(name);
+      // the canonical rental evaluator to receive explicit couples, family,
+      // and availability requirements.
+      const rentalAlias = tool.name === "rentals_search_properties" && ["couples_required", "families_required", "available_now"].includes(name);
       if (!(name in properties) && !rentalAlias) throw new GatewayError("INPUT_INVALID", `arguments.${name} is not accepted by this tool.`);
     }
   }
@@ -31,7 +31,7 @@ export function validateToolInput(tool: ToolDefinition, value: unknown): JsonObj
     validateValue(`arguments.${name}`, input[name], property as JsonObject);
   }
   if (tool.name === "rentals_search_properties") {
-    for (const name of ["couples_required", "available_now"]) {
+    for (const name of ["couples_required", "families_required", "available_now"]) {
       if (name in input && typeof input[name] !== "boolean") throw new GatewayError("INPUT_INVALID", `arguments.${name} must be a boolean.`);
     }
   }

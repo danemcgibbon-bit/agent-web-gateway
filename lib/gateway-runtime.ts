@@ -578,7 +578,7 @@ const COMPACT_RESULT_FIELDS = new Set([
   "rating", "rating_count", "review_count", "canonical_url", "url", "image_url", "delivery_summary", "delivery", "shipping",
   "price_pcm", "effective_price_pcm", "bedrooms", "bathrooms", "property_type", "furnishing", "bills", "bills_surcharge_pcm", "pets_allowed", "whole_property", "whole_property_eligible", "shared_property", "max_occupants", "parse_failures",
   "listed_at", "last_updated_at", "available_from", "published_at", "updated_at", "retrieved_at", "freshness", "remote", "department", "team", "employment_type", "salary", "nights", "guests", "rooms", "timezone",
-  "listing_mode", "dwelling_type", "rent", "rent_basis", "occupancy", "couples_allowed", "couples_confidence", "couples_source", "availability_details", "timestamps", "location", "constraint_states", "unknown_constraints", "unverified_candidates",
+  "listing_mode", "dwelling_type", "rent", "rent_basis", "occupancy", "couples_allowed", "couples_confidence", "couples_source", "families_allowed", "families_confidence", "families_source", "availability_details", "timestamps", "location", "constraint_states", "unknown_constraints", "unverified_candidates",
   "verification", "verification_status", "listing_type", "execution_mode", "actions", "failed_constraints", "search_objective", "objective_requested", "objective_supported", "objective_verified", "coverage_confidence", "coverage_sufficient_for_superlative",
 ]);
 
