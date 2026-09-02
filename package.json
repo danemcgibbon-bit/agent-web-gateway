@@ -9,7 +9,6 @@
     "install:ci": "bash scripts/install-ci.sh",
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vite",
     "build": "bash scripts/build-verified.sh",
-    "build:netlify": "NETLIFY=1 NITRO_PRESET=netlify vite build",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "npm run build && node --import tsx --test tests/*.test.mjs",
     "test:live": "npm run build && LIVE_CONNECTOR_TESTS=1 node --import tsx --test tests/live-connectors.test.mjs",
@@ -17,7 +16,7 @@
     "benchmark:targeted": "node --import tsx scripts/run-targeted-site-benchmark.ts data/targeted-site-benchmark-v0.11.1.json",
     "benchmark:shopify-matrix": "node --import tsx scripts/run-dynamic-shopify-matrix.ts",
     "benchmark:agent-evals": "node --import tsx scripts/run-agent-evals.ts",
-    "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .netlify",
+    "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate"
   },
   "dependencies": {
@@ -57,7 +56,6 @@
     "drizzle-kit": "0.31.10",
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.6",
-    "nitro": "3.0.260610-beta",
     "react-server-dom-webpack": "19.2.6",
     "tailwindcss": "4.2.1",
     "tsx": "^4.23.13",

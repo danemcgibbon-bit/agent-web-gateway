@@ -2014,7 +2014,7 @@ async function searchProducts(input: JsonObject, context: ConnectorContext): Pro
         provider_diagnostics: providerDiagnostics,
       },
     },
-    sourceUrl: sourceUrls[0] ?? "https://agent-web-gateway.djrookie99.chatgpt.site",
+    sourceUrl: sourceUrls[0] ?? "https://agent-web-gateway.danemcgibbon.workers.dev",
     sourceProvider: dynamicDiscovery
       ? `${dynamicDiscovery.provider.domain} (${dynamicDiscovery.provider.engine} dynamic compatibility route)`
       : "Commerce (direct providers plus dynamic Shopify/WooCommerce platform routes)",

@@ -31,7 +31,7 @@ import {
 
 const OTM_SITE = "https://www.onthemarket.com";
 const OPENRENT_SITE = "https://www.openrent.co.uk";
-const AGENT_USER_AGENT = "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.djrookie99.chatgpt.site)";
+const AGENT_USER_AGENT = "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.danemcgibbon.workers.dev)";
 const RENTAL_PROVIDERS = ["onthemarket", "openrent"] as const;
 type RentalProvider = (typeof RENTAL_PROVIDERS)[number];
 type RentalRecord = JsonObject;

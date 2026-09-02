@@ -2175,7 +2175,7 @@ async function robotsText(provider: CompatibilityProviderDefinition, context: Co
   const startedAt = Date.now();
   const pending = (async (): Promise<string> => {
     try {
-      const result = await fetchText(url, context, { accept: "text/plain,text/*;q=0.8", headers: { "user-agent": "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.djrookie99.chatgpt.site)" }, ...(provider.dynamic ? { allowedOrigin: providerOrigin(provider) } : {}) });
+      const result = await fetchText(url, context, { accept: "text/plain,text/*;q=0.8", headers: { "user-agent": "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.danemcgibbon.workers.dev)" }, ...(provider.dynamic ? { allowedOrigin: providerOrigin(provider) } : {}) });
       robotsObservation.set(hostKey, {
         route: "robots.txt",
         status: "success",
@@ -2220,7 +2220,7 @@ async function publicText(provider: CompatibilityProviderDefinition, url: string
   if (!target) throw new GatewayError("INTERNAL_ERROR", "The compatibility connector generated a URL outside its fixed site boundary.");
   const robots = await robotsText(provider, context);
   if (!robotsAllows(robots, target)) throw new GatewayError("PROVIDER_RESTRICTED", "The public site access policy disallows the requested read-only route.", { retryable: false, mode: "public_http", sourceUrl: target, stage: "http" });
-  const result = await fetchText(target, context, { accept, headers: { "user-agent": "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.djrookie99.chatgpt.site)" }, ...(provider.dynamic ? { allowedOrigin: providerOrigin(provider) } : {}) });
+  const result = await fetchText(target, context, { accept, headers: { "user-agent": "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.danemcgibbon.workers.dev)" }, ...(provider.dynamic ? { allowedOrigin: providerOrigin(provider) } : {}) });
   return { text: result.text, url: result.url, http_status: result.response.status, redirect_chain: result.redirect_chain };
 }
 

@@ -385,7 +385,7 @@ async function benchmarkReconTarget(target: (typeof RECON_TARGETS)[number]): Pro
   try {
     const page = await fetchText(target.url, handle.context, {
       accept: "text/html,application/xhtml+xml;q=0.9,*/*;q=0.8",
-      headers: { "user-agent": "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.djrookie99.chatgpt.site)" },
+      headers: { "user-agent": "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.danemcgibbon.workers.dev)" },
     });
     const html = page.text;
     const framework = detectFrameworks(html);

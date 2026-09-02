@@ -94,6 +94,15 @@ test("semantic and diagnostic fixture views share one normalized snapshot and cl
     network_requests: 1,
     routes: ["fixture_snapshot"],
     search_query: "sweater",
+    acquisition: {
+      strategy: "fixture",
+      scope: { kind: "store", key: "store", path: "/" },
+      pages_fetched: 1,
+      pagination_complete: true,
+      records_acquired: 1,
+      records_capped: false,
+      termination_reason: "end_of_catalogue",
+    },
   });
   const semanticQualifiers = snapshotCandidates(snapshot, "sweater").filter((candidate) => (
     classifyCompatibilityAudience(candidate) === "men"

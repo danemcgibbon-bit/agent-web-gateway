@@ -75,7 +75,7 @@ async function runTarget(gatewayUrl: string, target: MatrixTarget): Promise<Json
   };
 }
 
-const gatewayUrl = process.env.GATEWAY_URL ?? "https://agent-web-gateway.djrookie99.chatgpt.site";
+const gatewayUrl = process.env.GATEWAY_URL ?? "https://agent-web-gateway.danemcgibbon.workers.dev";
 const outputPath = process.argv[2] ?? "data/dynamic-shopify-matrix-v0.11.2.json";
 const sites: JsonObject[] = [];
 for (const target of TARGETS) {

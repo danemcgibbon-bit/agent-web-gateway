@@ -34,7 +34,7 @@ import { recordExtractionBenchmark } from "../../lib/extraction-benchmark";
 import { publicSearchCoverage, publicSearchCoverageFields } from "../../lib/commerce-coverage";
 
 const AMAZON_SITE = "https://www.amazon.co.uk";
-const IDENTIFYING_USER_AGENT = "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.djrookie99.chatgpt.site)";
+const IDENTIFYING_USER_AGENT = "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.danemcgibbon.workers.dev)";
 const MAX_AMAZON_SEARCH_PAGES = 4;
 const MAX_AMAZON_SEARCH_PRODUCTS = 160;
 const MAX_AMAZON_SEARCH_ELAPSED_MS = 10_000;

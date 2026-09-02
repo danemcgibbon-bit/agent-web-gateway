@@ -25,7 +25,7 @@ import { publicSearchCoverage, publicSearchCoverageFields } from "../../lib/comm
 import { robotsAllows } from "../rentals";
 
 const JOHN_LEWIS_SITE = "https://www.johnlewis.com";
-const JOHN_LEWIS_USER_AGENT = "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.djrookie99.chatgpt.site)";
+const JOHN_LEWIS_USER_AGENT = "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.danemcgibbon.workers.dev)";
 const JOHN_LEWIS_HOSTS = new Set(["johnlewis.com", "www.johnlewis.com"]);
 const JOHN_LEWIS_MEDIA_HOSTS = new Set(["media.johnlewiscontent.com"]);
 const ROBOTS_TTL_MS = 30 * 60 * 1000;

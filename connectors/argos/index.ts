@@ -25,7 +25,7 @@ import { robotsAllows } from "../rentals";
 import { publicSearchCoverage, publicSearchCoverageFields } from "../../lib/commerce-coverage";
 
 const ARGOS_SITE = "https://www.argos.co.uk";
-const ARGOS_USER_AGENT = "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.djrookie99.chatgpt.site)";
+const ARGOS_USER_AGENT = "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.danemcgibbon.workers.dev)";
 const ARGOS_HOSTS = new Set(["argos.co.uk", "www.argos.co.uk"]);
 const MEDIA_HOST_SUFFIX = ".4rgos.it";
 

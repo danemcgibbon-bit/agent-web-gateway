@@ -413,7 +413,7 @@ export async function fetchUpstream(
   const headers = new Headers(options.headers);
   headers.set("accept", accept ?? headers.get("accept") ?? "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8");
   headers.set("accept-language", headers.get("accept-language") ?? "en-GB,en;q=0.8");
-  headers.set("user-agent", headers.get("user-agent") ?? "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.djrookie99.chatgpt.site)");
+  headers.set("user-agent", headers.get("user-agent") ?? "Agent/AgentWebGateway (+read-only; https://agent-web-gateway.danemcgibbon.workers.dev)");
 
   try {
     let currentUrl = url;

@@ -27,7 +27,7 @@ const INTERFACE_VARIANTS: Array<{ id: InterfaceVariant; surface: Surface; toolNa
   { id: "lean_deterministic_advanced", surface: "semantic", guidance: "instructional", toolNames: [...PREFERRED_SEMANTIC_TOOL_NAMES] },
 ];
 
-const gatewayUrl = (process.env.AGENT_EVAL_GATEWAY_URL ?? "https://agent-web-gateway.djrookie99.chatgpt.site").replace(/\/$/, "");
+const gatewayUrl = (process.env.AGENT_EVAL_GATEWAY_URL ?? "https://agent-web-gateway.danemcgibbon.workers.dev").replace(/\/$/, "");
 const endpoint = process.env.AGENT_EVAL_MODEL_ENDPOINT ?? "https://api.openai.com/v1/chat/completions";
 const apiKey = process.env.AGENT_EVAL_API_KEY;
 const trials = Math.max(1, Math.min(10, Number.parseInt(process.env.AGENT_EVAL_TRIALS ?? "5", 10) || 5));
