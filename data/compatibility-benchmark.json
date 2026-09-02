@@ -1,0 +1,5506 @@
+{
+  "schema_version": "0.11",
+  "generated_at": "2026-09-01T12:42:46.255Z",
+  "status": "complete",
+  "methodology": {
+    "acquisition": [
+      "official/known public API",
+      "ordinary public HTTP",
+      "embedded structured state",
+      "bounded framework state",
+      "bounded static API clues"
+    ],
+    "public_https_only": true,
+    "read_only": true,
+    "zero_configuration": true,
+    "target_selection": "Fixed allowlisted targets: 10 Shopify, 10 WooCommerce, 5 Greenhouse, 5 Lever.",
+    "implementation_class_rule": "Each target is first run through the unchanged shared engine; later generic fixes may be labelled generic_improvement, while bespoke parsing is counted separately."
+  },
+  "families": {
+    "shopify": {
+      "tested_sites": 10,
+      "search_successes": 1,
+      "detail_successes": 1,
+      "chain_verified": 1,
+      "search_success_rate": 0.1,
+      "detail_success_rate": 0.1,
+      "chain_success_rate": 1,
+      "generic_reuse_rate": 1,
+      "bespoke_parser_overrides": 0,
+      "false_success_count": 0,
+      "field_completeness": 0.1,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "maturity": "partial"
+    },
+    "woocommerce": {
+      "tested_sites": 10,
+      "search_successes": 1,
+      "detail_successes": 1,
+      "chain_verified": 1,
+      "search_success_rate": 0.1,
+      "detail_success_rate": 0.1,
+      "chain_success_rate": 1,
+      "generic_reuse_rate": 1,
+      "bespoke_parser_overrides": 0,
+      "false_success_count": 0,
+      "field_completeness": 0.1,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "maturity": "partial"
+    },
+    "greenhouse": {
+      "tested_sites": 5,
+      "search_successes": 5,
+      "detail_successes": 5,
+      "chain_verified": 5,
+      "search_success_rate": 1,
+      "detail_success_rate": 1,
+      "chain_success_rate": 1,
+      "generic_reuse_rate": 1,
+      "bespoke_parser_overrides": 0,
+      "false_success_count": 0,
+      "field_completeness": 1,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "maturity": "verified"
+    },
+    "lever": {
+      "tested_sites": 5,
+      "search_successes": 0,
+      "detail_successes": 0,
+      "chain_verified": 0,
+      "search_success_rate": 0,
+      "detail_success_rate": 0,
+      "chain_success_rate": 0,
+      "generic_reuse_rate": 1,
+      "bespoke_parser_overrides": 0,
+      "false_success_count": 0,
+      "field_completeness": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "maturity": "experimental"
+    }
+  },
+  "sites": [
+    {
+      "site_id": "shopify_represent",
+      "name": "Represent",
+      "domain": "representclo.com",
+      "platform": "shopify",
+      "engine": "shopify",
+      "query": "hoodie",
+      "benchmark_category": "fashion",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "success",
+        "result_count": 2,
+        "latency_ms": 6337,
+        "source_url": "https://representclo.com/products.json?limit=20",
+        "execution_mode": "public_http",
+        "engine": "shopify",
+        "strategy": "shopify_products_json",
+        "diagnostics": {
+          "response_classification": "SEARCH_RESULTS",
+          "extraction_strategy": "shopify_products_json",
+          "compatibility_engine": "shopify"
+        }
+      },
+      "detail": {
+        "status": "success",
+        "result_count": 1,
+        "latency_ms": 212,
+        "source_url": "https://representclo.com/products/represent-x-guns-n-roses-cross-zip-through-hoodie-stained-black.js",
+        "execution_mode": "public_http",
+        "engine": "shopify",
+        "strategy": "shopify_product.js",
+        "diagnostics": {
+          "extraction_strategy": "shopify_product.js",
+          "compatibility_engine": "shopify"
+        }
+      },
+      "chain": {
+        "status": "verified",
+        "id": "represent-x-guns-n-roses-cross-zip-through-hoodie-stained-black",
+        "canonical_url": "https://representclo.com/products/represent-x-guns-n-roses-cross-zip-through-hoodie-stained-black",
+        "detail_id": "represent-x-guns-n-roses-cross-zip-through-hoodie-stained-black"
+      },
+      "field_completeness": {
+        "id": 1,
+        "title": 1,
+        "price": 1,
+        "canonical_url": 1
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    },
+    {
+      "site_id": "shopify_rapanuiclothing",
+      "name": "Rapanui",
+      "domain": "rapanuiclothing.com",
+      "platform": "shopify",
+      "engine": "shopify",
+      "query": "t-shirt",
+      "benchmark_category": "fashion",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 28000,
+        "source_url": "https://rapanuiclothing.com/search?q=t-shirt",
+        "error_code": "UPSTREAM_TIMEOUT",
+        "error_message": "The upstream website did not respond within the execution window.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "shopify_pipandnut",
+      "name": "Pip & Nut",
+      "domain": "pipandnut.com",
+      "platform": "shopify",
+      "engine": "shopify",
+      "query": "peanut butter",
+      "benchmark_category": "food",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 28000,
+        "source_url": "https://pipandnut.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "shopify_heatonist",
+      "name": "Heatonist",
+      "domain": "heatonist.com",
+      "platform": "shopify",
+      "engine": "shopify",
+      "query": "hot sauce",
+      "benchmark_category": "food",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 1,
+        "source_url": "https://heatonist.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "shopify_deathwishcoffee",
+      "name": "Death Wish Coffee",
+      "domain": "deathwishcoffee.com",
+      "platform": "shopify",
+      "engine": "shopify",
+      "query": "coffee",
+      "benchmark_category": "food",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 0,
+        "source_url": "https://deathwishcoffee.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "shopify_bombas",
+      "name": "Bombas",
+      "domain": "bombas.com",
+      "platform": "shopify",
+      "engine": "shopify",
+      "query": "socks",
+      "benchmark_category": "fashion",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 0,
+        "source_url": "https://bombas.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "shopify_gymshark",
+      "name": "Gymshark",
+      "domain": "gymshark.com",
+      "platform": "shopify",
+      "engine": "shopify",
+      "query": "leggings",
+      "benchmark_category": "fashion",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 0,
+        "source_url": "https://gymshark.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "shopify_pipcorn",
+      "name": "Pipcorn",
+      "domain": "pipsnacks.com",
+      "platform": "shopify",
+      "engine": "shopify",
+      "query": "popcorn",
+      "benchmark_category": "food",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 0,
+        "source_url": "https://pipsnacks.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "shopify_allbirds",
+      "name": "Allbirds",
+      "domain": "allbirds.com",
+      "platform": "shopify",
+      "engine": "shopify",
+      "query": "shoes",
+      "benchmark_category": "fashion",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 0,
+        "source_url": "https://www.allbirds.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "shopify_blueland",
+      "name": "Blueland",
+      "domain": "blueland.com",
+      "platform": "shopify",
+      "engine": "shopify",
+      "query": "cleaning",
+      "benchmark_category": "home",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 1,
+        "source_url": "https://www.blueland.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "woocommerce_hardandware",
+      "name": "Hard & Ware",
+      "domain": "hardandware.com",
+      "platform": "woocommerce",
+      "engine": "woocommerce",
+      "query": "storage",
+      "benchmark_category": "home",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 14776,
+        "source_url": "https://www.hardandware.com/?s=storage&post_type=product",
+        "execution_mode": "public_http",
+        "error_code": "UPSTREAM_CHANGED",
+        "error_message": "The public search page did not contain valid product records after bounded structured-data extraction.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "woocommerce_formnutrition",
+      "name": "Form Nutrition",
+      "domain": "formnutrition.com",
+      "platform": "woocommerce",
+      "engine": "woocommerce",
+      "query": "protein",
+      "benchmark_category": "nutrition",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "success",
+        "result_count": 5,
+        "latency_ms": 7958,
+        "source_url": "https://formnutrition.com/wp-json/wc/store/v1/products?search=protein&per_page=5&_fields=id%2Cname%2Cslug%2Cprices%2Cprice%2Cregular_price%2Csale_price%2Cimages%2Caverage_rating%2Crating_count%2Creview_count%2Cstock_status%2Cpermalink%2Cshort_description%2Cvariations",
+        "execution_mode": "public_http",
+        "engine": "woocommerce",
+        "strategy": "woo_store_api",
+        "diagnostics": {
+          "response_classification": "SEARCH_RESULTS",
+          "extraction_strategy": "woo_store_api",
+          "compatibility_engine": "woocommerce",
+          "woo_platform": {
+            "platform": "woocommerce",
+            "confidence": 0.99,
+            "signals": [
+              "WordPress REST index",
+              "wc/store namespace"
+            ],
+            "rest_index_status": "verified",
+            "routes": {
+              "store_api": true,
+              "store_api_plain": true,
+              "product_search_api": false,
+              "frontend_search": true
+            },
+            "store_api_verified": true
+          },
+          "woo_route_attempts": [
+            {
+              "route": "woo_store_api",
+              "state": "SUCCESS_WITH_RESULTS",
+              "url": "https://formnutrition.com/wp-json/wc/store/v1/products?per_page=1&_fields=id%2Cname%2Cslug%2Cprices%2Cpermalink"
+            },
+            {
+              "route": "woo_store_api",
+              "state": "SUCCESS_WITH_RESULTS",
+              "url": "https://formnutrition.com/wp-json/wc/store/v1/products?search=protein&per_page=5&_fields=id%2Cname%2Cslug%2Cprices%2Cprice%2Cregular_price%2Csale_price%2Cimages%2Caverage_rating%2Crating_count%2Creview_count%2Cstock_status%2Cpermalink%2Cshort_description%2Cvariations"
+            }
+          ],
+          "woo_preferred_search": "woo_store_api",
+          "woo_preferred_detail": null,
+          "preferred_acquisition_route": "woo_store_api"
+        }
+      },
+      "detail": {
+        "status": "success",
+        "result_count": 1,
+        "latency_ms": 851,
+        "source_url": "https://formnutrition.com/wp-json/wc/store/v1/products/1121463",
+        "execution_mode": "public_http",
+        "engine": "woocommerce",
+        "strategy": "woo_store_api",
+        "diagnostics": {
+          "extraction_strategy": "woo_store_api",
+          "compatibility_engine": "woocommerce",
+          "woo_platform": {
+            "platform": "woocommerce",
+            "confidence": 0.99,
+            "signals": [
+              "WordPress REST index",
+              "wc/store namespace"
+            ],
+            "rest_index_status": "verified",
+            "routes": {
+              "store_api": true,
+              "store_api_plain": true,
+              "product_search_api": false,
+              "frontend_search": true
+            },
+            "store_api_verified": true
+          },
+          "woo_route_attempts": [
+            {
+              "route": "woo_store_api",
+              "state": "SUCCESS_WITH_RESULTS",
+              "url": "https://formnutrition.com/wp-json/wc/store/v1/products/1121463"
+            }
+          ],
+          "woo_preferred_search": "woo_store_api",
+          "woo_preferred_detail": "woo_store_api",
+          "preferred_acquisition_route": "woo_store_api"
+        }
+      },
+      "chain": {
+        "status": "verified",
+        "id": "1121463",
+        "canonical_url": "https://formnutrition.com/plant-based-nutrition/form-protein-bar",
+        "detail_id": "1121463"
+      },
+      "field_completeness": {
+        "id": 1,
+        "title": 1,
+        "price": 1,
+        "canonical_url": 1
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    },
+    {
+      "site_id": "woocommerce_gruum",
+      "name": "Gruum",
+      "domain": "gruum.com",
+      "platform": "woocommerce",
+      "engine": "woocommerce",
+      "query": "moisturiser",
+      "benchmark_category": "beauty",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 28002,
+        "source_url": "https://gruum.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "woocommerce_chucklinggoat",
+      "name": "Chuckling Goat",
+      "domain": "chucklinggoat.co.uk",
+      "platform": "woocommerce",
+      "engine": "woocommerce",
+      "query": "kefir",
+      "benchmark_category": "nutrition",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 0,
+        "source_url": "https://www.chucklinggoat.co.uk/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "woocommerce_landyachtz",
+      "name": "Landyachtz",
+      "domain": "landyachtz.com",
+      "platform": "woocommerce",
+      "engine": "woocommerce",
+      "query": "skateboard",
+      "benchmark_category": "sport",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 1,
+        "source_url": "https://landyachtz.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "woocommerce_bonsoy",
+      "name": "Bonsoy",
+      "domain": "bonsoy.com",
+      "platform": "woocommerce",
+      "engine": "woocommerce",
+      "query": "soy milk",
+      "benchmark_category": "food",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 0,
+        "source_url": "https://bonsoy.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "woocommerce_chaniahoney",
+      "name": "Chania Honey",
+      "domain": "chania-honey.gr",
+      "platform": "woocommerce",
+      "engine": "woocommerce",
+      "query": "honey",
+      "benchmark_category": "food",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 0,
+        "source_url": "https://chania-honey.gr/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "woocommerce_eamesoffice",
+      "name": "Eames Office",
+      "domain": "eamesoffice.com",
+      "platform": "woocommerce",
+      "engine": "woocommerce",
+      "query": "chair",
+      "benchmark_category": "home",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 1,
+        "source_url": "https://eamesoffice.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "woocommerce_maisonkayser",
+      "name": "Maison Kayser",
+      "domain": "maison-kayser.com",
+      "platform": "woocommerce",
+      "engine": "woocommerce",
+      "query": "bread",
+      "benchmark_category": "food",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 0,
+        "source_url": "https://maison-kayser.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "woocommerce_thompsonhanson",
+      "name": "Thompson + Hanson",
+      "domain": "thompsonhanson.com",
+      "platform": "woocommerce",
+      "engine": "woocommerce",
+      "query": "furniture",
+      "benchmark_category": "home",
+      "implementation_class": "generic_improvement",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 0,
+        "source_url": "https://thompsonhanson.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "price": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0,
+      "notes": [
+        "Generic compatibility engine failed on the first-pass target."
+      ]
+    },
+    {
+      "site_id": "greenhouse:stripe",
+      "name": "Stripe",
+      "domain": "job-boards.greenhouse.io",
+      "platform": "greenhouse",
+      "engine": "greenhouse",
+      "query": "all public board postings",
+      "implementation_class": "unchanged",
+      "search": {
+        "status": "success",
+        "result_count": 5,
+        "latency_ms": 9001,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=false",
+        "execution_mode": "public_http",
+        "engine": "greenhouse",
+        "diagnostics": {
+          "boards_attempted": [
+            {
+              "platform": "greenhouse",
+              "company": "stripe"
+            }
+          ],
+          "catalog_size": 10,
+          "provider_diagnostics": {
+            "greenhouse:stripe": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Stripe",
+              "result_count": 180,
+              "route": "greenhouse_public_api"
+            }
+          },
+          "platform_families": [
+            "greenhouse"
+          ]
+        }
+      },
+      "detail": {
+        "status": "success",
+        "result_count": 1,
+        "latency_ms": 739,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/stripe/jobs/8106026?content=true",
+        "execution_mode": "public_http",
+        "engine": "greenhouse",
+        "strategy": "greenhouse_public_api",
+        "diagnostics": {
+          "platform": "greenhouse",
+          "company": "Stripe",
+          "route": "greenhouse_public_api",
+          "identity_verified": true
+        }
+      },
+      "chain": {
+        "status": "verified",
+        "id": "greenhouse:stripe:8106026",
+        "canonical_url": "https://job-boards.greenhouse.io/stripe/jobs/8106026",
+        "detail_id": "greenhouse:stripe:8106026"
+      },
+      "field_completeness": {
+        "id": 1,
+        "title": 1,
+        "canonical_url": 1
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    },
+    {
+      "site_id": "greenhouse:figma",
+      "name": "Figma",
+      "domain": "job-boards.greenhouse.io",
+      "platform": "greenhouse",
+      "engine": "greenhouse",
+      "query": "all public board postings",
+      "implementation_class": "unchanged",
+      "search": {
+        "status": "success",
+        "result_count": 5,
+        "latency_ms": 9009,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/figma/jobs?content=false",
+        "execution_mode": "public_http",
+        "engine": "greenhouse",
+        "diagnostics": {
+          "boards_attempted": [
+            {
+              "platform": "greenhouse",
+              "company": "figma"
+            }
+          ],
+          "catalog_size": 10,
+          "provider_diagnostics": {
+            "greenhouse:figma": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Figma",
+              "result_count": 160,
+              "route": "greenhouse_public_api"
+            }
+          },
+          "platform_families": [
+            "greenhouse"
+          ]
+        }
+      },
+      "detail": {
+        "status": "success",
+        "result_count": 1,
+        "latency_ms": 425,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/figma/jobs/6163045004?content=true",
+        "execution_mode": "public_http",
+        "engine": "greenhouse",
+        "strategy": "greenhouse_public_api",
+        "diagnostics": {
+          "platform": "greenhouse",
+          "company": "Figma",
+          "route": "greenhouse_public_api",
+          "identity_verified": true
+        }
+      },
+      "chain": {
+        "status": "verified",
+        "id": "greenhouse:figma:6163045004",
+        "canonical_url": "https://boards.greenhouse.io/figma/jobs/6163045004",
+        "detail_id": "greenhouse:figma:6163045004"
+      },
+      "field_completeness": {
+        "id": 1,
+        "title": 1,
+        "canonical_url": 1
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    },
+    {
+      "site_id": "greenhouse:lyft",
+      "name": "Lyft",
+      "domain": "job-boards.greenhouse.io",
+      "platform": "greenhouse",
+      "engine": "greenhouse",
+      "query": "all public board postings",
+      "implementation_class": "unchanged",
+      "search": {
+        "status": "success",
+        "result_count": 5,
+        "latency_ms": 9361,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/lyft/jobs?content=false",
+        "execution_mode": "public_http",
+        "engine": "greenhouse",
+        "diagnostics": {
+          "boards_attempted": [
+            {
+              "platform": "greenhouse",
+              "company": "lyft"
+            }
+          ],
+          "catalog_size": 10,
+          "provider_diagnostics": {
+            "greenhouse:lyft": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Lyft",
+              "result_count": 170,
+              "route": "greenhouse_public_api"
+            }
+          },
+          "platform_families": [
+            "greenhouse"
+          ]
+        }
+      },
+      "detail": {
+        "status": "success",
+        "result_count": 1,
+        "latency_ms": 417,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/lyft/jobs/8733597002?content=true",
+        "execution_mode": "public_http",
+        "engine": "greenhouse",
+        "strategy": "greenhouse_public_api",
+        "diagnostics": {
+          "platform": "greenhouse",
+          "company": "Lyft",
+          "route": "greenhouse_public_api",
+          "identity_verified": true
+        }
+      },
+      "chain": {
+        "status": "verified",
+        "id": "greenhouse:lyft:8733597002",
+        "canonical_url": "https://job-boards.greenhouse.io/lyft/jobs/8733597002",
+        "detail_id": "greenhouse:lyft:8733597002"
+      },
+      "field_completeness": {
+        "id": 1,
+        "title": 1,
+        "canonical_url": 1
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    },
+    {
+      "site_id": "greenhouse:coinbase",
+      "name": "Coinbase",
+      "domain": "job-boards.greenhouse.io",
+      "platform": "greenhouse",
+      "engine": "greenhouse",
+      "query": "all public board postings",
+      "implementation_class": "unchanged",
+      "search": {
+        "status": "success",
+        "result_count": 5,
+        "latency_ms": 410,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/coinbase/jobs?content=false",
+        "execution_mode": "public_http",
+        "engine": "greenhouse",
+        "diagnostics": {
+          "boards_attempted": [
+            {
+              "platform": "greenhouse",
+              "company": "coinbase"
+            }
+          ],
+          "catalog_size": 10,
+          "provider_diagnostics": {
+            "greenhouse:coinbase": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Coinbase",
+              "result_count": 180,
+              "route": "greenhouse_public_api"
+            }
+          },
+          "platform_families": [
+            "greenhouse"
+          ]
+        }
+      },
+      "detail": {
+        "status": "success",
+        "result_count": 1,
+        "latency_ms": 650,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/coinbase/jobs/8021647?content=true",
+        "execution_mode": "public_http",
+        "engine": "greenhouse",
+        "strategy": "greenhouse_public_api",
+        "diagnostics": {
+          "platform": "greenhouse",
+          "company": "Coinbase",
+          "route": "greenhouse_public_api",
+          "identity_verified": true
+        }
+      },
+      "chain": {
+        "status": "verified",
+        "id": "greenhouse:coinbase:8021647",
+        "canonical_url": "https://job-boards.greenhouse.io/coinbase/jobs/8021647",
+        "detail_id": "greenhouse:coinbase:8021647"
+      },
+      "field_completeness": {
+        "id": 1,
+        "title": 1,
+        "canonical_url": 1
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    },
+    {
+      "site_id": "greenhouse:gitlab",
+      "name": "GitLab",
+      "domain": "job-boards.greenhouse.io",
+      "platform": "greenhouse",
+      "engine": "greenhouse",
+      "query": "all public board postings",
+      "implementation_class": "unchanged",
+      "search": {
+        "status": "success",
+        "result_count": 5,
+        "latency_ms": 369,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/gitlab/jobs?content=false",
+        "execution_mode": "public_http",
+        "engine": "greenhouse",
+        "diagnostics": {
+          "boards_attempted": [
+            {
+              "platform": "greenhouse",
+              "company": "gitlab"
+            }
+          ],
+          "catalog_size": 10,
+          "provider_diagnostics": {
+            "greenhouse:gitlab": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "GitLab",
+              "result_count": 180,
+              "route": "greenhouse_public_api"
+            }
+          },
+          "platform_families": [
+            "greenhouse"
+          ]
+        }
+      },
+      "detail": {
+        "status": "success",
+        "result_count": 1,
+        "latency_ms": 472,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/gitlab/jobs/8527416002?content=true",
+        "execution_mode": "public_http",
+        "engine": "greenhouse",
+        "strategy": "greenhouse_public_api",
+        "diagnostics": {
+          "platform": "greenhouse",
+          "company": "GitLab",
+          "route": "greenhouse_public_api",
+          "identity_verified": true
+        }
+      },
+      "chain": {
+        "status": "verified",
+        "id": "greenhouse:gitlab:8527416002",
+        "canonical_url": "https://job-boards.greenhouse.io/gitlab/jobs/8527416002",
+        "detail_id": "greenhouse:gitlab:8527416002"
+      },
+      "field_completeness": {
+        "id": 1,
+        "title": 1,
+        "canonical_url": 1
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    },
+    {
+      "site_id": "lever:binance",
+      "name": "Binance",
+      "domain": "jobs.lever.co",
+      "platform": "lever",
+      "engine": "lever",
+      "query": "all public board postings",
+      "implementation_class": "unchanged",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 12000,
+        "source_url": "https://api.lever.co/v0/postings/binance?mode=json&limit=20",
+        "error_code": "UPSTREAM_TIMEOUT",
+        "error_message": "The upstream website did not respond within the execution window.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    },
+    {
+      "site_id": "lever:deliverect",
+      "name": "Deliverect",
+      "domain": "jobs.lever.co",
+      "platform": "lever",
+      "engine": "lever",
+      "query": "all public board postings",
+      "implementation_class": "unchanged",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 12001,
+        "source_url": "https://api.lever.co/v0/postings/deliverect?mode=json&limit=20",
+        "error_code": "UPSTREAM_TIMEOUT",
+        "error_message": "The upstream website did not respond within the execution window.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    },
+    {
+      "site_id": "lever:farfetch",
+      "name": "Farfetch",
+      "domain": "jobs.lever.co",
+      "platform": "lever",
+      "engine": "lever",
+      "query": "all public board postings",
+      "implementation_class": "unchanged",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 12002,
+        "source_url": "https://api.lever.co/v0/postings/farfetch?mode=json&limit=20",
+        "error_code": "UPSTREAM_TIMEOUT",
+        "error_message": "The upstream website did not respond within the execution window.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    },
+    {
+      "site_id": "lever:qonto",
+      "name": "Qonto",
+      "domain": "jobs.lever.co",
+      "platform": "lever",
+      "engine": "lever",
+      "query": "all public board postings",
+      "implementation_class": "unchanged",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 12001,
+        "source_url": "https://api.lever.co/v0/postings/qonto?mode=json&limit=20",
+        "error_code": "UPSTREAM_TIMEOUT",
+        "error_message": "The upstream website did not respond within the execution window.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    },
+    {
+      "site_id": "lever:zartis",
+      "name": "Zartis",
+      "domain": "jobs.lever.co",
+      "platform": "lever",
+      "engine": "lever",
+      "query": "all public board postings",
+      "implementation_class": "unchanged",
+      "search": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 12001,
+        "source_url": "https://api.lever.co/v0/postings/zartis?mode=json&limit=20",
+        "error_code": "UPSTREAM_TIMEOUT",
+        "error_message": "The upstream website did not respond within the execution window.",
+        "retryable": true
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": {
+        "status": "not_attempted"
+      },
+      "field_completeness": {
+        "id": 0,
+        "title": 0,
+        "canonical_url": 0
+      },
+      "false_success_count": 0,
+      "frameworks_detected": [],
+      "embedded_state_kinds": [],
+      "api_candidates": 0
+    }
+  ],
+  "reconnaissance": [
+    {
+      "site": "booking",
+      "url": "https://www.booking.com/searchresults.html?ss=Brighton",
+      "direct_http": "failed",
+      "latency_ms": 12001,
+      "frameworks_detected": [],
+      "rendering": "unknown",
+      "embedded_state_kinds": [],
+      "useful_structured_records": 0,
+      "inline_api_candidates": 0,
+      "bundle_api_candidates": 0,
+      "inspected_bundle_count": 0,
+      "stable_connector_feasible": false,
+      "safe_read_route_reproduced": false,
+      "failure_code": "UPSTREAM_TIMEOUT"
+    },
+    {
+      "site": "argos",
+      "url": "https://www.argos.co.uk/search/wireless-headphones/",
+      "direct_http": "failed",
+      "latency_ms": 12001,
+      "frameworks_detected": [],
+      "rendering": "unknown",
+      "embedded_state_kinds": [],
+      "useful_structured_records": 0,
+      "inline_api_candidates": 0,
+      "bundle_api_candidates": 0,
+      "inspected_bundle_count": 0,
+      "stable_connector_feasible": false,
+      "safe_read_route_reproduced": false,
+      "failure_code": "UPSTREAM_TIMEOUT"
+    },
+    {
+      "site": "currys",
+      "url": "https://www.currys.co.uk/search?q=wireless%20headphones",
+      "direct_http": "failed",
+      "latency_ms": 12000,
+      "frameworks_detected": [],
+      "rendering": "unknown",
+      "embedded_state_kinds": [],
+      "useful_structured_records": 0,
+      "inline_api_candidates": 0,
+      "bundle_api_candidates": 0,
+      "inspected_bundle_count": 0,
+      "stable_connector_feasible": false,
+      "safe_read_route_reproduced": false,
+      "failure_code": "UPSTREAM_TIMEOUT"
+    },
+    {
+      "site": "johnlewis",
+      "url": "https://www.johnlewis.com/search?search-term=desk%20lamp",
+      "direct_http": "usable",
+      "latency_ms": 9987,
+      "frameworks_detected": [
+        "nextjs",
+        "react",
+        "angular",
+        "algolia"
+      ],
+      "rendering": "mixed",
+      "embedded_state_kinds": [
+        "json_ld",
+        "redux_state",
+        "inline_json",
+        "next_data"
+      ],
+      "useful_structured_records": 20,
+      "inline_api_candidates": 7,
+      "bundle_api_candidates": 2,
+      "inspected_bundle_count": 6,
+      "stable_connector_feasible": true,
+      "safe_read_route_reproduced": false
+    }
+  ],
+  "unified_benchmarks": [
+    {
+      "capability": "commerce",
+      "query": "protein powder under £40",
+      "input": {
+        "query": "protein powder under £40",
+        "max_results": 5,
+        "currency": "GBP",
+        "locale": "en-GB"
+      },
+      "result": {
+        "status": "success",
+        "result_count": 1,
+        "latency_ms": 6859,
+        "source_url": "https://formnutrition.com/wp-json/wc/store/v1/products?search=protein+powder&per_page=5&_fields=id%2Cname%2Cslug%2Cprices%2Cprice%2Cregular_price%2Csale_price%2Cimages%2Caverage_rating%2Crating_count%2Creview_count%2Cstock_status%2Cpermalink%2Cshort_description%2Cvariations",
+        "execution_mode": "public_http",
+        "diagnostics": {
+          "provider_count": 3,
+          "valid_result_count": 1,
+          "ranking": "relevance",
+          "relevance_excluded": 0,
+          "relevance_excluded_by_provider": {},
+          "provider_selection": {
+            "selection_mode": "intent_ranked",
+            "normalized_intent": {
+              "raw_query": "protein powder under £40",
+              "product_query": "protein powder",
+              "tokens": [
+                "protein",
+                "powder"
+              ],
+              "categories": [
+                "nutrition"
+              ],
+              "max_price": 40
+            },
+            "selected": [
+              "woocommerce_formnutrition",
+              "amazon",
+              "ebay"
+            ],
+            "ranked": [
+              {
+                "provider": "woocommerce_formnutrition",
+                "score": 220,
+                "keyword_matches": [
+                  "protein",
+                  "powder"
+                ],
+                "category_matches": [
+                  "nutrition"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "amazon",
+                "score": 30,
+                "keyword_matches": [],
+                "category_matches": [
+                  "nutrition"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "ebay",
+                "score": 30,
+                "keyword_matches": [],
+                "category_matches": [
+                  "nutrition"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "score": 20,
+                "keyword_matches": [],
+                "category_matches": [
+                  "nutrition"
+                ],
+                "selection_eligible": false
+              },
+              {
+                "provider": "ikea",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "argos",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "johnlewis",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_represent",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_hardandware",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_decathlon",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_currys",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_dunelm",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              }
+            ],
+            "excluded": [
+              {
+                "provider": "ikea",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "argos",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "johnlewis",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_represent",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "reason": "no precise product-keyword match"
+              },
+              {
+                "provider": "woocommerce_hardandware",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_decathlon",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_currys",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_dunelm",
+                "reason": "no category or keyword match"
+              }
+            ]
+          },
+          "provider_diagnostics": {
+            "woocommerce_formnutrition": {
+              "response_classification": "SEARCH_RESULTS",
+              "extraction_strategy": "woo_store_api",
+              "compatibility_engine": "woocommerce",
+              "woo_platform": {
+                "platform": "woocommerce",
+                "confidence": 0.99,
+                "signals": [
+                  "WordPress REST index",
+                  "wc/store namespace"
+                ],
+                "rest_index_status": "verified",
+                "routes": {
+                  "store_api": true,
+                  "store_api_plain": true,
+                  "product_search_api": false,
+                  "frontend_search": true
+                },
+                "store_api_verified": true
+              },
+              "woo_route_attempts": [
+                {
+                  "route": "woo_store_api",
+                  "state": "SUCCESS_WITH_RESULTS",
+                  "url": "https://formnutrition.com/wp-json/wc/store/v1/products?search=protein+powder&per_page=5&_fields=id%2Cname%2Cslug%2Cprices%2Cprice%2Cregular_price%2Csale_price%2Cimages%2Caverage_rating%2Crating_count%2Creview_count%2Cstock_status%2Cpermalink%2Cshort_description%2Cvariations"
+                }
+              ],
+              "woo_preferred_search": "woo_store_api",
+              "woo_preferred_detail": "woo_store_api",
+              "preferred_acquisition_route": "woo_store_api"
+            }
+          }
+        }
+      },
+      "provider_summary": {
+        "woocommerce_formnutrition": {
+          "status": "success",
+          "result_count": 1,
+          "execution_mode": "public_http",
+          "compatibility_engine": "woocommerce"
+        },
+        "amazon": {
+          "status": "error",
+          "code": "UPSTREAM_BLOCKED",
+          "message": "Amazon’s identified public HTTP route was refused or returned an automated-access response.",
+          "retryable": false
+        },
+        "ebay": {
+          "status": "error",
+          "code": "PROVIDER_UNSUPPORTED",
+          "message": "eBay is not available through a zero-configuration public route.",
+          "retryable": false
+        }
+      },
+      "intent": {
+        "product_query": "protein powder",
+        "categories": [
+          "nutrition"
+        ],
+        "max_price": 40
+      },
+      "selection": {
+        "selection_mode": "intent_ranked",
+        "normalized_intent": {
+          "raw_query": "protein powder under £40",
+          "product_query": "protein powder",
+          "tokens": [
+            "protein",
+            "powder"
+          ],
+          "categories": [
+            "nutrition"
+          ],
+          "max_price": 40
+        },
+        "selected": [
+          "woocommerce_formnutrition",
+          "amazon",
+          "ebay"
+        ],
+        "ranked": [
+          {
+            "provider": "woocommerce_formnutrition",
+            "score": 220,
+            "keyword_matches": [
+              "protein",
+              "powder"
+            ],
+            "category_matches": [
+              "nutrition"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "amazon",
+            "score": 30,
+            "keyword_matches": [],
+            "category_matches": [
+              "nutrition"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "ebay",
+            "score": 30,
+            "keyword_matches": [],
+            "category_matches": [
+              "nutrition"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "score": 20,
+            "keyword_matches": [],
+            "category_matches": [
+              "nutrition"
+            ],
+            "selection_eligible": false
+          },
+          {
+            "provider": "ikea",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "argos",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "johnlewis",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_represent",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_hardandware",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_decathlon",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_currys",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_dunelm",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          }
+        ],
+        "excluded": [
+          {
+            "provider": "ikea",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "argos",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "johnlewis",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_represent",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "reason": "no precise product-keyword match"
+          },
+          {
+            "provider": "woocommerce_hardandware",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_decathlon",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_currys",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_dunelm",
+            "reason": "no category or keyword match"
+          }
+        ]
+      }
+    },
+    {
+      "capability": "commerce",
+      "query": "nut butter under £15",
+      "input": {
+        "query": "nut butter under £15",
+        "max_results": 5,
+        "currency": "GBP",
+        "locale": "en-GB"
+      },
+      "result": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 28002,
+        "source_url": "https://pipandnut.com/robots.txt",
+        "execution_mode": "public_http",
+        "error_code": "PROVIDER_RESTRICTED",
+        "error_message": "The public site access policy could not be verified for this route.",
+        "retryable": true
+      }
+    },
+    {
+      "capability": "commerce",
+      "query": "storage unit under £100",
+      "input": {
+        "query": "storage unit under £100",
+        "max_results": 5,
+        "currency": "GBP",
+        "locale": "en-GB"
+      },
+      "result": {
+        "status": "success",
+        "result_count": 5,
+        "latency_ms": 16773,
+        "source_url": "https://sik.search.blue.cdtapps.com/gb/en/search-result-page?types=PRODUCT&q=storage+unit",
+        "execution_mode": "mixed",
+        "diagnostics": {
+          "provider_count": 7,
+          "valid_result_count": 5,
+          "ranking": "relevance",
+          "relevance_excluded": 2,
+          "relevance_excluded_by_provider": {
+            "argos": 2
+          },
+          "provider_selection": {
+            "selection_mode": "intent_ranked",
+            "normalized_intent": {
+              "raw_query": "storage unit under £100",
+              "product_query": "storage unit",
+              "tokens": [
+                "storage",
+                "unit"
+              ],
+              "categories": [
+                "storage"
+              ],
+              "max_price": 100
+            },
+            "selected": [
+              "ikea",
+              "argos",
+              "johnlewis",
+              "structured_dunelm",
+              "woocommerce_hardandware",
+              "amazon",
+              "ebay"
+            ],
+            "ranked": [
+              {
+                "provider": "ikea",
+                "score": 220,
+                "keyword_matches": [
+                  "storage",
+                  "unit"
+                ],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "argos",
+                "score": 120,
+                "keyword_matches": [
+                  "storage"
+                ],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "johnlewis",
+                "score": 120,
+                "keyword_matches": [
+                  "storage"
+                ],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "structured_dunelm",
+                "score": 120,
+                "keyword_matches": [
+                  "storage"
+                ],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "woocommerce_hardandware",
+                "score": 100,
+                "keyword_matches": [
+                  "storage"
+                ],
+                "category_matches": [],
+                "selection_eligible": true
+              },
+              {
+                "provider": "amazon",
+                "score": 30,
+                "keyword_matches": [],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "ebay",
+                "score": 30,
+                "keyword_matches": [],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "shopify_represent",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_formnutrition",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_decathlon",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_currys",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              }
+            ],
+            "excluded": [
+              {
+                "provider": "shopify_represent",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "woocommerce_formnutrition",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_decathlon",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_currys",
+                "reason": "no category or keyword match"
+              }
+            ]
+          },
+          "provider_diagnostics": {
+            "argos": {
+              "response_classification": "SEARCH_RESULTS",
+              "extraction_strategy": "product_card",
+              "frameworks_detected": [
+                "nextjs",
+                "react",
+                "algolia"
+              ],
+              "embedded_state_kinds": [
+                "inline_json",
+                "next_flight"
+              ],
+              "inline_api_candidate_count": 1
+            }
+          }
+        }
+      },
+      "provider_summary": {
+        "ikea": {
+          "status": "success",
+          "result_count": 5,
+          "execution_mode": "first_party_api"
+        },
+        "argos": {
+          "status": "success",
+          "result_count": 5,
+          "execution_mode": "public_http",
+          "relevant_result_count": 3
+        },
+        "johnlewis": {
+          "status": "error",
+          "code": "UPSTREAM_CHANGED",
+          "message": "John Lewis returned a search page without validated product records.",
+          "retryable": true
+        },
+        "structured_dunelm": {
+          "status": "error",
+          "code": "PROVIDER_RESTRICTED",
+          "message": "The public site access policy disallows the requested read-only route.",
+          "retryable": false
+        },
+        "woocommerce_hardandware": {
+          "status": "error",
+          "code": "UPSTREAM_CHANGED",
+          "message": "The public search page did not contain valid product records after bounded structured-data extraction.",
+          "retryable": true
+        },
+        "amazon": {
+          "status": "error",
+          "code": "UPSTREAM_BLOCKED",
+          "message": "Amazon’s identified public HTTP route was refused or returned an automated-access response.",
+          "retryable": false
+        },
+        "ebay": {
+          "status": "error",
+          "code": "PROVIDER_UNSUPPORTED",
+          "message": "eBay is not available through a zero-configuration public route.",
+          "retryable": false
+        }
+      },
+      "intent": {
+        "product_query": "storage unit",
+        "categories": [
+          "storage"
+        ],
+        "max_price": 100
+      },
+      "selection": {
+        "selection_mode": "intent_ranked",
+        "normalized_intent": {
+          "raw_query": "storage unit under £100",
+          "product_query": "storage unit",
+          "tokens": [
+            "storage",
+            "unit"
+          ],
+          "categories": [
+            "storage"
+          ],
+          "max_price": 100
+        },
+        "selected": [
+          "ikea",
+          "argos",
+          "johnlewis",
+          "structured_dunelm",
+          "woocommerce_hardandware",
+          "amazon",
+          "ebay"
+        ],
+        "ranked": [
+          {
+            "provider": "ikea",
+            "score": 220,
+            "keyword_matches": [
+              "storage",
+              "unit"
+            ],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "argos",
+            "score": 120,
+            "keyword_matches": [
+              "storage"
+            ],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "johnlewis",
+            "score": 120,
+            "keyword_matches": [
+              "storage"
+            ],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "structured_dunelm",
+            "score": 120,
+            "keyword_matches": [
+              "storage"
+            ],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "woocommerce_hardandware",
+            "score": 100,
+            "keyword_matches": [
+              "storage"
+            ],
+            "category_matches": [],
+            "selection_eligible": true
+          },
+          {
+            "provider": "amazon",
+            "score": 30,
+            "keyword_matches": [],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "ebay",
+            "score": 30,
+            "keyword_matches": [],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "shopify_represent",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_formnutrition",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_decathlon",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_currys",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          }
+        ],
+        "excluded": [
+          {
+            "provider": "shopify_represent",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "woocommerce_formnutrition",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_decathlon",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_currys",
+            "reason": "no category or keyword match"
+          }
+        ]
+      }
+    },
+    {
+      "capability": "commerce",
+      "query": "running shoes under £80",
+      "input": {
+        "query": "running shoes under £80",
+        "max_results": 5,
+        "currency": "GBP",
+        "locale": "en-GB"
+      },
+      "result": {
+        "status": "zero_results",
+        "result_count": 0,
+        "latency_ms": 13103,
+        "source_url": "https://www.argos.co.uk/search/running-shoe/",
+        "execution_mode": "public_http",
+        "diagnostics": {
+          "provider_count": 4,
+          "valid_result_count": 0,
+          "ranking": "relevance",
+          "relevance_excluded": 5,
+          "relevance_excluded_by_provider": {
+            "argos": 5
+          },
+          "provider_selection": {
+            "selection_mode": "intent_ranked",
+            "normalized_intent": {
+              "raw_query": "running shoes under £80",
+              "product_query": "running shoe",
+              "tokens": [
+                "running",
+                "shoe"
+              ],
+              "categories": [
+                "sport"
+              ],
+              "max_price": 80
+            },
+            "selected": [
+              "structured_decathlon",
+              "amazon",
+              "ebay",
+              "argos"
+            ],
+            "ranked": [
+              {
+                "provider": "structured_decathlon",
+                "score": 120,
+                "keyword_matches": [
+                  "running"
+                ],
+                "category_matches": [
+                  "sport"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "amazon",
+                "score": 30,
+                "keyword_matches": [],
+                "category_matches": [
+                  "sport"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "ebay",
+                "score": 30,
+                "keyword_matches": [],
+                "category_matches": [
+                  "sport"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "argos",
+                "score": 20,
+                "keyword_matches": [],
+                "category_matches": [
+                  "sport"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "ikea",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "johnlewis",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_represent",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_hardandware",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_formnutrition",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_currys",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_dunelm",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              }
+            ],
+            "excluded": [
+              {
+                "provider": "ikea",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "johnlewis",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_represent",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "woocommerce_hardandware",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "woocommerce_formnutrition",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_currys",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_dunelm",
+                "reason": "no category or keyword match"
+              }
+            ]
+          },
+          "provider_diagnostics": {
+            "argos": {
+              "response_classification": "SEARCH_RESULTS",
+              "extraction_strategy": "product_card",
+              "frameworks_detected": [
+                "nextjs",
+                "react",
+                "algolia"
+              ],
+              "embedded_state_kinds": [
+                "inline_json",
+                "next_flight"
+              ],
+              "inline_api_candidate_count": 1
+            }
+          }
+        }
+      },
+      "provider_summary": {
+        "structured_decathlon": {
+          "status": "error",
+          "code": "PROVIDER_RESTRICTED",
+          "message": "The public site access policy disallows the requested read-only route.",
+          "retryable": false
+        },
+        "amazon": {
+          "status": "error",
+          "code": "UPSTREAM_BLOCKED",
+          "message": "Amazon’s identified public HTTP route was refused or returned an automated-access response.",
+          "retryable": false
+        },
+        "ebay": {
+          "status": "error",
+          "code": "PROVIDER_UNSUPPORTED",
+          "message": "eBay is not available through a zero-configuration public route.",
+          "retryable": false
+        },
+        "argos": {
+          "status": "success",
+          "result_count": 5,
+          "execution_mode": "public_http",
+          "relevant_result_count": 0
+        }
+      },
+      "intent": {
+        "product_query": "running shoe",
+        "categories": [
+          "sport"
+        ],
+        "max_price": 80
+      },
+      "selection": {
+        "selection_mode": "intent_ranked",
+        "normalized_intent": {
+          "raw_query": "running shoes under £80",
+          "product_query": "running shoe",
+          "tokens": [
+            "running",
+            "shoe"
+          ],
+          "categories": [
+            "sport"
+          ],
+          "max_price": 80
+        },
+        "selected": [
+          "structured_decathlon",
+          "amazon",
+          "ebay",
+          "argos"
+        ],
+        "ranked": [
+          {
+            "provider": "structured_decathlon",
+            "score": 120,
+            "keyword_matches": [
+              "running"
+            ],
+            "category_matches": [
+              "sport"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "amazon",
+            "score": 30,
+            "keyword_matches": [],
+            "category_matches": [
+              "sport"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "ebay",
+            "score": 30,
+            "keyword_matches": [],
+            "category_matches": [
+              "sport"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "argos",
+            "score": 20,
+            "keyword_matches": [],
+            "category_matches": [
+              "sport"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "ikea",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "johnlewis",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_represent",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_hardandware",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_formnutrition",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_currys",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_dunelm",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          }
+        ],
+        "excluded": [
+          {
+            "provider": "ikea",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "johnlewis",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_represent",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "woocommerce_hardandware",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "woocommerce_formnutrition",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_currys",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_dunelm",
+            "reason": "no category or keyword match"
+          }
+        ]
+      }
+    },
+    {
+      "capability": "commerce",
+      "query": "desk lamp under £50",
+      "input": {
+        "query": "desk lamp under £50",
+        "max_results": 5,
+        "currency": "GBP",
+        "locale": "en-GB"
+      },
+      "result": {
+        "status": "success",
+        "result_count": 5,
+        "latency_ms": 11725,
+        "source_url": "https://sik.search.blue.cdtapps.com/gb/en/search-result-page?types=PRODUCT&q=desk+lamp",
+        "execution_mode": "mixed",
+        "diagnostics": {
+          "provider_count": 6,
+          "valid_result_count": 5,
+          "ranking": "relevance",
+          "relevance_excluded": 0,
+          "relevance_excluded_by_provider": {},
+          "provider_selection": {
+            "selection_mode": "intent_ranked",
+            "normalized_intent": {
+              "raw_query": "desk lamp under £50",
+              "product_query": "desk lamp",
+              "tokens": [
+                "desk",
+                "lamp"
+              ],
+              "categories": [
+                "home",
+                "lighting"
+              ],
+              "max_price": 50
+            },
+            "selected": [
+              "ikea",
+              "argos",
+              "johnlewis",
+              "structured_dunelm",
+              "amazon",
+              "ebay"
+            ],
+            "ranked": [
+              {
+                "provider": "ikea",
+                "score": 240,
+                "keyword_matches": [
+                  "lamp",
+                  "desk"
+                ],
+                "category_matches": [
+                  "home",
+                  "lighting"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "argos",
+                "score": 240,
+                "keyword_matches": [
+                  "lamp",
+                  "desk"
+                ],
+                "category_matches": [
+                  "home",
+                  "lighting"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "johnlewis",
+                "score": 240,
+                "keyword_matches": [
+                  "lamp",
+                  "desk"
+                ],
+                "category_matches": [
+                  "home",
+                  "lighting"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "structured_dunelm",
+                "score": 240,
+                "keyword_matches": [
+                  "lamp",
+                  "desk"
+                ],
+                "category_matches": [
+                  "home",
+                  "lighting"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "amazon",
+                "score": 50,
+                "keyword_matches": [],
+                "category_matches": [
+                  "home",
+                  "lighting"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "ebay",
+                "score": 50,
+                "keyword_matches": [],
+                "category_matches": [
+                  "home",
+                  "lighting"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "woocommerce_hardandware",
+                "score": 20,
+                "keyword_matches": [],
+                "category_matches": [
+                  "home"
+                ],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_represent",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_formnutrition",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_decathlon",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_currys",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              }
+            ],
+            "excluded": [
+              {
+                "provider": "shopify_represent",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "woocommerce_hardandware",
+                "reason": "no precise product-keyword match"
+              },
+              {
+                "provider": "woocommerce_formnutrition",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_decathlon",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_currys",
+                "reason": "no category or keyword match"
+              }
+            ]
+          },
+          "provider_diagnostics": {
+            "argos": {
+              "response_classification": "SEARCH_RESULTS",
+              "extraction_strategy": "product_card",
+              "frameworks_detected": [
+                "nextjs",
+                "react",
+                "algolia"
+              ],
+              "embedded_state_kinds": [
+                "inline_json",
+                "next_flight"
+              ],
+              "inline_api_candidate_count": 1
+            }
+          }
+        }
+      },
+      "provider_summary": {
+        "ikea": {
+          "status": "success",
+          "result_count": 5,
+          "execution_mode": "first_party_api"
+        },
+        "argos": {
+          "status": "success",
+          "result_count": 5,
+          "execution_mode": "public_http"
+        },
+        "johnlewis": {
+          "status": "error",
+          "code": "UPSTREAM_CHANGED",
+          "message": "John Lewis returned a search page without validated product records.",
+          "retryable": true
+        },
+        "structured_dunelm": {
+          "status": "error",
+          "code": "PROVIDER_RESTRICTED",
+          "message": "The public site access policy disallows the requested read-only route.",
+          "retryable": false
+        },
+        "amazon": {
+          "status": "error",
+          "code": "UPSTREAM_BLOCKED",
+          "message": "Amazon’s identified public HTTP route was refused or returned an automated-access response.",
+          "retryable": false
+        },
+        "ebay": {
+          "status": "error",
+          "code": "PROVIDER_UNSUPPORTED",
+          "message": "eBay is not available through a zero-configuration public route.",
+          "retryable": false
+        }
+      },
+      "intent": {
+        "product_query": "desk lamp",
+        "categories": [
+          "home",
+          "lighting"
+        ],
+        "max_price": 50
+      },
+      "selection": {
+        "selection_mode": "intent_ranked",
+        "normalized_intent": {
+          "raw_query": "desk lamp under £50",
+          "product_query": "desk lamp",
+          "tokens": [
+            "desk",
+            "lamp"
+          ],
+          "categories": [
+            "home",
+            "lighting"
+          ],
+          "max_price": 50
+        },
+        "selected": [
+          "ikea",
+          "argos",
+          "johnlewis",
+          "structured_dunelm",
+          "amazon",
+          "ebay"
+        ],
+        "ranked": [
+          {
+            "provider": "ikea",
+            "score": 240,
+            "keyword_matches": [
+              "lamp",
+              "desk"
+            ],
+            "category_matches": [
+              "home",
+              "lighting"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "argos",
+            "score": 240,
+            "keyword_matches": [
+              "lamp",
+              "desk"
+            ],
+            "category_matches": [
+              "home",
+              "lighting"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "johnlewis",
+            "score": 240,
+            "keyword_matches": [
+              "lamp",
+              "desk"
+            ],
+            "category_matches": [
+              "home",
+              "lighting"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "structured_dunelm",
+            "score": 240,
+            "keyword_matches": [
+              "lamp",
+              "desk"
+            ],
+            "category_matches": [
+              "home",
+              "lighting"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "amazon",
+            "score": 50,
+            "keyword_matches": [],
+            "category_matches": [
+              "home",
+              "lighting"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "ebay",
+            "score": 50,
+            "keyword_matches": [],
+            "category_matches": [
+              "home",
+              "lighting"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "woocommerce_hardandware",
+            "score": 20,
+            "keyword_matches": [],
+            "category_matches": [
+              "home"
+            ],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_represent",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_formnutrition",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_decathlon",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_currys",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          }
+        ],
+        "excluded": [
+          {
+            "provider": "shopify_represent",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "woocommerce_hardandware",
+            "reason": "no precise product-keyword match"
+          },
+          {
+            "provider": "woocommerce_formnutrition",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_decathlon",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_currys",
+            "reason": "no category or keyword match"
+          }
+        ]
+      }
+    },
+    {
+      "capability": "rentals",
+      "query": "2-bed rentals in Croydon under £1,800",
+      "input": {
+        "location": "Croydon",
+        "min_bedrooms": 2,
+        "max_price_pcm": 1800,
+        "whole_property_only": true,
+        "max_results": 5
+      },
+      "result": {
+        "status": "success",
+        "result_count": 4,
+        "latency_ms": 22370,
+        "source_url": "https://www.openrent.co.uk/properties-to-rent/croydon",
+        "execution_mode": "public_http",
+        "diagnostics": {
+          "filtered_out": [
+            {
+              "provider": "openrent",
+              "listing_id": "2999540",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2983696",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2934954",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2895968",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "3015357",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2975932",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "1655190",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2995361",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2861013",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "3001979",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "3022851",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2938092",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2995967",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "3022094",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2976318",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2947728",
+              "reason": "above_max_price_pcm"
+            }
+          ],
+          "verification_failures": []
+        }
+      },
+      "provider_summary": {
+        "onthemarket": {
+          "status": "error",
+          "code": "PROVIDER_RESTRICTED",
+          "message": "onthemarket robots.txt could not be verified, so the gateway will not automate that provider.",
+          "retryable": true
+        },
+        "openrent": {
+          "status": "success",
+          "result_count": 20,
+          "execution_mode": "public_http"
+        }
+      }
+    },
+    {
+      "capability": "jobs",
+      "query": "strategy consultant London",
+      "input": {
+        "query": "strategy consultant",
+        "location": "London",
+        "max_results": 5
+      },
+      "result": {
+        "status": "zero_results",
+        "result_count": 0,
+        "latency_ms": 10208,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=false",
+        "execution_mode": "public_http",
+        "engine": "greenhouse+lever",
+        "diagnostics": {
+          "boards_attempted": [
+            {
+              "platform": "greenhouse",
+              "company": "stripe"
+            },
+            {
+              "platform": "greenhouse",
+              "company": "figma"
+            },
+            {
+              "platform": "greenhouse",
+              "company": "lyft"
+            },
+            {
+              "platform": "lever",
+              "company": "binance"
+            },
+            {
+              "platform": "lever",
+              "company": "deliverect"
+            },
+            {
+              "platform": "lever",
+              "company": "farfetch"
+            }
+          ],
+          "catalog_size": 10,
+          "provider_diagnostics": {
+            "greenhouse:stripe": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Stripe",
+              "result_count": 180,
+              "route": "greenhouse_public_api"
+            },
+            "greenhouse:figma": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Figma",
+              "result_count": 160,
+              "route": "greenhouse_public_api"
+            },
+            "greenhouse:lyft": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Lyft",
+              "result_count": 170,
+              "route": "greenhouse_public_api"
+            },
+            "lever:binance": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Binance",
+              "result_count": 20,
+              "route": "lever_public_api"
+            },
+            "lever:deliverect": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Deliverect",
+              "result_count": 20,
+              "route": "lever_public_api"
+            },
+            "lever:farfetch": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Farfetch",
+              "result_count": 20,
+              "route": "lever_public_api"
+            }
+          },
+          "platform_families": [
+            "greenhouse",
+            "lever"
+          ]
+        }
+      },
+      "provider_summary": {
+        "greenhouse": {
+          "status": "success",
+          "boards_attempted": 3,
+          "boards_with_results": 3,
+          "result_count": 510
+        },
+        "lever": {
+          "status": "success",
+          "boards_attempted": 3,
+          "boards_with_results": 3,
+          "result_count": 60
+        }
+      }
+    },
+    {
+      "capability": "jobs",
+      "query": "software engineer London",
+      "input": {
+        "query": "software engineer",
+        "location": "London",
+        "max_results": 5
+      },
+      "result": {
+        "status": "success",
+        "result_count": 3,
+        "latency_ms": 12006,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=false",
+        "execution_mode": "public_http",
+        "engine": "greenhouse+lever",
+        "diagnostics": {
+          "boards_attempted": [
+            {
+              "platform": "greenhouse",
+              "company": "stripe"
+            },
+            {
+              "platform": "greenhouse",
+              "company": "figma"
+            },
+            {
+              "platform": "greenhouse",
+              "company": "lyft"
+            },
+            {
+              "platform": "lever",
+              "company": "binance"
+            },
+            {
+              "platform": "lever",
+              "company": "deliverect"
+            },
+            {
+              "platform": "lever",
+              "company": "farfetch"
+            }
+          ],
+          "catalog_size": 10,
+          "provider_diagnostics": {
+            "greenhouse:stripe": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Stripe",
+              "result_count": 180,
+              "route": "greenhouse_public_api"
+            },
+            "greenhouse:figma": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Figma",
+              "result_count": 160,
+              "route": "greenhouse_public_api"
+            },
+            "greenhouse:lyft": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Lyft",
+              "result_count": 170,
+              "route": "greenhouse_public_api"
+            },
+            "lever:binance": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Binance",
+              "result_count": 20,
+              "route": "lever_public_api"
+            },
+            "lever:deliverect": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Deliverect",
+              "result_count": 20,
+              "route": "lever_public_api"
+            },
+            "lever:farfetch": {
+              "status": "error",
+              "code": "UPSTREAM_TIMEOUT",
+              "message": "The upstream website did not respond within the execution window.",
+              "retryable": true
+            }
+          },
+          "platform_families": [
+            "greenhouse",
+            "lever"
+          ]
+        }
+      },
+      "provider_summary": {
+        "greenhouse": {
+          "status": "success",
+          "boards_attempted": 3,
+          "boards_with_results": 3,
+          "result_count": 510
+        },
+        "lever": {
+          "status": "partial",
+          "boards_attempted": 3,
+          "boards_with_results": 2,
+          "result_count": 40,
+          "code": "UPSTREAM_TIMEOUT",
+          "failures": [
+            {
+              "company": "farfetch",
+              "status": "error",
+              "code": "UPSTREAM_TIMEOUT",
+              "message": "The upstream website did not respond within the execution window.",
+              "retryable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "capability": "jobs",
+      "query": "product manager remote",
+      "input": {
+        "query": "product manager",
+        "remote": true,
+        "max_results": 5
+      },
+      "result": {
+        "status": "success",
+        "result_count": 3,
+        "latency_ms": 9588,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=false",
+        "execution_mode": "public_http",
+        "engine": "greenhouse+lever",
+        "diagnostics": {
+          "boards_attempted": [
+            {
+              "platform": "greenhouse",
+              "company": "stripe"
+            },
+            {
+              "platform": "greenhouse",
+              "company": "figma"
+            },
+            {
+              "platform": "greenhouse",
+              "company": "lyft"
+            },
+            {
+              "platform": "lever",
+              "company": "binance"
+            },
+            {
+              "platform": "lever",
+              "company": "deliverect"
+            },
+            {
+              "platform": "lever",
+              "company": "farfetch"
+            }
+          ],
+          "catalog_size": 10,
+          "provider_diagnostics": {
+            "greenhouse:stripe": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Stripe",
+              "result_count": 180,
+              "route": "greenhouse_public_api"
+            },
+            "greenhouse:figma": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Figma",
+              "result_count": 160,
+              "route": "greenhouse_public_api"
+            },
+            "greenhouse:lyft": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Lyft",
+              "result_count": 170,
+              "route": "greenhouse_public_api"
+            },
+            "lever:binance": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Binance",
+              "result_count": 20,
+              "route": "lever_public_api"
+            },
+            "lever:deliverect": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Deliverect",
+              "result_count": 20,
+              "route": "lever_public_api"
+            },
+            "lever:farfetch": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Farfetch",
+              "result_count": 20,
+              "route": "lever_public_api"
+            }
+          },
+          "platform_families": [
+            "greenhouse",
+            "lever"
+          ]
+        }
+      },
+      "provider_summary": {
+        "greenhouse": {
+          "status": "success",
+          "boards_attempted": 3,
+          "boards_with_results": 3,
+          "result_count": 510
+        },
+        "lever": {
+          "status": "success",
+          "boards_attempted": 3,
+          "boards_with_results": 3,
+          "result_count": 60
+        }
+      }
+    },
+    {
+      "capability": "jobs",
+      "query": "data analyst London",
+      "input": {
+        "query": "data analyst",
+        "location": "London",
+        "max_results": 5
+      },
+      "result": {
+        "status": "zero_results",
+        "result_count": 0,
+        "latency_ms": 6154,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=false",
+        "execution_mode": "public_http",
+        "engine": "greenhouse+lever",
+        "diagnostics": {
+          "boards_attempted": [
+            {
+              "platform": "greenhouse",
+              "company": "stripe"
+            },
+            {
+              "platform": "greenhouse",
+              "company": "figma"
+            },
+            {
+              "platform": "greenhouse",
+              "company": "lyft"
+            },
+            {
+              "platform": "lever",
+              "company": "binance"
+            },
+            {
+              "platform": "lever",
+              "company": "deliverect"
+            },
+            {
+              "platform": "lever",
+              "company": "farfetch"
+            }
+          ],
+          "catalog_size": 10,
+          "provider_diagnostics": {
+            "greenhouse:stripe": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Stripe",
+              "result_count": 180,
+              "route": "greenhouse_public_api"
+            },
+            "greenhouse:figma": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Figma",
+              "result_count": 160,
+              "route": "greenhouse_public_api"
+            },
+            "greenhouse:lyft": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Lyft",
+              "result_count": 170,
+              "route": "greenhouse_public_api"
+            },
+            "lever:binance": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Binance",
+              "result_count": 20,
+              "route": "lever_public_api"
+            },
+            "lever:deliverect": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Deliverect",
+              "result_count": 20,
+              "route": "lever_public_api"
+            },
+            "lever:farfetch": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Farfetch",
+              "result_count": 20,
+              "route": "lever_public_api"
+            }
+          },
+          "platform_families": [
+            "greenhouse",
+            "lever"
+          ]
+        }
+      },
+      "provider_summary": {
+        "greenhouse": {
+          "status": "success",
+          "boards_attempted": 3,
+          "boards_with_results": 3,
+          "result_count": 510
+        },
+        "lever": {
+          "status": "success",
+          "boards_attempted": 3,
+          "boards_with_results": 3,
+          "result_count": 60
+        }
+      }
+    },
+    {
+      "capability": "amazon",
+      "query": "wireless headphones",
+      "input": {
+        "query": "wireless headphones",
+        "max_results": 5,
+        "currency": "GBP",
+        "locale": "en-GB"
+      },
+      "result": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 13418,
+        "source_url": "https://www.amazon.co.uk/s?k=wireless+headphones",
+        "execution_mode": "public_http",
+        "error_code": "UPSTREAM_BLOCKED",
+        "error_message": "Amazon’s identified public HTTP route was refused or returned an automated-access response.",
+        "retryable": false
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": "not_attempted"
+    },
+    {
+      "capability": "amazon",
+      "query": "kindle",
+      "input": {
+        "query": "kindle",
+        "max_results": 5,
+        "currency": "GBP",
+        "locale": "en-GB"
+      },
+      "result": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 13470,
+        "source_url": "https://www.amazon.co.uk/s?k=kindle",
+        "execution_mode": "public_http",
+        "error_code": "UPSTREAM_BLOCKED",
+        "error_message": "Amazon’s identified public HTTP route was refused or returned an automated-access response.",
+        "retryable": false
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": "not_attempted"
+    },
+    {
+      "capability": "amazon",
+      "query": "coffee",
+      "input": {
+        "query": "coffee",
+        "max_results": 5,
+        "currency": "GBP",
+        "locale": "en-GB"
+      },
+      "result": {
+        "status": "error",
+        "result_count": 0,
+        "latency_ms": 13135,
+        "source_url": "https://www.amazon.co.uk/s?k=coffee",
+        "execution_mode": "public_http",
+        "error_code": "UPSTREAM_BLOCKED",
+        "error_message": "Amazon’s identified public HTTP route was refused or returned an automated-access response.",
+        "retryable": false
+      },
+      "detail": {
+        "status": "not_attempted",
+        "result_count": 0,
+        "latency_ms": null
+      },
+      "chain": "not_attempted"
+    }
+  ],
+  "canonical_demos": [
+    {
+      "capability": "commerce",
+      "query": "protein powder under £40",
+      "input": {
+        "query": "protein powder under £40",
+        "max_results": 5,
+        "currency": "GBP",
+        "locale": "en-GB"
+      },
+      "result": {
+        "status": "success",
+        "result_count": 1,
+        "latency_ms": 6859,
+        "source_url": "https://formnutrition.com/wp-json/wc/store/v1/products?search=protein+powder&per_page=5&_fields=id%2Cname%2Cslug%2Cprices%2Cprice%2Cregular_price%2Csale_price%2Cimages%2Caverage_rating%2Crating_count%2Creview_count%2Cstock_status%2Cpermalink%2Cshort_description%2Cvariations",
+        "execution_mode": "public_http",
+        "diagnostics": {
+          "provider_count": 3,
+          "valid_result_count": 1,
+          "ranking": "relevance",
+          "relevance_excluded": 0,
+          "relevance_excluded_by_provider": {},
+          "provider_selection": {
+            "selection_mode": "intent_ranked",
+            "normalized_intent": {
+              "raw_query": "protein powder under £40",
+              "product_query": "protein powder",
+              "tokens": [
+                "protein",
+                "powder"
+              ],
+              "categories": [
+                "nutrition"
+              ],
+              "max_price": 40
+            },
+            "selected": [
+              "woocommerce_formnutrition",
+              "amazon",
+              "ebay"
+            ],
+            "ranked": [
+              {
+                "provider": "woocommerce_formnutrition",
+                "score": 220,
+                "keyword_matches": [
+                  "protein",
+                  "powder"
+                ],
+                "category_matches": [
+                  "nutrition"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "amazon",
+                "score": 30,
+                "keyword_matches": [],
+                "category_matches": [
+                  "nutrition"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "ebay",
+                "score": 30,
+                "keyword_matches": [],
+                "category_matches": [
+                  "nutrition"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "score": 20,
+                "keyword_matches": [],
+                "category_matches": [
+                  "nutrition"
+                ],
+                "selection_eligible": false
+              },
+              {
+                "provider": "ikea",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "argos",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "johnlewis",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_represent",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_hardandware",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_decathlon",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_currys",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_dunelm",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              }
+            ],
+            "excluded": [
+              {
+                "provider": "ikea",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "argos",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "johnlewis",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_represent",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "reason": "no precise product-keyword match"
+              },
+              {
+                "provider": "woocommerce_hardandware",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_decathlon",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_currys",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_dunelm",
+                "reason": "no category or keyword match"
+              }
+            ]
+          },
+          "provider_diagnostics": {
+            "woocommerce_formnutrition": {
+              "response_classification": "SEARCH_RESULTS",
+              "extraction_strategy": "woo_store_api",
+              "compatibility_engine": "woocommerce",
+              "woo_platform": {
+                "platform": "woocommerce",
+                "confidence": 0.99,
+                "signals": [
+                  "WordPress REST index",
+                  "wc/store namespace"
+                ],
+                "rest_index_status": "verified",
+                "routes": {
+                  "store_api": true,
+                  "store_api_plain": true,
+                  "product_search_api": false,
+                  "frontend_search": true
+                },
+                "store_api_verified": true
+              },
+              "woo_route_attempts": [
+                {
+                  "route": "woo_store_api",
+                  "state": "SUCCESS_WITH_RESULTS",
+                  "url": "https://formnutrition.com/wp-json/wc/store/v1/products?search=protein+powder&per_page=5&_fields=id%2Cname%2Cslug%2Cprices%2Cprice%2Cregular_price%2Csale_price%2Cimages%2Caverage_rating%2Crating_count%2Creview_count%2Cstock_status%2Cpermalink%2Cshort_description%2Cvariations"
+                }
+              ],
+              "woo_preferred_search": "woo_store_api",
+              "woo_preferred_detail": "woo_store_api",
+              "preferred_acquisition_route": "woo_store_api"
+            }
+          }
+        }
+      },
+      "provider_summary": {
+        "woocommerce_formnutrition": {
+          "status": "success",
+          "result_count": 1,
+          "execution_mode": "public_http",
+          "compatibility_engine": "woocommerce"
+        },
+        "amazon": {
+          "status": "error",
+          "code": "UPSTREAM_BLOCKED",
+          "message": "Amazon’s identified public HTTP route was refused or returned an automated-access response.",
+          "retryable": false
+        },
+        "ebay": {
+          "status": "error",
+          "code": "PROVIDER_UNSUPPORTED",
+          "message": "eBay is not available through a zero-configuration public route.",
+          "retryable": false
+        }
+      },
+      "intent": {
+        "product_query": "protein powder",
+        "categories": [
+          "nutrition"
+        ],
+        "max_price": 40
+      },
+      "selection": {
+        "selection_mode": "intent_ranked",
+        "normalized_intent": {
+          "raw_query": "protein powder under £40",
+          "product_query": "protein powder",
+          "tokens": [
+            "protein",
+            "powder"
+          ],
+          "categories": [
+            "nutrition"
+          ],
+          "max_price": 40
+        },
+        "selected": [
+          "woocommerce_formnutrition",
+          "amazon",
+          "ebay"
+        ],
+        "ranked": [
+          {
+            "provider": "woocommerce_formnutrition",
+            "score": 220,
+            "keyword_matches": [
+              "protein",
+              "powder"
+            ],
+            "category_matches": [
+              "nutrition"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "amazon",
+            "score": 30,
+            "keyword_matches": [],
+            "category_matches": [
+              "nutrition"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "ebay",
+            "score": 30,
+            "keyword_matches": [],
+            "category_matches": [
+              "nutrition"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "score": 20,
+            "keyword_matches": [],
+            "category_matches": [
+              "nutrition"
+            ],
+            "selection_eligible": false
+          },
+          {
+            "provider": "ikea",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "argos",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "johnlewis",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_represent",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_hardandware",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_decathlon",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_currys",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_dunelm",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          }
+        ],
+        "excluded": [
+          {
+            "provider": "ikea",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "argos",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "johnlewis",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_represent",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "reason": "no precise product-keyword match"
+          },
+          {
+            "provider": "woocommerce_hardandware",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_decathlon",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_currys",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_dunelm",
+            "reason": "no category or keyword match"
+          }
+        ]
+      }
+    },
+    {
+      "capability": "commerce",
+      "query": "storage unit under £100",
+      "input": {
+        "query": "storage unit under £100",
+        "max_results": 5,
+        "currency": "GBP",
+        "locale": "en-GB"
+      },
+      "result": {
+        "status": "success",
+        "result_count": 5,
+        "latency_ms": 16773,
+        "source_url": "https://sik.search.blue.cdtapps.com/gb/en/search-result-page?types=PRODUCT&q=storage+unit",
+        "execution_mode": "mixed",
+        "diagnostics": {
+          "provider_count": 7,
+          "valid_result_count": 5,
+          "ranking": "relevance",
+          "relevance_excluded": 2,
+          "relevance_excluded_by_provider": {
+            "argos": 2
+          },
+          "provider_selection": {
+            "selection_mode": "intent_ranked",
+            "normalized_intent": {
+              "raw_query": "storage unit under £100",
+              "product_query": "storage unit",
+              "tokens": [
+                "storage",
+                "unit"
+              ],
+              "categories": [
+                "storage"
+              ],
+              "max_price": 100
+            },
+            "selected": [
+              "ikea",
+              "argos",
+              "johnlewis",
+              "structured_dunelm",
+              "woocommerce_hardandware",
+              "amazon",
+              "ebay"
+            ],
+            "ranked": [
+              {
+                "provider": "ikea",
+                "score": 220,
+                "keyword_matches": [
+                  "storage",
+                  "unit"
+                ],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "argos",
+                "score": 120,
+                "keyword_matches": [
+                  "storage"
+                ],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "johnlewis",
+                "score": 120,
+                "keyword_matches": [
+                  "storage"
+                ],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "structured_dunelm",
+                "score": 120,
+                "keyword_matches": [
+                  "storage"
+                ],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "woocommerce_hardandware",
+                "score": 100,
+                "keyword_matches": [
+                  "storage"
+                ],
+                "category_matches": [],
+                "selection_eligible": true
+              },
+              {
+                "provider": "amazon",
+                "score": 30,
+                "keyword_matches": [],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "ebay",
+                "score": 30,
+                "keyword_matches": [],
+                "category_matches": [
+                  "storage"
+                ],
+                "selection_eligible": true
+              },
+              {
+                "provider": "shopify_represent",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_formnutrition",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_decathlon",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              },
+              {
+                "provider": "structured_currys",
+                "score": 0,
+                "keyword_matches": [],
+                "category_matches": [],
+                "selection_eligible": false
+              }
+            ],
+            "excluded": [
+              {
+                "provider": "shopify_represent",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_rapanuiclothing",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "shopify_pipandnut",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "woocommerce_formnutrition",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "woocommerce_gruum",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_decathlon",
+                "reason": "no category or keyword match"
+              },
+              {
+                "provider": "structured_currys",
+                "reason": "no category or keyword match"
+              }
+            ]
+          },
+          "provider_diagnostics": {
+            "argos": {
+              "response_classification": "SEARCH_RESULTS",
+              "extraction_strategy": "product_card",
+              "frameworks_detected": [
+                "nextjs",
+                "react",
+                "algolia"
+              ],
+              "embedded_state_kinds": [
+                "inline_json",
+                "next_flight"
+              ],
+              "inline_api_candidate_count": 1
+            }
+          }
+        }
+      },
+      "provider_summary": {
+        "ikea": {
+          "status": "success",
+          "result_count": 5,
+          "execution_mode": "first_party_api"
+        },
+        "argos": {
+          "status": "success",
+          "result_count": 5,
+          "execution_mode": "public_http",
+          "relevant_result_count": 3
+        },
+        "johnlewis": {
+          "status": "error",
+          "code": "UPSTREAM_CHANGED",
+          "message": "John Lewis returned a search page without validated product records.",
+          "retryable": true
+        },
+        "structured_dunelm": {
+          "status": "error",
+          "code": "PROVIDER_RESTRICTED",
+          "message": "The public site access policy disallows the requested read-only route.",
+          "retryable": false
+        },
+        "woocommerce_hardandware": {
+          "status": "error",
+          "code": "UPSTREAM_CHANGED",
+          "message": "The public search page did not contain valid product records after bounded structured-data extraction.",
+          "retryable": true
+        },
+        "amazon": {
+          "status": "error",
+          "code": "UPSTREAM_BLOCKED",
+          "message": "Amazon’s identified public HTTP route was refused or returned an automated-access response.",
+          "retryable": false
+        },
+        "ebay": {
+          "status": "error",
+          "code": "PROVIDER_UNSUPPORTED",
+          "message": "eBay is not available through a zero-configuration public route.",
+          "retryable": false
+        }
+      },
+      "intent": {
+        "product_query": "storage unit",
+        "categories": [
+          "storage"
+        ],
+        "max_price": 100
+      },
+      "selection": {
+        "selection_mode": "intent_ranked",
+        "normalized_intent": {
+          "raw_query": "storage unit under £100",
+          "product_query": "storage unit",
+          "tokens": [
+            "storage",
+            "unit"
+          ],
+          "categories": [
+            "storage"
+          ],
+          "max_price": 100
+        },
+        "selected": [
+          "ikea",
+          "argos",
+          "johnlewis",
+          "structured_dunelm",
+          "woocommerce_hardandware",
+          "amazon",
+          "ebay"
+        ],
+        "ranked": [
+          {
+            "provider": "ikea",
+            "score": 220,
+            "keyword_matches": [
+              "storage",
+              "unit"
+            ],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "argos",
+            "score": 120,
+            "keyword_matches": [
+              "storage"
+            ],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "johnlewis",
+            "score": 120,
+            "keyword_matches": [
+              "storage"
+            ],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "structured_dunelm",
+            "score": 120,
+            "keyword_matches": [
+              "storage"
+            ],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "woocommerce_hardandware",
+            "score": 100,
+            "keyword_matches": [
+              "storage"
+            ],
+            "category_matches": [],
+            "selection_eligible": true
+          },
+          {
+            "provider": "amazon",
+            "score": 30,
+            "keyword_matches": [],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "ebay",
+            "score": 30,
+            "keyword_matches": [],
+            "category_matches": [
+              "storage"
+            ],
+            "selection_eligible": true
+          },
+          {
+            "provider": "shopify_represent",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_formnutrition",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_decathlon",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          },
+          {
+            "provider": "structured_currys",
+            "score": 0,
+            "keyword_matches": [],
+            "category_matches": [],
+            "selection_eligible": false
+          }
+        ],
+        "excluded": [
+          {
+            "provider": "shopify_represent",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_rapanuiclothing",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "shopify_pipandnut",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "woocommerce_formnutrition",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "woocommerce_gruum",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_decathlon",
+            "reason": "no category or keyword match"
+          },
+          {
+            "provider": "structured_currys",
+            "reason": "no category or keyword match"
+          }
+        ]
+      }
+    },
+    {
+      "capability": "rentals",
+      "query": "2-bed rentals in Croydon under £1,800",
+      "input": {
+        "location": "Croydon",
+        "min_bedrooms": 2,
+        "max_price_pcm": 1800,
+        "whole_property_only": true,
+        "max_results": 5
+      },
+      "result": {
+        "status": "success",
+        "result_count": 4,
+        "latency_ms": 22370,
+        "source_url": "https://www.openrent.co.uk/properties-to-rent/croydon",
+        "execution_mode": "public_http",
+        "diagnostics": {
+          "filtered_out": [
+            {
+              "provider": "openrent",
+              "listing_id": "2999540",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2983696",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2934954",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2895968",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "3015357",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2975932",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "1655190",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2995361",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2861013",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "3001979",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "3022851",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2938092",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2995967",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "3022094",
+              "reason": "below_min_bedrooms"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2976318",
+              "reason": "above_max_price_pcm"
+            },
+            {
+              "provider": "openrent",
+              "listing_id": "2947728",
+              "reason": "above_max_price_pcm"
+            }
+          ],
+          "verification_failures": []
+        }
+      },
+      "provider_summary": {
+        "onthemarket": {
+          "status": "error",
+          "code": "PROVIDER_RESTRICTED",
+          "message": "onthemarket robots.txt could not be verified, so the gateway will not automate that provider.",
+          "retryable": true
+        },
+        "openrent": {
+          "status": "success",
+          "result_count": 20,
+          "execution_mode": "public_http"
+        }
+      }
+    },
+    {
+      "capability": "jobs",
+      "query": "strategy consultant London",
+      "input": {
+        "query": "strategy consultant",
+        "location": "London",
+        "max_results": 5
+      },
+      "result": {
+        "status": "zero_results",
+        "result_count": 0,
+        "latency_ms": 10208,
+        "source_url": "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=false",
+        "execution_mode": "public_http",
+        "engine": "greenhouse+lever",
+        "diagnostics": {
+          "boards_attempted": [
+            {
+              "platform": "greenhouse",
+              "company": "stripe"
+            },
+            {
+              "platform": "greenhouse",
+              "company": "figma"
+            },
+            {
+              "platform": "greenhouse",
+              "company": "lyft"
+            },
+            {
+              "platform": "lever",
+              "company": "binance"
+            },
+            {
+              "platform": "lever",
+              "company": "deliverect"
+            },
+            {
+              "platform": "lever",
+              "company": "farfetch"
+            }
+          ],
+          "catalog_size": 10,
+          "provider_diagnostics": {
+            "greenhouse:stripe": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Stripe",
+              "result_count": 180,
+              "route": "greenhouse_public_api"
+            },
+            "greenhouse:figma": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Figma",
+              "result_count": 160,
+              "route": "greenhouse_public_api"
+            },
+            "greenhouse:lyft": {
+              "status": "success",
+              "platform": "greenhouse",
+              "company": "Lyft",
+              "result_count": 170,
+              "route": "greenhouse_public_api"
+            },
+            "lever:binance": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Binance",
+              "result_count": 20,
+              "route": "lever_public_api"
+            },
+            "lever:deliverect": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Deliverect",
+              "result_count": 20,
+              "route": "lever_public_api"
+            },
+            "lever:farfetch": {
+              "status": "success",
+              "platform": "lever",
+              "company": "Farfetch",
+              "result_count": 20,
+              "route": "lever_public_api"
+            }
+          },
+          "platform_families": [
+            "greenhouse",
+            "lever"
+          ]
+        }
+      },
+      "provider_summary": {
+        "greenhouse": {
+          "status": "success",
+          "boards_attempted": 3,
+          "boards_with_results": 3,
+          "result_count": 510
+        },
+        "lever": {
+          "status": "success",
+          "boards_attempted": 3,
+          "boards_with_results": 3,
+          "result_count": 60
+        }
+      }
+    }
+  ],
+  "generic_improvement_log": [
+    {
+      "change": "Try the public Shopify catalogue JSON route after the storefront search-suggest route is restricted.",
+      "scope": "shared Shopify compatibility engine",
+      "measured_effect": "Represent search/detail changed from restricted to validated success in the unchanged-target comparison; other targets remained honestly unavailable."
+    }
+  ],
+  "route_change_comparison": {
+    "before_shopify_search_success_rate": 0,
+    "after_shopify_search_success_rate": 0.1,
+    "before_woocommerce_search_success_rate": 0.1,
+    "after_woocommerce_search_success_rate": 0.1
+  },
+  "amazon_comparison": {
+    "before_v0_11": {
+      "search_success_rate": null,
+      "detail_success_rate": null,
+      "note": "No retained multi-sample v0.10.1 baseline was available; the Amazon connector itself was not changed in v0.11."
+    },
+    "after_v0_11": {
+      "search_success_rate": 0,
+      "detail_success_rate": 0,
+      "queries_tested": 3
+    },
+    "delta": "not measurable against a retained baseline; no Amazon connector code changed in v0.11"
+  },
+  "runtime_extraction_summary": {
+    "retained": 38,
+    "false_success_count": 0,
+    "by_provider": {
+      "shopify_represent": {
+        "samples": 2,
+        "successful_samples": 2,
+        "success_rate": 1,
+        "search_samples": 1,
+        "search_successful_samples": 1,
+        "search_success_rate": 1,
+        "detail_samples": 1,
+        "detail_successful_samples": 1,
+        "detail_success_rate": 1,
+        "field_completeness": {
+          "id": 1,
+          "title": 1,
+          "price": 1,
+          "rating": 0,
+          "review_count": 0,
+          "image_url": 1,
+          "canonical_url": 1
+        },
+        "price_completeness": 1,
+        "id_chain_samples": 1,
+        "id_chain_verified": 1,
+        "id_chain_success_rate": 1,
+        "candidate_count": 3,
+        "average_field_completeness": 0.714,
+        "false_success_count": 0,
+        "false_success_rate": 0,
+        "frameworks": [],
+        "embedded_state_kinds": [],
+        "engines": [
+          "shopify"
+        ],
+        "last_sample_at": "2026-09-01T12:39:22.962Z"
+      },
+      "woocommerce_formnutrition": {
+        "samples": 3,
+        "successful_samples": 3,
+        "success_rate": 1,
+        "search_samples": 2,
+        "search_successful_samples": 2,
+        "search_success_rate": 1,
+        "detail_samples": 1,
+        "detail_successful_samples": 1,
+        "detail_success_rate": 1,
+        "field_completeness": {
+          "id": 1,
+          "title": 1,
+          "price": 1,
+          "rating": 0,
+          "review_count": 0,
+          "image_url": 1,
+          "canonical_url": 1
+        },
+        "price_completeness": 1,
+        "id_chain_samples": 1,
+        "id_chain_verified": 1,
+        "id_chain_success_rate": 1,
+        "candidate_count": 7,
+        "average_field_completeness": 0.714,
+        "false_success_count": 0,
+        "false_success_rate": 0,
+        "frameworks": [],
+        "embedded_state_kinds": [],
+        "engines": [
+          "woocommerce"
+        ],
+        "last_sample_at": "2026-09-01T12:41:17.866Z"
+      },
+      "greenhouse:stripe": {
+        "samples": 6,
+        "successful_samples": 6,
+        "success_rate": 1,
+        "search_samples": 5,
+        "search_successful_samples": 5,
+        "search_success_rate": 1,
+        "detail_samples": 1,
+        "detail_successful_samples": 1,
+        "detail_success_rate": 1,
+        "field_completeness": {
+          "id": 1,
+          "title": 1,
+          "location": 1,
+          "remote": 0.273,
+          "department": 0.167,
+          "employment_type": 0,
+          "description_summary": 0.167,
+          "salary": 0,
+          "canonical_url": 1
+        },
+        "price_completeness": null,
+        "id_chain_samples": 1,
+        "id_chain_verified": 1,
+        "id_chain_success_rate": 1,
+        "candidate_count": 901,
+        "average_field_completeness": 0.512,
+        "false_success_count": 0,
+        "false_success_rate": 0,
+        "frameworks": [],
+        "embedded_state_kinds": [],
+        "engines": [
+          "greenhouse"
+        ],
+        "last_sample_at": "2026-09-01T12:42:19.098Z"
+      },
+      "greenhouse:figma": {
+        "samples": 6,
+        "successful_samples": 6,
+        "success_rate": 1,
+        "search_samples": 5,
+        "search_successful_samples": 5,
+        "search_success_rate": 1,
+        "detail_samples": 1,
+        "detail_successful_samples": 1,
+        "detail_success_rate": 1,
+        "field_completeness": {
+          "id": 1,
+          "title": 1,
+          "location": 1,
+          "remote": 0,
+          "department": 0.167,
+          "employment_type": 0,
+          "description_summary": 0.167,
+          "salary": 0,
+          "canonical_url": 1
+        },
+        "price_completeness": null,
+        "id_chain_samples": 1,
+        "id_chain_verified": 1,
+        "id_chain_success_rate": 1,
+        "candidate_count": 801,
+        "average_field_completeness": 0.481,
+        "false_success_count": 0,
+        "false_success_rate": 0,
+        "frameworks": [],
+        "embedded_state_kinds": [],
+        "engines": [
+          "greenhouse"
+        ],
+        "last_sample_at": "2026-09-01T12:42:19.101Z"
+      },
+      "greenhouse:lyft": {
+        "samples": 6,
+        "successful_samples": 6,
+        "success_rate": 1,
+        "search_samples": 5,
+        "search_successful_samples": 5,
+        "search_success_rate": 1,
+        "detail_samples": 1,
+        "detail_successful_samples": 1,
+        "detail_success_rate": 1,
+        "field_completeness": {
+          "id": 1,
+          "title": 1,
+          "location": 1,
+          "remote": 0,
+          "department": 0.167,
+          "employment_type": 0,
+          "description_summary": 0.167,
+          "salary": 0,
+          "canonical_url": 1
+        },
+        "price_completeness": null,
+        "id_chain_samples": 1,
+        "id_chain_verified": 1,
+        "id_chain_success_rate": 1,
+        "candidate_count": 851,
+        "average_field_completeness": 0.481,
+        "false_success_count": 0,
+        "false_success_rate": 0,
+        "frameworks": [],
+        "embedded_state_kinds": [],
+        "engines": [
+          "greenhouse"
+        ],
+        "last_sample_at": "2026-09-01T12:42:19.698Z"
+      },
+      "greenhouse:coinbase": {
+        "samples": 2,
+        "successful_samples": 2,
+        "success_rate": 1,
+        "search_samples": 1,
+        "search_successful_samples": 1,
+        "search_success_rate": 1,
+        "detail_samples": 1,
+        "detail_successful_samples": 1,
+        "detail_success_rate": 1,
+        "field_completeness": {
+          "id": 1,
+          "title": 1,
+          "location": 1,
+          "remote": 0.942,
+          "department": 0.5,
+          "employment_type": 0,
+          "description_summary": 0.5,
+          "salary": 0,
+          "canonical_url": 1
+        },
+        "price_completeness": null,
+        "id_chain_samples": 1,
+        "id_chain_verified": 1,
+        "id_chain_success_rate": 1,
+        "candidate_count": 181,
+        "average_field_completeness": 0.66,
+        "false_success_count": 0,
+        "false_success_rate": 0,
+        "frameworks": [],
+        "embedded_state_kinds": [],
+        "engines": [
+          "greenhouse"
+        ],
+        "last_sample_at": "2026-09-01T12:40:22.921Z"
+      },
+      "greenhouse:gitlab": {
+        "samples": 2,
+        "successful_samples": 2,
+        "success_rate": 1,
+        "search_samples": 1,
+        "search_successful_samples": 1,
+        "search_success_rate": 1,
+        "detail_samples": 1,
+        "detail_successful_samples": 1,
+        "detail_success_rate": 1,
+        "field_completeness": {
+          "id": 1,
+          "title": 1,
+          "location": 1,
+          "remote": 0.945,
+          "department": 0.5,
+          "employment_type": 0,
+          "description_summary": 0.5,
+          "salary": 0,
+          "canonical_url": 1
+        },
+        "price_completeness": null,
+        "id_chain_samples": 1,
+        "id_chain_verified": 1,
+        "id_chain_success_rate": 1,
+        "candidate_count": 181,
+        "average_field_completeness": 0.661,
+        "false_success_count": 0,
+        "false_success_rate": 0,
+        "frameworks": [],
+        "embedded_state_kinds": [],
+        "engines": [
+          "greenhouse"
+        ],
+        "last_sample_at": "2026-09-01T12:40:23.005Z"
+      },
+      "lever:farfetch": {
+        "samples": 3,
+        "successful_samples": 3,
+        "success_rate": 1,
+        "search_samples": 3,
+        "search_successful_samples": 3,
+        "search_success_rate": 1,
+        "detail_samples": 0,
+        "detail_successful_samples": 0,
+        "detail_success_rate": null,
+        "field_completeness": {
+          "id": 1,
+          "title": 1,
+          "location": 1,
+          "remote": 0.05,
+          "department": 1,
+          "employment_type": 1,
+          "description_summary": 1,
+          "salary": 0,
+          "canonical_url": 1
+        },
+        "price_completeness": null,
+        "id_chain_samples": 0,
+        "id_chain_verified": 0,
+        "id_chain_success_rate": null,
+        "candidate_count": 60,
+        "average_field_completeness": 0.783,
+        "false_success_count": 0,
+        "false_success_rate": 0,
+        "frameworks": [],
+        "embedded_state_kinds": [],
+        "engines": [
+          "lever"
+        ],
+        "last_sample_at": "2026-09-01T12:42:18.070Z"
+      },
+      "lever:binance": {
+        "samples": 4,
+        "successful_samples": 4,
+        "success_rate": 1,
+        "search_samples": 4,
+        "search_successful_samples": 4,
+        "search_success_rate": 1,
+        "detail_samples": 0,
+        "detail_successful_samples": 0,
+        "detail_success_rate": null,
+        "field_completeness": {
+          "id": 1,
+          "title": 1,
+          "location": 1,
+          "remote": 0.85,
+          "department": 1,
+          "employment_type": 0.95,
+          "description_summary": 1,
+          "salary": 0,
+          "canonical_url": 1
+        },
+        "price_completeness": null,
+        "id_chain_samples": 0,
+        "id_chain_verified": 0,
+        "id_chain_success_rate": null,
+        "candidate_count": 80,
+        "average_field_completeness": 0.867,
+        "false_success_count": 0,
+        "false_success_rate": 0,
+        "frameworks": [],
+        "embedded_state_kinds": [],
+        "engines": [
+          "lever"
+        ],
+        "last_sample_at": "2026-09-01T12:42:17.503Z"
+      },
+      "lever:deliverect": {
+        "samples": 4,
+        "successful_samples": 4,
+        "success_rate": 1,
+        "search_samples": 4,
+        "search_successful_samples": 4,
+        "search_success_rate": 1,
+        "detail_samples": 0,
+        "detail_successful_samples": 0,
+        "detail_success_rate": null,
+        "field_completeness": {
+          "id": 1,
+          "title": 1,
+          "location": 1,
+          "remote": 0.1,
+          "department": 1,
+          "employment_type": 0.9,
+          "description_summary": 1,
+          "salary": 0,
+          "canonical_url": 1
+        },
+        "price_completeness": null,
+        "id_chain_samples": 0,
+        "id_chain_verified": 0,
+        "id_chain_success_rate": null,
+        "candidate_count": 80,
+        "average_field_completeness": 0.778,
+        "false_success_count": 0,
+        "false_success_rate": 0,
+        "frameworks": [],
+        "embedded_state_kinds": [],
+        "engines": [
+          "lever"
+        ],
+        "last_sample_at": "2026-09-01T12:42:18.399Z"
+      }
+    }
+  },
+  "limitations": [
+    "The report is a point-in-time public reachability sample; upstream storefronts can change independently.",
+    "No site-specific parser or private provider access was added for this benchmark.",
+    "A benchmark target is not automatically added to default unified routing."
+  ]
+}

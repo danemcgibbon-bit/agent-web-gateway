@@ -1,0 +1,188 @@
+{
+  "schema_version": "0.11.1",
+  "generated_at": "2026-09-01T13:28:28.948Z",
+  "methodology": {
+    "public_https_only": true,
+    "read_only": true,
+    "zero_configuration": true,
+    "dynamic_platforms": [
+      "shopify",
+      "woocommerce"
+    ],
+    "discovery": "homepage platform detection followed by bounded generated platform routes",
+    "no_bespoke_site_parsers": true
+  },
+  "webmcp_contract": {
+    "registration_api": "document.modelContext.registerTool",
+    "discovery_api": "document.modelContext.getTools",
+    "invocation_api": "document.modelContext.executeTool",
+    "registry_source": "TOOL_DEFINITIONS",
+    "expected_tool_count": 31,
+    "semantic_tool_count": 27,
+    "registration_strategy": "concurrent_per_tool",
+    "annotation_policy": "readOnlyHint_only; external_untrusted_data_in_response_envelope",
+    "page_registry_id": "agent-webmcp-registry",
+    "runtime_status": "page_scoped; inspect the live document for registration results"
+  },
+  "targets": [
+    {
+      "site": "https://www.tentree.com",
+      "family": "shopify",
+      "query": "green men's sweater size large",
+      "constraints": {
+        "audience": "men",
+        "color": "green",
+        "size": "L",
+        "in_stock": true,
+        "sort_by": "price_asc"
+      },
+      "input": {
+        "site": "https://www.tentree.com",
+        "query": "green men's sweater size large",
+        "max_results": 5,
+        "audience": "men",
+        "color": "green",
+        "size": "L",
+        "in_stock": true,
+        "sort_by": "price_asc"
+      },
+      "cold": {
+        "status": "error",
+        "latency_ms": 11018,
+        "execution_mode": "public_http",
+        "result_count": 0,
+        "error_code": "UPSTREAM_BLOCKED"
+      },
+      "warm": {
+        "status": "error",
+        "latency_ms": 433,
+        "execution_mode": "public_http",
+        "result_count": 0,
+        "error_code": "UPSTREAM_BLOCKED"
+      },
+      "chain": {
+        "status": "not_attempted"
+      }
+    },
+    {
+      "site": "https://heatonist.com",
+      "family": "shopify",
+      "query": "hot sauce",
+      "input": {
+        "site": "https://heatonist.com",
+        "query": "hot sauce",
+        "max_results": 5
+      },
+      "cold": {
+        "status": "error",
+        "latency_ms": 11255,
+        "execution_mode": "public_http",
+        "result_count": 0,
+        "error_code": "UPSTREAM_BLOCKED"
+      },
+      "warm": {
+        "status": "error",
+        "latency_ms": 181,
+        "execution_mode": "public_http",
+        "result_count": 0,
+        "error_code": "UPSTREAM_BLOCKED"
+      },
+      "chain": {
+        "status": "not_attempted"
+      }
+    },
+    {
+      "site": "https://gymshark.com",
+      "family": "shopify",
+      "query": "leggings",
+      "input": {
+        "site": "https://gymshark.com",
+        "query": "leggings",
+        "max_results": 5
+      },
+      "cold": {
+        "status": "error",
+        "latency_ms": 10411,
+        "execution_mode": "public_http",
+        "result_count": 0,
+        "error_code": "PROVIDER_RESTRICTED"
+      },
+      "warm": {
+        "status": "error",
+        "latency_ms": 9468,
+        "execution_mode": "public_http",
+        "result_count": 0,
+        "error_code": "PROVIDER_RESTRICTED"
+      },
+      "chain": {
+        "status": "not_attempted"
+      }
+    },
+    {
+      "site": "https://www.chucklinggoat.co.uk",
+      "family": "woocommerce",
+      "query": "kefir",
+      "input": {
+        "site": "https://www.chucklinggoat.co.uk",
+        "query": "kefir",
+        "max_results": 5
+      },
+      "cold": {
+        "status": "error",
+        "latency_ms": 10746,
+        "execution_mode": "mixed",
+        "result_count": 0,
+        "error_code": "UPSTREAM_BLOCKED"
+      },
+      "warm": {
+        "status": "error",
+        "latency_ms": 9081,
+        "execution_mode": "mixed",
+        "result_count": 0,
+        "error_code": "UPSTREAM_BLOCKED"
+      },
+      "chain": {
+        "status": "not_attempted"
+      }
+    },
+    {
+      "site": "https://eamesoffice.com",
+      "family": "woocommerce",
+      "query": "chair",
+      "input": {
+        "site": "https://eamesoffice.com",
+        "query": "chair",
+        "max_results": 5
+      },
+      "cold": {
+        "status": "error",
+        "latency_ms": 12002,
+        "execution_mode": "public_http",
+        "result_count": 0,
+        "error_code": "PROVIDER_RESTRICTED"
+      },
+      "warm": {
+        "status": "error",
+        "latency_ms": 16077,
+        "execution_mode": "mixed",
+        "result_count": 0,
+        "error_code": "UPSTREAM_BLOCKED"
+      },
+      "chain": {
+        "status": "not_attempted"
+      }
+    }
+  ],
+  "summary": {
+    "targets": 5,
+    "successful_dynamic_searches": 0,
+    "successful_chains": 0,
+    "shopify_targets": 3,
+    "woocommerce_targets": 2,
+    "false_successes": 0
+  },
+  "limitations": [
+    "Live site shape and access policies can change after this snapshot.",
+    "A failed dynamic route is retained as a structured failure; no challenge circumvention is attempted."
+  ]
+}

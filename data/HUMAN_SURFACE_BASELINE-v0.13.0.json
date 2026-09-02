@@ -1,0 +1,10 @@
+{
+  "baseline_name": "HUMAN_SURFACE_BASELINE",
+  "captured_from_version": "0.13.0",
+  "source_normalization": "Home JSX from the deployed v0.13.0 commit with script elements removed, whitespace collapsed, and trimmed",
+  "source_visible_jsx_bytes": 6930,
+  "source_visible_jsx_sha256": "91857cc7f27d2a9cf99298945a857943a13a89bc921375a6069aad0d3419ee5d",
+  "rendered_normalization": "body HTML with script elements removed, whitespace collapsed, and trimmed",
+  "rendered_visible_body_bytes": 6585,
+  "rendered_visible_body_sha256": "33beca9949e48973b7c5ceb414dc0701ef2b53bbe208e15293a4a7fced80f630"
+}

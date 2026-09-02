@@ -1,0 +1,16 @@
+# Netlify build/deploy settings for the Vinext + Nitro adapter.
+# The existing `npm run build` remains the Cloudflare/Sites build; Netlify
+# uses the explicit adapter script below.
+
+[build]
+  command = "npm run build:netlify"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22.13.0"
+  NITRO_PRESET = "netlify"
+  NPM_FLAGS = "--include=dev"
+
+[functions]
+  # Nitro writes the Netlify function and its manifest here during the build.
+  directory = ".netlify/functions-internal"

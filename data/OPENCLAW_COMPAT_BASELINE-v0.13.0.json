@@ -1,0 +1,1829 @@
+{
+  "baseline_name": "OPENCLAW_COMPAT_BASELINE",
+  "captured_from_version": "0.13.0",
+  "captured_at": "2026-09-02",
+  "webmcp_contract_version": "1.0",
+  "tool_count": 24,
+  "core_tool_count": 10,
+  "tool_names": [
+    "gateway_task",
+    "gateway_echo",
+    "gateway_status",
+    "gateway_manifest",
+    "gateway_capabilities",
+    "gateway_find_tool",
+    "gateway_call_tool",
+    "gateway_expand_tools",
+    "commerce_platform_diagnostics",
+    "ikea_search_products",
+    "ikea_get_product",
+    "ikea_check_availability",
+    "amazon_search_products",
+    "amazon_get_product",
+    "argos_search_products",
+    "argos_get_product",
+    "johnlewis_search_products",
+    "johnlewis_get_product",
+    "jobs_search",
+    "jobs_get_listing",
+    "commerce_search_products",
+    "commerce_get_product",
+    "rentals_search_properties",
+    "rentals_get_listing"
+  ],
+  "core_tool_names": [
+    "gateway_task",
+    "gateway_capabilities",
+    "gateway_find_tool",
+    "gateway_call_tool",
+    "commerce_search_products",
+    "commerce_get_product",
+    "jobs_search",
+    "jobs_get_listing",
+    "rentals_search_properties",
+    "rentals_get_listing"
+  ],
+  "preferred_tool_names": [
+    "gateway_task",
+    "gateway_capabilities",
+    "gateway_find_tool",
+    "gateway_call_tool",
+    "commerce_search_products",
+    "commerce_get_product",
+    "jobs_search",
+    "jobs_get_listing",
+    "rentals_search_properties",
+    "rentals_get_listing"
+  ],
+  "tools": [
+    {
+      "name": "gateway_task",
+      "provider": "gateway",
+      "operation": "task",
+      "title": "Run a normal gateway task",
+      "description": "Default tool for normal read-only requests. Pass the user's goal largely as written, including any website URL. The gateway selects the workflow, searches, filters, ranks, and verifies results. If agent_action=\"answer\", stop using tools and answer the user. Example: gateway_task({ goal: \"Find the cheapest green men's sweater on tentree.com\" }).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "goal": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000,
+            "description": "The user's normal-language read-only request; pass it mostly as written."
+          },
+          "site": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300,
+            "description": "Optional public site URL or domain; a URL in goal is also extracted automatically."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed"
+            ],
+            "description": "Optional response size; concise is the default."
+          }
+        },
+        "required": [
+          "goal"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "goal"
+      ],
+      "readOnlyHint": true,
+      "keywords": [
+        "task",
+        "default",
+        "normal",
+        "goal",
+        "commerce",
+        "jobs",
+        "rentals",
+        "search"
+      ],
+      "discovery_scopes": [
+        "commerce",
+        "rentals",
+        "jobs",
+        "all"
+      ],
+      "surface": "semantic"
+    },
+    {
+      "name": "gateway_echo",
+      "provider": "gateway",
+      "operation": "echo",
+      "title": "Gateway echo test",
+      "description": "Confirm that an agent can reach and execute the Agent Web Gateway. Returns the received message without changing external state.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "description": "A short message to echo back."
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "message"
+      ],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "gateway_status",
+      "provider": "gateway",
+      "operation": "status",
+      "title": "Gateway status",
+      "description": "Advanced diagnostics for gateway health, execution state, connector coverage, and rolling metrics. Use gateway_capabilities first when planning a user task.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "required": [],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "gateway_manifest",
+      "provider": "gateway",
+      "operation": "manifest",
+      "title": "Gateway tool manifest",
+      "description": "Advanced route and contract diagnostics. Inspect the full or default read-only surface, schemas, current availability, and bounded route evidence when QA requires it; do not pre-inspect this for ordinary tasks.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "surface": {
+            "type": "string",
+            "enum": [
+              "full",
+              "semantic"
+            ],
+            "description": "Return all tools or only the preferred semantic tools."
+          },
+          "site": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300,
+            "description": "Optional public storefront URL/domain for one bounded compatibility route diagnostic."
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Optional product query used with site for one bounded route diagnostic."
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "required": [],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "gateway_capabilities",
+      "provider": "gateway",
+      "operation": "capabilities",
+      "title": "Gateway capability planner",
+      "description": "Optional planner for a broad or ambiguous goal. For a clear task, use gateway_task or the matching specialist tool directly after WebMCP discovery; never inspect the manifest first. If the result is answer-ready, stop using tools.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "capability": {
+            "type": "string",
+            "enum": [
+              "commerce",
+              "rentals",
+              "jobs",
+              "all"
+            ],
+            "description": "Capability group to plan for; defaults to all."
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "commerce",
+              "rentals",
+              "jobs",
+              "diagnostics",
+              "compatibility",
+              "all"
+            ],
+            "description": "Optional planning scope; use diagnostics or compatibility only when the task needs advanced inspection."
+          },
+          "goal": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "description": "Optional short description of the user's goal; helps choose the narrowest recipe."
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "overview",
+              "advanced"
+            ],
+            "description": "Use advanced only when the task explicitly needs diagnostics or compatibility detail."
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "required": [],
+      "readOnlyHint": true,
+      "surface": "semantic"
+    },
+    {
+      "name": "gateway_find_tool",
+      "provider": "gateway",
+      "operation": "find_tool",
+      "title": "Find an advanced gateway tool",
+      "description": "Use only for uncommon functionality not covered by the normal tools. Search the bounded advanced registry once; then use gateway_call_tool with the exact returned operation. This tool does not execute anything.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "description": "Short description of the specialist capability needed."
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "commerce",
+              "rentals",
+              "jobs",
+              "compatibility",
+              "diagnostics",
+              "all"
+            ],
+            "description": "Optional scope to keep discovery narrow."
+          },
+          "max_results": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "Maximum number of matching operations to return; hard cap 5."
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "query"
+      ],
+      "readOnlyHint": true,
+      "keywords": [
+        "discover",
+        "search",
+        "advanced",
+        "specialist",
+        "operation",
+        "tool"
+      ],
+      "discovery_scopes": [
+        "commerce",
+        "rentals",
+        "jobs",
+        "compatibility",
+        "diagnostics",
+        "all"
+      ],
+      "surface": "semantic"
+    },
+    {
+      "name": "gateway_call_tool",
+      "provider": "gateway",
+      "operation": "call_tool",
+      "title": "Call a registered advanced gateway tool",
+      "description": "Execute only the exact operation and validated arguments returned by gateway_find_tool. Use this after advanced discovery, not for normal tasks. Unknown operations, arbitrary URLs, methods, headers, code, shell, and filesystem access are rejected.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "Exact registered operation name returned by gateway_find_tool."
+          },
+          "arguments": {
+            "type": "object",
+            "description": "Arguments for the selected registered operation; its existing schema is validated before execution.",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "operation",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "operation",
+        "arguments"
+      ],
+      "readOnlyHint": true,
+      "keywords": [
+        "invoke",
+        "dispatch",
+        "advanced",
+        "registered",
+        "validated"
+      ],
+      "discovery_scopes": [
+        "commerce",
+        "rentals",
+        "jobs",
+        "compatibility",
+        "diagnostics",
+        "all"
+      ],
+      "surface": "semantic"
+    },
+    {
+      "name": "gateway_expand_tools",
+      "provider": "gateway",
+      "operation": "expand_tools",
+      "title": "Expand gateway tools by scope",
+      "description": "Deprecated compatibility shim. The fixed WebMCP surface is registered at startup; use gateway_find_tool and gateway_call_tool for deliberate advanced inspection.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "type": "string",
+            "enum": [
+              "commerce",
+              "rentals",
+              "jobs",
+              "diagnostics",
+              "compatibility",
+              "all"
+            ],
+            "description": "Advanced group to register just in time."
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "advanced"
+            ],
+            "description": "Optional explicit confirmation that advanced contracts are needed."
+          }
+        },
+        "required": [
+          "scope"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "scope"
+      ],
+      "readOnlyHint": true,
+      "deprecated": true,
+      "keywords": [
+        "expand",
+        "register",
+        "advanced",
+        "scope",
+        "rediscover"
+      ],
+      "discovery_scopes": [
+        "commerce",
+        "rentals",
+        "jobs",
+        "compatibility",
+        "diagnostics",
+        "all"
+      ],
+      "surface": "advanced"
+    },
+    {
+      "name": "commerce_platform_diagnostics",
+      "provider": "gateway",
+      "operation": "commerce_platform_diagnostics",
+      "title": "Diagnose a compatible storefront route",
+      "description": "Inspect bounded platform detection and route evidence for one public Shopify or WooCommerce storefront. This is read-only and never proxies arbitrary requests.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "site": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300,
+            "description": "Public HTTPS storefront URL or domain to diagnose."
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Optional short product query used for one bounded route check."
+          }
+        },
+        "required": [
+          "site"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "site"
+      ],
+      "readOnlyHint": true,
+      "keywords": [
+        "commerce",
+        "platform",
+        "shopify",
+        "woocommerce",
+        "storefront",
+        "route",
+        "routes",
+        "diagnostics",
+        "diagnostic",
+        "compatibility"
+      ],
+      "discovery_scopes": [
+        "commerce",
+        "compatibility",
+        "diagnostics",
+        "all"
+      ],
+      "surface": "advanced"
+    },
+    {
+      "name": "ikea_search_products",
+      "provider": "ikea",
+      "operation": "search_products",
+      "title": "Search IKEA products",
+      "description": "Search the IKEA UK catalogue by query and filters. Monetary fields are in GBP; results are bounded by max_results.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Product search terms."
+          },
+          "max_results": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Maximum number of results to return; hard cap 20."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "GBP"
+            ],
+            "description": "Currency for monetary fields."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-GB"
+            ],
+            "description": "Locale used for the UK source."
+          },
+          "max_price": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Maximum product price in GBP."
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "description": "Optional product category."
+          },
+          "sort_by": {
+            "type": "string",
+            "enum": [
+              "relevance",
+              "price_asc",
+              "price_desc"
+            ],
+            "description": "Optional result ordering."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "query",
+          "max_results",
+          "currency",
+          "locale"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "query",
+        "max_results",
+        "currency",
+        "locale"
+      ],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "ikea_get_product",
+      "provider": "ikea",
+      "operation": "get_product",
+      "title": "Get an IKEA product",
+      "description": "Get bounded structured details for one IKEA UK product.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "The IKEA product identifier."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "GBP"
+            ],
+            "description": "Currency for monetary fields."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-GB"
+            ],
+            "description": "Locale used for the UK source."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "product_id",
+          "currency",
+          "locale"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "product_id",
+        "currency",
+        "locale"
+      ],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "ikea_check_availability",
+      "provider": "ikea",
+      "operation": "check_availability",
+      "title": "Check IKEA availability",
+      "description": "Check current IKEA UK delivery or store availability for one product and UK postcode.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "The IKEA product identifier."
+          },
+          "postcode": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 10,
+            "description": "UK postcode used for availability."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-GB"
+            ],
+            "description": "Locale used for the UK source."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "product_id",
+          "postcode",
+          "locale"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "product_id",
+        "postcode",
+        "locale"
+      ],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "amazon_search_products",
+      "provider": "amazon",
+      "operation": "search_products",
+      "title": "Search Amazon UK products",
+      "description": "Search Amazon UK for current read-only product information through the gateway's identified public HTTP route, with strict validation for every result.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Product search terms."
+          },
+          "max_results": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Maximum number of results to return; hard cap 20."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "GBP"
+            ],
+            "description": "Currency for monetary fields."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-GB"
+            ],
+            "description": "Locale used for the UK source."
+          },
+          "max_price": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000,
+            "description": "Optional maximum product price in GBP."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "query",
+          "max_results",
+          "currency",
+          "locale"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "query",
+        "max_results",
+        "currency",
+        "locale"
+      ],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "amazon_get_product",
+      "provider": "amazon",
+      "operation": "get_product",
+      "title": "Get an Amazon UK product",
+      "description": "Get current bounded details for one Amazon UK ASIN returned by amazon_search_products. No cart, purchase, account, or other external action is performed.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "The Amazon ASIN returned by search."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "GBP"
+            ],
+            "description": "Currency for monetary fields."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-GB"
+            ],
+            "description": "Locale used for the UK source."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "product_id",
+          "currency",
+          "locale"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "product_id",
+        "currency",
+        "locale"
+      ],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "argos_search_products",
+      "provider": "argos",
+      "operation": "search_products",
+      "title": "Search Argos UK products",
+      "description": "Search Argos UK catalogue pages using identified, robots-compliant public HTTP. Results are bounded and validated before they are returned.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Product search terms."
+          },
+          "max_results": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Maximum number of results to return; hard cap 20."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "GBP"
+            ],
+            "description": "Currency for monetary fields."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-GB"
+            ],
+            "description": "Locale used for the UK source."
+          },
+          "max_price": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000,
+            "description": "Optional maximum product price in GBP."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "query",
+          "max_results",
+          "currency",
+          "locale"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "query",
+        "max_results",
+        "currency",
+        "locale"
+      ],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "argos_get_product",
+      "provider": "argos",
+      "operation": "get_product",
+      "title": "Get an Argos UK product",
+      "description": "Get current bounded details for one Argos UK product ID returned by argos_search_products. No basket, purchase, account, or other external action is performed.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "The Argos product ID returned by search."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "GBP"
+            ],
+            "description": "Currency for monetary fields."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-GB"
+            ],
+            "description": "Locale used for the UK source."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "product_id",
+          "currency",
+          "locale"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "product_id",
+        "currency",
+        "locale"
+      ],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "johnlewis_search_products",
+      "provider": "johnlewis",
+      "operation": "search_products",
+      "title": "Search John Lewis products",
+      "description": "Search John Lewis UK product pages using identified public HTTP and bounded embedded catalogue state. Results are validated before they are returned.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Product search terms."
+          },
+          "max_results": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Maximum number of results to return; hard cap 20."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "GBP"
+            ],
+            "description": "Currency for monetary fields."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-GB"
+            ],
+            "description": "Locale used for the UK source."
+          },
+          "max_price": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000,
+            "description": "Optional maximum product price in GBP."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "query",
+          "max_results",
+          "currency",
+          "locale"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "query",
+        "max_results",
+        "currency",
+        "locale"
+      ],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "johnlewis_get_product",
+      "provider": "johnlewis",
+      "operation": "get_product",
+      "title": "Get a John Lewis product",
+      "description": "Get current bounded details for one John Lewis UK product ID or canonical product URL returned by johnlewis_search_products. No basket, purchase, account, or other external action is performed.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "The John Lewis numeric product ID or canonical product URL returned by search."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "GBP"
+            ],
+            "description": "Currency for monetary fields."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-GB"
+            ],
+            "description": "Locale used for the UK source."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "product_id",
+          "currency",
+          "locale"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "product_id",
+        "currency",
+        "locale"
+      ],
+      "readOnlyHint": true,
+      "surface": "advanced"
+    },
+    {
+      "name": "jobs_search",
+      "provider": "jobs",
+      "operation": "search",
+      "title": "Search public jobs",
+      "description": "Search public job listings when you already know this is a jobs task. The gateway handles board selection, filtering, ranking, and verification. If agent_action=\"answer\" or the result is answer-ready, stop using tools and answer. Example: jobs_search({ query: \"strategy consulting\", location: \"London\" }).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "Optional job title, skill, or keyword query."
+          },
+          "location": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "Optional city, country, or location filter."
+          },
+          "remote": {
+            "type": "boolean",
+            "description": "Optional explicit remote-work filter."
+          },
+          "company": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Optional supported company or board name."
+          },
+          "department": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Optional department or team filter."
+          },
+          "employment_type": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "Optional employment type or commitment filter."
+          },
+          "max_results": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Maximum number of results to return; hard cap 20."
+          },
+          "sort_by": {
+            "type": "string",
+            "enum": [
+              "relevance",
+              "date_desc",
+              "title_asc"
+            ],
+            "description": "Optional deterministic ordering."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "required": [],
+      "readOnlyHint": true,
+      "surface": "semantic"
+    },
+    {
+      "name": "jobs_get_listing",
+      "provider": "jobs",
+      "operation": "get_listing",
+      "title": "Get a public job listing",
+      "description": "Use only when the user asks for additional details about a listing returned by jobs_search. Pass its provider and stable ID; no application is submitted. Example: jobs_get_listing({ provider: \"greenhouse\", job_id: \"...\" }).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "greenhouse",
+              "lever"
+            ],
+            "description": "Job-board platform that issued job_id."
+          },
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "Stable job identifier returned by jobs_search."
+          },
+          "company": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Optional supported company or board name when using a platform-local ID."
+          },
+          "canonical_url": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Optional canonical job URL returned by search."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "provider",
+          "job_id"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "provider",
+        "job_id"
+      ],
+      "readOnlyHint": true,
+      "surface": "semantic"
+    },
+    {
+      "name": "commerce_search_products",
+      "provider": "commerce",
+      "operation": "search_products",
+      "title": "Search products across commerce providers",
+      "description": "Search products when you already know this is a commerce task. If the user names a store, pass its URL in site; the gateway handles platform detection, acquisition, semantic filtering, ranking, and verification. If agent_action=answer or answer_ready is true, stop using tools and answer; do not manually paginate or browse the source. Example: query sweater, site tentree.com.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Product search terms."
+          },
+          "max_results": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Maximum number of results to return; hard cap 20."
+          },
+          "min_price": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000,
+            "description": "Optional minimum price; records without a verified comparable price are excluded when set."
+          },
+          "max_price": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000,
+            "description": "Optional maximum price; records without a verified comparable price are excluded when set."
+          },
+          "providers": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 14,
+            "items": {
+              "type": "string",
+              "enum": [
+                "ikea",
+                "amazon",
+                "argos",
+                "johnlewis",
+                "shopify_represent",
+                "shopify_rapanuiclothing",
+                "shopify_pipandnut",
+                "woocommerce_hardandware",
+                "woocommerce_formnutrition",
+                "woocommerce_gruum",
+                "structured_decathlon",
+                "structured_currys",
+                "structured_dunelm"
+              ],
+              "description": "Commerce provider identifier."
+            },
+            "description": "Optional source selection when the user names providers. Otherwise the gateway picks relevant public sources; not required for normal search."
+          },
+          "condition": {
+            "type": "string",
+            "enum": [
+              "all",
+              "new",
+              "used",
+              "refurbished"
+            ],
+            "description": "Optional condition filter."
+          },
+          "site": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300,
+            "description": "Optional public storefront URL or domain. The gateway attempts dynamic Shopify/WooCommerce adaptation; the site need not be pre-registered."
+          },
+          "search_context": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 160,
+            "description": "Optional opaque context returned by a prior search for the same storefront; enables reuse and refinement."
+          },
+          "audience": {
+            "type": "string",
+            "enum": [
+              "men",
+              "women",
+              "kids",
+              "unisex"
+            ],
+            "description": "Optional audience constraint; explicit values override natural-language inference."
+          },
+          "color": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "description": "Optional exact or normalized color constraint."
+          },
+          "size": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "description": "Optional size constraint, such as S, M, L, or XL."
+          },
+          "in_stock": {
+            "type": "boolean",
+            "description": "Require the requested product variant to be explicitly available."
+          },
+          "sort_by": {
+            "type": "string",
+            "enum": [
+              "relevance",
+              "price_asc",
+              "price_desc",
+              "rating_desc"
+            ],
+            "description": "Optional deterministic ordering."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "GBP"
+            ],
+            "description": "Currency for monetary fields."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-GB"
+            ],
+            "description": "Locale used for the UK source."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "query"
+      ],
+      "readOnlyHint": true,
+      "surface": "semantic"
+    },
+    {
+      "name": "commerce_get_product",
+      "provider": "commerce",
+      "operation": "get_product",
+      "title": "Get a commerce product",
+      "description": "Use only when the user asks for additional information about one returned product, or when a search next_action requests it. Do not call after an answer-ready search just to recheck it. Example: commerce_get_product({ provider: \"shopify.example\", product_id: \"...\" }). It never buys or changes state.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 180,
+            "description": "Provider that issued product_id, including a normalized dynamic Shopify/WooCommerce domain."
+          },
+          "product_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "The provider product ID or ASIN returned by search."
+          },
+          "canonical_url": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Optional canonical URL returned by search; useful for providers whose stable path identifier is not reconstructable."
+          },
+          "site": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300,
+            "description": "Optional public storefront URL/domain for targeted dynamic detail verification."
+          },
+          "search_context": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 160,
+            "description": "Optional opaque search context from commerce_search_products for cheap same-store detail reuse."
+          },
+          "include": {
+            "type": "array",
+            "maxItems": 8,
+            "items": {
+              "type": "string",
+              "enum": [
+                "price",
+                "availability",
+                "sizes",
+                "colors",
+                "variants",
+                "materials",
+                "description",
+                "images",
+                "sale",
+                "provenance"
+              ],
+              "description": "Detail section to include."
+            },
+            "description": "Optional rich sections; omit for a concise verified product record."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "GBP"
+            ],
+            "description": "Currency for monetary fields."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-GB"
+            ],
+            "description": "Locale used for the UK source."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "provider",
+          "product_id"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "provider",
+        "product_id"
+      ],
+      "readOnlyHint": true,
+      "surface": "semantic"
+    },
+    {
+      "name": "rentals_search_properties",
+      "provider": "rentals",
+      "operation": "search_properties",
+      "title": "Search UK rental properties",
+      "description": "Search public rental listings when you already know this is a rentals task. The gateway handles provider selection, filtering, ranking, and verification. If agent_action=\"answer\" or the result is answer-ready, stop using tools and answer. Example: rentals_search_properties({ location: \"London\", min_bedrooms: 2 }).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Town, city, area, or postcode."
+          },
+          "min_bedrooms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 20,
+            "description": "Minimum bedrooms."
+          },
+          "max_bedrooms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 20,
+            "description": "Maximum bedrooms."
+          },
+          "min_price_pcm": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000,
+            "description": "Minimum monthly rent in GBP."
+          },
+          "max_price_pcm": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000,
+            "description": "Maximum effective monthly cost in GBP."
+          },
+          "radius_miles": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Optional search radius in miles when a provider supports it."
+          },
+          "property_type": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "description": "Optional property type, such as flat or house."
+          },
+          "furnishing": {
+            "type": "string",
+            "enum": [
+              "furnished",
+              "part_furnished",
+              "unfurnished"
+            ],
+            "description": "Optional furnishing requirement."
+          },
+          "bills_included": {
+            "type": "boolean",
+            "description": "Require explicit evidence that bills are included."
+          },
+          "pets_allowed": {
+            "type": "boolean",
+            "description": "Require explicit evidence that pets are allowed."
+          },
+          "available_before": {
+            "type": "string",
+            "format": "date",
+            "description": "Require availability on or before this date."
+          },
+          "freshness_days": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 365,
+            "description": "Only include listings no older than this many days when listed date is known."
+          },
+          "whole_property_only": {
+            "type": "boolean",
+            "description": "Exclude rooms, shares, student-only, retirement, and clearly unavailable supply."
+          },
+          "max_results": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Maximum number of results to return; hard cap 20."
+          },
+          "sort_by": {
+            "type": "string",
+            "enum": [
+              "relevance",
+              "price_asc",
+              "price_desc",
+              "freshest"
+            ],
+            "description": "Optional deterministic ordering."
+          },
+          "providers": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "items": {
+              "type": "string",
+              "enum": [
+                "onthemarket",
+                "openrent"
+              ],
+              "description": "Rental provider identifier."
+            },
+            "description": "Optional provider allow-list. Defaults to OnTheMarket and OpenRent."
+          },
+          "exclude_listing_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "description": "Stable listing IDs already seen by the caller."
+          },
+          "exclude_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "description": "Canonical listing URLs already seen by the caller."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "location"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "location"
+      ],
+      "readOnlyHint": true,
+      "surface": "semantic"
+    },
+    {
+      "name": "rentals_get_listing",
+      "provider": "rentals",
+      "operation": "get_listing",
+      "title": "Verify a UK rental listing",
+      "description": "Use only when the user asks for additional details about one listing returned by rentals_search_properties, or when a search next_action requests verification. Pass its provider and stable ID. No application or booking is performed. Example: rentals_get_listing({ provider: \"openrent\", listing_id: \"...\" }).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "onthemarket",
+              "openrent"
+            ],
+            "description": "Provider that issued listing_id."
+          },
+          "listing_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "Stable listing ID returned by rentals_search_properties."
+          },
+          "canonical_url": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Canonical listing URL returned by search; required for OpenRent when the slug is not otherwise known."
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "concise",
+              "detailed",
+              "diagnostic"
+            ],
+            "description": "Response size: concise by default, detailed for richer fields, diagnostic for bounded route evidence."
+          },
+          "include_diagnostics": {
+            "type": "boolean",
+            "description": "Include bounded route diagnostics for QA; omit for the compact normal response."
+          }
+        },
+        "required": [
+          "provider",
+          "listing_id"
+        ],
+        "additionalProperties": false
+      },
+      "required": [
+        "provider",
+        "listing_id"
+      ],
+      "readOnlyHint": true,
+      "surface": "semantic"
+    }
+  ],
+  "accepted_input_forms": {
+    "site": [
+      "tentree.com",
+      "https://tentree.com",
+      "https://www.tentree.com/"
+    ],
+    "audience": [
+      "men",
+      "mens",
+      "men’s",
+      "male"
+    ],
+    "colour_field": [
+      "color",
+      "colour"
+    ],
+    "size": [
+      "large",
+      "L",
+      "extra large",
+      "XL"
+    ]
+  },
+  "normal_response_fields": [
+    "gateway_version",
+    "status",
+    "outcome",
+    "provider",
+    "tool",
+    "correlation_id",
+    "meta",
+    "coverage",
+    "gateway_mode",
+    "consequential_actions",
+    "authentication_required",
+    "answer_state",
+    "answer_ready",
+    "agent_action",
+    "summary",
+    "next_action",
+    "task",
+    "execution",
+    "source",
+    "data",
+    "error"
+  ],
+  "agent_action_values": [
+    "answer",
+    "follow_next_action",
+    "clarify",
+    "report_partial"
+  ],
+  "golden_journeys": [
+    {
+      "id": "dynamic-shopify-tentree",
+      "prompt": "Find the cheapest green men’s sweater on https://www.tentree.com/",
+      "first_tool": "gateway_task",
+      "specialist_tool": "commerce_search_products",
+      "expected": "targeted read-only commerce search and explicit stop signal"
+    },
+    {
+      "id": "dynamic-woocommerce-storefront",
+      "prompt": "Find a lamp on a public WooCommerce storefront.",
+      "first_tool": "gateway_task",
+      "specialist_tool": "commerce_search_products",
+      "expected": "targeted read-only commerce search without manual browsing"
+    },
+    {
+      "id": "commerce-detail",
+      "prompt": "Show me more details for the returned product.",
+      "first_tool": "commerce_get_product",
+      "specialist_tool": "commerce_get_product",
+      "expected": "detail follow-up only after a search result"
+    },
+    {
+      "id": "jobs-search",
+      "prompt": "Find public software engineering jobs in London.",
+      "first_tool": "jobs_search",
+      "specialist_tool": "jobs_search",
+      "expected": "bounded jobs search with answer-ready or prescribed next action"
+    },
+    {
+      "id": "rental-search",
+      "prompt": "Find a two-bedroom rental in Manchester.",
+      "first_tool": "rentals_search_properties",
+      "specialist_tool": "rentals_search_properties",
+      "expected": "bounded rental search with coverage status"
+    },
+    {
+      "id": "advanced-capability",
+      "prompt": "Find an uncommon supported operation for a compatibility diagnostic.",
+      "first_tool": "gateway_find_tool",
+      "specialist_tool": "gateway_call_tool",
+      "expected": "one bounded discovery followed by exact validated dispatch"
+    },
+    {
+      "id": "tentree-benchmark",
+      "prompt": "Find the cheapest green men’s sweater on tentree.com.",
+      "first_tool": "gateway_task",
+      "specialist_tool": "commerce_search_products",
+      "expected": "dynamic storefront compatibility benchmark"
+    }
+  ],
+  "quickstart": {
+    "default_tool": "gateway_task",
+    "purpose": "Run an ordinary read-only web request without requiring the agent to understand provider routing.",
+    "normal_workflow": [
+      "Call gateway_task with the user's request in goal.",
+      "If agent_action is answer, answer the user now; do not repeat the search, inspect diagnostics, or browse the source unless independent verification was requested.",
+      "If agent_action is report_partial, stop and explain the safe coverage limitation without restarting the same search independently.",
+      "If agent_action is follow_next_action, execute next_action exactly.",
+      "If agent_action is clarify, ask the user the returned clarification."
+    ],
+    "automatic_steps": [
+      "Choose commerce, jobs, or rentals deterministically.",
+      "Extract a supplied URL and obvious constraints such as price, audience, color, size, stock, or location.",
+      "Run the existing bounded search, filtering, ranking, and finalist-verification workflow."
+    ],
+    "stop_signals": {
+      "answer": "The result is ready; stop using tools and answer.",
+      "follow_next_action": "Execute the supplied next_action tool and arguments exactly.",
+      "clarify": "Ask the returned clarification before continuing.",
+      "report_partial": "Explain the safe coverage limitation; do not restart the same search independently."
+    },
+    "specialist_tools": {
+      "commerce": "commerce_search_products",
+      "jobs": "jobs_search",
+      "rentals": "rentals_search_properties"
+    },
+    "advanced": "gateway_find_tool",
+    "rules": [
+      "Leave a supplied site URL in goal or pass it in site.",
+      "Do not inspect the manifest or capabilities for a normal clear task.",
+      "Do not browse a source directly or manage acquisition tiers."
+    ],
+    "examples": {
+      "gateway_task": {
+        "goal": "Find the cheapest green men's sweater on https://www.tentree.com/"
+      },
+      "commerce_search_products": {
+        "query": "green sweater",
+        "site": "https://www.tentree.com"
+      },
+      "commerce_get_product": {
+        "provider": "tentree.com",
+        "product_id": "example-id"
+      },
+      "jobs_search": {
+        "query": "strategy consulting",
+        "location": "London"
+      },
+      "rentals_search_properties": {
+        "location": "London",
+        "min_bedrooms": 2
+      }
+    }
+  }
+}
