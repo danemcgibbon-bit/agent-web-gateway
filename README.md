@@ -542,7 +542,7 @@ See [`LICENSE`](./LICENSE).
 
 ---
 
-## Closing
+## Closing Thoughts
 
 Native WebMCP is the destination.
 
@@ -562,7 +562,7 @@ original website
 human + agent together
 ```
 
-**WebMCP is the ideal future, but most of the web isn't there yet. Agent Web Gateway gives agents a structured way through today's web — then brings people back to the real site.**
+**WebMCP is the ideal future, but most of the web isn't there yet. Agent Web Gateway gives agents a structured way through today's web, then brings people back to the real site.**
 
 The goal is not to make agents better at scraping.
 
