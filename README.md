@@ -542,7 +542,7 @@ See [`LICENSE`](./LICENSE).
 
 ---
 
-## Closing Thoughts
+## Closing thoughts
 
 Native WebMCP is the destination.
 
