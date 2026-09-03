@@ -443,7 +443,7 @@ const ALL_TOOL_DEFINITIONS: ToolDefinition[] = [
     operation: "task",
     title: "Run a normal gateway task",
     description:
-      `Default tool for normal read-only requests. Pass the user's goal largely as written, including any website URL. The gateway selects the workflow, searches, filters, ranks, and verifies results. If agent_action="answer", stop using tools and answer the user. Example: gateway_task({ goal: "Find the cheapest green men's sweater on tentree.com" }).`,
+      `Default tool for read-only requests. Pass the user's goal largely as written, including any website URL. The gateway selects the workflow, searches, filters, ranks, and verifies results. If agent_action="answer", stop using tools for further discovery. When presentation.action="open_result" and a browser is available, open presentation.url once for final inspection, then answer; otherwise answer directly. Example: gateway_task({ goal: "Find the cheapest green men's sweater on tentree.com" }).`,
     inputSchema: strictObject({
       goal: textField("The user's normal-language read-only request; pass it mostly as written.", 1000),
       site: {
@@ -510,7 +510,7 @@ const ALL_TOOL_DEFINITIONS: ToolDefinition[] = [
     operation: "capabilities",
     title: "Gateway capability planner",
     description:
-      "Use when the user asks what the gateway can do or the goal is broad or ambiguous. For a clear task, use gateway_task or the matching specialist tool directly after WebMCP discovery; never inspect the manifest first. If the result is answer-ready, stop using tools.",
+      "Use when the user asks what the gateway can do or the goal is broad or ambiguous. For a clear task, use gateway_task or the matching specialist tool directly after WebMCP discovery; never inspect the manifest first. If the result is answer-ready, stop using tools for additional gateway discovery; this planning response has no result to present.",
     inputSchema: strictObject({
       capability: providerField(["commerce", "rentals", "jobs", "all"], "Capability group to plan for; defaults to all."),
       scope: providerField(["commerce", "rentals", "jobs", "diagnostics", "compatibility", "all"], "Optional planning scope; use diagnostics or compatibility only when the task needs advanced inspection."),
@@ -1180,7 +1180,7 @@ const ALL_TOOL_DEFINITIONS: ToolDefinition[] = [
     operation: "search",
     title: "Search public jobs",
     description:
-      `Search public job listings when you already know this is a jobs task. The gateway handles board selection, filtering, ranking, and verification. If agent_action="answer" or the result is answer-ready, stop using tools and answer. Example: jobs_search({ query: "strategy consulting", location: "London" }).`,
+      `Search public job listings when you already know this is a jobs task. The gateway handles board selection, filtering, ranking, and verification. If agent_action="answer" or the result is answer-ready, stop using tools for additional gateway discovery. If presentation.action="open_result" and browser navigation is available, open presentation.url once for final inspection, then answer; otherwise answer directly. Example: jobs_search({ query: "strategy consulting", location: "London" }).`,
     inputSchema: strictObject({
       query: textField("Optional job title, skill, or keyword query.", 160),
       location: textField("Optional city, country, or location filter.", 160),
@@ -1221,7 +1221,7 @@ const ALL_TOOL_DEFINITIONS: ToolDefinition[] = [
     operation: "search_products",
     title: "Search products across commerce providers",
     description:
-      "Search products when you already know this is a commerce task. If the user names a store, pass its URL in site; the gateway handles platform detection, acquisition, semantic filtering, ranking, and verification. If agent_action=answer or answer_ready is true, stop using tools and answer; do not manually paginate or browse the source. Example: query sweater, site tentree.com.",
+      "Search products when you already know this is a commerce task. If the user names a store, pass its URL in site; the gateway handles platform detection, acquisition, filtering, ranking, and verification. If agent_action=answer or answer_ready is true, stop using tools for further discovery. If presentation.action=open_result and a browser exists, open presentation.url once, then answer. Do not browse the source to repeat discovery. Example: query sweater, site tentree.com.",
     inputSchema: strictObject(
       {
         query: textField("Product search terms."),
@@ -1320,7 +1320,7 @@ const ALL_TOOL_DEFINITIONS: ToolDefinition[] = [
     operation: "search_properties",
     title: "Search UK rental properties",
     description:
-      `Search public rental listings when you already know this is a rentals task. The gateway handles provider selection, filtering, ranking, and verification. If agent_action="answer" or the result is answer-ready, stop using tools and answer. Example: rentals_search_properties({ location: "London", min_bedrooms: 2 }).`,
+      `Search public rental listings when you already know this is a rentals task. The gateway handles provider selection, filtering, ranking, and verification. If agent_action="answer" or the result is answer-ready, stop using tools for additional gateway discovery. If presentation.action="open_result" and browser navigation is available, open presentation.url once for final inspection, then answer; otherwise answer directly. Example: rentals_search_properties({ location: "London", min_bedrooms: 2 }).`,
     inputSchema: strictObject(
       {
         location: textField("Town, city, area, or postcode."),
@@ -1432,7 +1432,7 @@ export const AGENT_QUICKSTART = {
   purpose: "Run an ordinary read-only web request without requiring the agent to understand provider routing.",
   normal_workflow: [
     "Call gateway_task with the user's request in goal.",
-    "If agent_action is answer, answer the user now; do not repeat the search, inspect diagnostics, or browse the source unless independent verification was requested.",
+    "If agent_action is answer, stop using tools for additional gateway discovery/search. If presentation.action is open_result and browser navigation is available, open presentation.url once for final inspection and user presentation, then answer; otherwise answer directly.",
     "If agent_action is report_partial, stop and explain the safe coverage limitation without restarting the same search independently.",
     "If agent_action is follow_next_action, execute next_action exactly.",
     "If agent_action is clarify, ask the user the returned clarification.",
@@ -1443,7 +1443,7 @@ export const AGENT_QUICKSTART = {
     "Run the existing bounded search, filtering, ranking, and finalist-verification workflow.",
   ],
   stop_signals: {
-    answer: "The result is ready; stop using tools and answer.",
+    answer: "The result is ready; stop using tools for additional gateway discovery. Open presentation.url once for final inspection when available, then answer.",
     follow_next_action: "Execute the supplied next_action tool and arguments exactly.",
     clarify: "Ask the returned clarification before continuing.",
     report_partial: "Explain the safe coverage limitation; do not restart the same search independently.",
@@ -1457,7 +1457,7 @@ export const AGENT_QUICKSTART = {
   rules: [
     "Leave a supplied site URL in goal or pass it in site.",
     "Do not inspect the manifest or capabilities for a normal clear task.",
-    "Do not browse a source directly or manage acquisition tiers.",
+    "Do not browse a source to repeat gateway discovery or manage acquisition tiers. Open only presentation.url once when it is an explicit gateway-selected result.",
   ],
   examples: {
     gateway_task: { goal: "Find the cheapest green men's sweater on https://www.tentree.com/" },

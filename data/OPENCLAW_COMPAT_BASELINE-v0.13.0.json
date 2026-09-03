@@ -61,7 +61,7 @@
       "provider": "gateway",
       "operation": "task",
       "title": "Run a normal gateway task",
-      "description": "Default tool for normal read-only requests. Pass the user's goal largely as written, including any website URL. The gateway selects the workflow, searches, filters, ranks, and verifies results. If agent_action=\"answer\", stop using tools and answer the user. Example: gateway_task({ goal: \"Find the cheapest green men's sweater on tentree.com\" }).",
+      "description": "Default tool for read-only requests. Pass the user's goal largely as written, including any website URL. The gateway selects the workflow, searches, filters, ranks, and verifies results. If agent_action=\"answer\", stop using tools for further discovery. When presentation.action=\"open_result\" and a browser is available, open presentation.url once for final inspection, then answer; otherwise answer directly. Example: gateway_task({ goal: \"Find the cheapest green men's sweater on tentree.com\" }).",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1060,7 +1060,7 @@
       "provider": "jobs",
       "operation": "search",
       "title": "Search public jobs",
-      "description": "Search public job listings when you already know this is a jobs task. The gateway handles board selection, filtering, ranking, and verification. If agent_action=\"answer\" or the result is answer-ready, stop using tools and answer. Example: jobs_search({ query: \"strategy consulting\", location: \"London\" }).",
+      "description": "Search public job listings when you already know this is a jobs task. The gateway handles board selection, filtering, ranking, and verification. If agent_action=\"answer\" or the result is answer-ready, stop using tools for additional gateway discovery. If presentation.action=\"open_result\" and browser navigation is available, open presentation.url once for final inspection, then answer; otherwise answer directly. Example: jobs_search({ query: \"strategy consulting\", location: \"London\" }).",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1201,7 +1201,7 @@
       "provider": "commerce",
       "operation": "search_products",
       "title": "Search products across commerce providers",
-      "description": "Search products when you already know this is a commerce task. If the user names a store, pass its URL in site; the gateway handles platform detection, acquisition, semantic filtering, ranking, and verification. If agent_action=answer or answer_ready is true, stop using tools and answer; do not manually paginate or browse the source. Example: query sweater, site tentree.com.",
+      "description": "Search products when you already know this is a commerce task. If the user names a store, pass its URL in site; the gateway handles platform detection, acquisition, filtering, ranking, and verification. If agent_action=answer or answer_ready is true, stop using tools for further discovery. If presentation.action=open_result and a browser exists, open presentation.url once, then answer. Do not browse the source to repeat discovery. Example: query sweater, site tentree.com.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1457,7 +1457,7 @@
       "provider": "rentals",
       "operation": "search_properties",
       "title": "Search UK rental properties",
-      "description": "Search public rental listings when you already know this is a rentals task. The gateway handles provider selection, filtering, ranking, and verification. If agent_action=\"answer\" or the result is answer-ready, stop using tools and answer. Example: rentals_search_properties({ location: \"London\", min_bedrooms: 2 }).",
+      "description": "Search public rental listings when you already know this is a rentals task. The gateway handles provider selection, filtering, ranking, and verification. If agent_action=\"answer\" or the result is answer-ready, stop using tools for additional gateway discovery. If presentation.action=\"open_result\" and browser navigation is available, open presentation.url once for final inspection, then answer; otherwise answer directly. Example: rentals_search_properties({ location: \"London\", min_bedrooms: 2 }).",
       "inputSchema": {
         "type": "object",
         "properties": {

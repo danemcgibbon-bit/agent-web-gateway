@@ -28,12 +28,12 @@ export const AGENT_MANUAL = {
   rules: [
     "If the user names a website, preserve its URL in goal or pass it as the target site.",
     "The gateway handles platform detection, acquisition, filtering, ranking, and verification internally.",
-    "If agent_action is answer or answer_ready is true, stop using tools and answer the user.",
+    "When agent_action is answer or answer_ready is true, stop using tools for additional gateway discovery/search. If presentation.action is open_result and browser navigation is available, open presentation.url once for final inspection and user presentation, then answer; if browser navigation is unavailable, answer directly.",
     "If agent_action is follow_next_action, execute next_action exactly.",
     "If agent_action is report_partial, explain the safe limitation and stop unless a prescribed next_action is provided.",
     "Use detail tools only when the user asks for additional information about a returned item.",
     "Do not inspect the manifest or capabilities during a normal clear task.",
-    "Do not browse the source website or manually paginate because it is not listed as a tested example.",
+    "Do not browse the source website to repeat discovery or manually paginate. When presentation.action is open_result, open only the gateway-selected result once for final inspection and presentation.",
     "Use gateway_find_tool once, then gateway_call_tool, only for uncommon functionality.",
   ],
   capabilities: {
@@ -54,7 +54,7 @@ export const AGENT_MANUAL = {
     },
   },
   result_handling: {
-    answer: "Answer immediately; do not repeat diagnostics or browse independently.",
+    answer: "Stop gateway discovery. If presentation.action is open_result and a browser is available, open the selected URL once for final inspection; otherwise answer directly from the gateway result.",
     follow_next_action: "Run the returned tool and arguments exactly.",
     clarify: "Ask the returned clarification before continuing.",
     report_partial: "Report the limitation without restarting the same search independently.",

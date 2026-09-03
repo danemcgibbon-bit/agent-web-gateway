@@ -175,6 +175,22 @@ export type ConnectorExecution = {
   trace?: ExecutionTrace;
 };
 
+/**
+ * A browser-capable consumer may use this additive hint to present the
+ * gateway-selected result.  Navigation remains outside the gateway; this
+ * contract only identifies one already-verified public destination.
+ */
+export type GatewayPresentation =
+  | {
+    action: "open_result";
+    url: string;
+    title?: string;
+    reason?: string;
+  }
+  | {
+    action: "none";
+  };
+
 export type SiteConnector = {
   provider: ConnectorId;
   execute: (
@@ -719,6 +735,116 @@ function decisionReadyData(provider: ConnectorId, tool: string, data: JsonObject
   };
 }
 
+function presentationText(value: unknown, maxLength = 240): string | null {
+  if (typeof value !== "string") return null;
+  const text = value.trim();
+  return text ? text.slice(0, maxLength) : null;
+}
+
+function presentationUrl(value: unknown): string | null {
+  const raw = presentationText(value, 800);
+  if (!raw) return null;
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    return null;
+  }
+  const hostname = normalizedHostname(url.hostname);
+  const standardPort = url.protocol === "https:" ? "443" : "80";
+  const unsafeQueryKey = /(?:token|secret|password|passwd|api[_-]?key|access[_-]?token|authorization|session|signature|sig)/i;
+  const searchKeys = [...url.searchParams.keys()];
+  const path = url.pathname.replace(/\/+/g, "/").toLowerCase();
+  const lastSegment = path.split("/").filter(Boolean).at(-1) ?? "";
+  const genericSearchPath = /(?:^|\/)(?:search(?:-results?)?|results|catalog(?:ue)?|browse)(?:\/|$)/i;
+  const genericCollectionPath = /(?:^|\/)(?:collections?|categories?)(?:\/?$)/i;
+  const gatewayHost = hostname === "agent-web-gateway.djrookie99.chatgpt.site"
+    || hostname === "agent-web-gateway.danemcgibbon.workers.dev";
+  if (
+    (url.protocol !== "https:" && url.protocol !== "http:")
+    || (url.port && url.port !== standardPort)
+    || !hostname.includes(".")
+    || isPrivateOrInternalHostname(hostname)
+    || gatewayHost
+    || url.username
+    || url.password
+    || searchKeys.some((key) => unsafeQueryKey.test(key))
+    || genericSearchPath.test(path)
+    || genericCollectionPath.test(path)
+    || /^(?:search|search-results?|results|catalog(?:ue)?|browse|category|categories|collection|collections|products|items|jobs|careers|properties|rentals)$/i.test(lastSegment)
+  ) return null;
+  // Fragments are client-side state rather than a stable canonical result
+  // address. Keep the destination deterministic for browser-capable agents.
+  url.hash = "";
+  return url.toString();
+}
+
+function verifiedPresentationRecord(candidate: JsonObject, data: JsonObject): boolean {
+  const verification = record(candidate.verification);
+  const states = [
+    candidate.verification_status,
+    verification?.status,
+    data.verification_status,
+    data.answer_state,
+  ];
+  for (const state of states) {
+    if (typeof state !== "string" || !state.trim()) continue;
+    if (/(?:partial|unverified|unknown|failed|failure|clarif|diagnostic|error|incomplete)/i.test(state)) return false;
+  }
+  if (data.coverage_level === "bounded_partial" || data.coverage_sufficient_for_superlative === false) return false;
+  return true;
+}
+
+/**
+ * Build the generic browser-presentation hint from an already decision-ready
+ * result. This never performs navigation or derives a URL from an ID/title.
+ */
+export function presentationForData(
+  provider: ConnectorId | string,
+  tool: string,
+  data: JsonObject,
+  answerReady: boolean,
+  agentAction: unknown,
+): GatewayPresentation {
+  if (provider === "gateway" || !answerReady || agentAction !== "answer") return { action: "none" };
+  if (data.search_objective && data.objective_verified === false) return { action: "none" };
+
+  const candidate = tool.includes("search")
+    ? Array.isArray(data.results) ? record(data.results[0]) : null
+    : record(data.product) ?? record(data.listing) ?? record(data.job) ?? record(data.item) ?? record(data.result);
+  if (!candidate || !verifiedPresentationRecord(candidate, data)) return { action: "none" };
+
+  const url = presentationUrl(candidate.canonical_url);
+  if (!url) return { action: "none" };
+  const title = presentationText(candidate.title, 240)
+    ?? presentationText(candidate.name, 240)
+    ?? presentationText(candidate.product_name, 240)
+    ?? presentationText(candidate.property_title, 240)
+    ?? presentationText(candidate.job_title, 240);
+  return {
+    action: "open_result",
+    url,
+    ...(title ? { title } : {}),
+    reason: "Top verified match",
+  };
+}
+
+/** Validate/normalize an additive presentation object before forwarding it. */
+export function normalizePresentation(value: unknown): GatewayPresentation {
+  const object = record(value);
+  if (!object || object.action !== "open_result") return { action: "none" };
+  const url = presentationUrl(object.url);
+  if (!url) return { action: "none" };
+  const title = presentationText(object.title, 240);
+  const reason = presentationText(object.reason, 160);
+  return {
+    action: "open_result",
+    url,
+    ...(title ? { title } : {}),
+    ...(reason ? { reason } : {}),
+  };
+}
+
 function detailAction(provider: string, result: JsonObject, searchContext?: unknown): JsonObject | null {
   const currency = typeof result.currency === "string" ? result.currency : null;
   const locale = "en-GB";
@@ -837,6 +963,7 @@ export function successEnvelope(
   const agentAction = requestedAgentAction === "answer" || requestedAgentAction === "follow_next_action" || requestedAgentAction === "clarify" || requestedAgentAction === "report_partial"
     ? requestedAgentAction
     : answerReady ? "answer" : nextAction ? "follow_next_action" : "report_partial";
+  const presentation = presentationForData(provider, tool, data, answerReady, agentAction);
   const results = Array.isArray(data.results) ? data.results : [];
   const result = record(data.result) ?? (record(results[0]) ?? null);
   const alternatives = Array.isArray(data.alternatives)
@@ -859,6 +986,7 @@ export function successEnvelope(
     answer_state: data.answer_state ?? null,
     agent_action: agentAction,
     answer_ready: answerReady,
+    presentation,
     summary,
     result,
     alternatives,

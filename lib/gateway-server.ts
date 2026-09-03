@@ -46,6 +46,7 @@ import {
   markHttpSuccess,
   markSemanticValidation,
   newCorrelationId,
+  presentationForData,
   gatewaySource,
   responseMeta,
   successEnvelope,
@@ -837,6 +838,7 @@ function gatewayErrorBody(tool: string, error: GatewayError, correlationId = new
     consequential_actions: false,
     authentication_required: false,
     answer_ready: false,
+    presentation: { action: "none" },
     next_action: null,
     source: gatewaySource(completedAt),
     error: {
@@ -865,6 +867,7 @@ function gatewayEchoResponse(input: JsonObject): JsonObject {
     consequential_actions: false,
     authentication_required: false,
     answer_ready: true,
+    presentation: { action: "none" },
     next_action: null,
     source: gatewaySource(completedAt),
     data: { message: "Hello from Gateway", received: validated.message ?? null },
@@ -897,6 +900,7 @@ function taskErrorBody(error: GatewayError, correlationId: string, startedAt: st
     authentication_required: false,
     answer_state: "unverified",
     answer_ready: false,
+    presentation: { action: "none" },
     agent_action: clarification ? "clarify" : "report_partial",
     next_action: null,
     ...(clarification ? { clarification } : {}),
@@ -949,6 +953,7 @@ export async function gatewayTask(
         answer_state: "needs_clarification",
         answer_ready: false,
         agent_action: "clarify",
+        presentation: { action: "none" },
         clarification: plan.clarification,
         next_action: null,
         source: gatewaySource(),
@@ -973,6 +978,9 @@ export async function gatewayTask(
       : routedAnswerReady
         ? partial ? "report_partial" : "answer"
         : routedNextAction ? "follow_next_action" : "report_partial";
+    const presentation = routed.status < 400
+      ? presentationForData(route.provider, route.tool, routedData, routedAnswerReady, agentAction)
+      : { action: "none" } as const;
     const summary = routed.status < 400
       ? taskResultSummary(route.vertical, routedData, partial)
       : "The gateway could not complete the public-source search, so matching status is unknown.";
@@ -994,6 +1002,7 @@ export async function gatewayTask(
       answer_state: routedData.answer_state ?? (routed.status < 400 ? "partial" : "unverified"),
       answer_ready: routedAnswerReady,
       agent_action: agentAction,
+      presentation,
       summary,
       next_action: agentAction === "follow_next_action" ? routedNextAction : null,
       task: taskRouteData(route),
@@ -1099,6 +1108,7 @@ export function gatewayFindTool(inputValue: unknown = {}): JsonObject {
       status: "success",
       meta: responseMeta(newCorrelationId(), startedAt, completedAt),
       answer_ready: true,
+      presentation: { action: "none" },
       next_action: null,
       matches: candidates,
       data: { query, scope, matches: candidates },
@@ -1148,6 +1158,7 @@ async function executeRegisteredGatewayOperation(
       status: "success",
       meta: body.meta,
       answer_ready: true,
+      presentation: { action: "none" },
       next_action: null,
       data: routeDiagnostics,
     };
@@ -1194,6 +1205,7 @@ export async function gatewayStatus(): Promise<JsonObject> {
     gateway_mode: "read_only",
     consequential_actions: false,
     authentication_required: false,
+    presentation: { action: "none" },
     source: gatewaySource(completedAt),
     mode: "stateless-read-only",
     webmcp: {
@@ -1308,6 +1320,7 @@ export function gatewayCapabilities(capabilityValue: unknown = "all", options: J
       gateway_mode: "read_only",
       consequential_actions: false,
       authentication_required: false,
+      presentation: { action: "none" },
       coverage: {},
       source: gatewaySource(completedAt),
       error: {
@@ -1330,6 +1343,7 @@ export function gatewayCapabilities(capabilityValue: unknown = "all", options: J
     gateway_mode: "read_only",
     consequential_actions: false,
     authentication_required: false,
+    presentation: { action: "none" },
     coverage: Object.fromEntries(groups.map((id) => [id, { status: (capabilities[id] as JsonObject).status }])),
     source: gatewaySource(completedAt),
     data: {
@@ -1455,6 +1469,7 @@ export async function gatewayManifest(surfaceValue: unknown = "full", options: J
     gateway_mode: "read_only",
     consequential_actions: false,
     authentication_required: false,
+    presentation: { action: "none" },
     source: gatewaySource(completedAt),
     surface,
     surface_counts: toolSurfaceCounts(),
@@ -1570,6 +1585,7 @@ function errorEnvelope(
     coverage: { [provider]: { status: coverageStatusForErrorCode(error.code), error_code: error.code } },
     answer_state: "unverified",
     answer_ready: false,
+    presentation: { action: "none" },
     next_action: error.retryable && input
       ? {
         tool: `${provider}_${tool}`,

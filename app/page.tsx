@@ -24,6 +24,7 @@ import {
 import { AGENT_MANUAL } from "@/lib/agent-manual";
 import { validateToolInput } from "@/lib/gateway-validation";
 import { registerWebMcpTools, type WebMcpModelContext } from "@/lib/webmcp-bootstrap";
+import WebMcpChecker from "@/components/webmcp-checker";
 
 const AGENT_BRIEF = {
   service: "Agent Web Gateway",
@@ -442,6 +443,8 @@ export default function Home() {
           <div className="visual-label label-top">ordinary web</div><div className="visual-label label-bottom">structured access</div>
         </div>
       </section>
+
+      <WebMcpChecker />
 
       <section id="why" className="intro-section section-rule" aria-labelledby="why-title">
         <div className="section-label">Why it matters</div>
