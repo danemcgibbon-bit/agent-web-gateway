@@ -946,7 +946,7 @@ See [`LICENSE`](./LICENSE).
 
 ---
 
-## Closing
+## Closing Thoughts
 
 Native WebMCP is the destination.
 
