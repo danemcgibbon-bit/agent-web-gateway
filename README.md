@@ -1,418 +1,975 @@
-# Agent Web Gateway v0.13.2
+# Agent Web Gateway
 
-An experimental, read-only WebMCP gateway for useful structured access to
-ordinary public web services. It is not affiliated with IKEA, Amazon, Argos,
-John Lewis, Greenhouse, Lever, or OpenAI.
+> **A WebMCP compatibility layer for the existing web.**
 
-Live demo (Sites): https://agent-web-gateway.djrookie99.chatgpt.site
-Cloudflare Worker endpoint: https://agent-web-gateway.danemcgibbon.workers.dev
+### Let the gateway find it. Experience it on the real site.
 
-The public page exposes one stable internal registry plus a fixed ten-tool
-WebMCP surface. The server chooses
-the least expensive usable route for each request: bounded in-memory cache,
-first-party HTTP, public HTTP, embedded page state, or a deterministic parser.
-Dynamic storefront searches escalate internally into short-lived normalized
-server-side snapshots with opaque `search_context` handles; agents never select
-a route or receive the raw catalogue.
-Snapshots retain the requested scope, acquisition strategy, page and record
-counts, pagination termination, route context, and a precise coverage reason.
-Incomplete snapshots are refetched for ranked or exhaustive requests; a
-superlative is marked sufficient only after the relevant collection or
-catalogue has reached a proven terminal page.
+**[Live gateway](https://agent-web-gateway.djrookie99.chatgpt.site/)** · **[Source](https://github.com/danemcgibbon-bit/agent-web-gateway)**
+
+Agent Web Gateway helps AI agents use ordinary public websites through a consistent, read-only WebMCP interface — without requiring the target website to install anything, change its code, or integrate with the gateway.
+
+The key idea is simple:
+
+```text
+the agent should reason about what you want
+the gateway should handle the repetitive web mechanics
+the original website should remain the place you experience the result
+```
+
+That produces a **gateway-first, browser-last** workflow:
+
+```text
+you ask
+   ↓
+AI agent
+   ↓
+Agent Web Gateway
+find → normalize → filter → rank → verify
+   ↓
+best verified canonical result
+   ↓
+agent opens the real webpage
+   ↓
+you + your agent inspect it together
+```
+
+The gateway does not try to replace the web.
+
+It helps the agent get you to the right part of it.
+
+---
+
+## Quickstart
+
+### 1. Open Agent Web Gateway
+
+**https://agent-web-gateway.djrookie99.chatgpt.site/**
+
+You can first check whether the website you want to use already exposes detectable native WebMCP support.
+
+If strong native WebMCP is available, prefer the site's own tools.
+
+If not, Agent Web Gateway can provide the compatibility path.
+
+### 2. Give your agent one simple starter prompt
+
+For OpenRent:
+
+> **Use https://agent-web-gateway.djrookie99.chatgpt.site/ to help you access https://openrent.co.uk/ more naturally. I’ll tell you what I want to do.**
+
+That is the whole handshake.
+
+You do not need to know tool names, schemas, APIs, or provider routes.
+
+### 3. Tell your agent what you actually want
+
+For example:
+
+> **Find the cheapest available whole 2+ bedroom flat in Bromley, London under £2,000 that allows families.**
+
+The agent can then use the gateway's WebMCP tools to do the structured work.
+
+### 4. Continue on the real website
+
+For a concrete answer-ready result, the gateway can return the selected canonical page as a presentation hint.
+
+A browser-capable agent can open that page once for final inspection and show it to you before answering.
+
+So instead of ending at:
+
+```text
+"Here is a URL."
+```
+
+the intended experience is:
+
+```text
+"I found the best verified match — I've opened it for you."
+```
+
+---
+
+## The handshake
+
+Agent Web Gateway is designed around a very small handoff between human, agent, gateway, and website.
+
+```text
+┌───────────────┐
+│     Human     │
+│ "Help me use  │
+│  this site."  │
+└───────┬───────┘
+        │
+        ▼
+┌───────────────┐
+│   AI agent    │
+│ discovers AWG │
+│ through WebMCP│
+└───────┬───────┘
+        │
+        ▼
+┌──────────────────────┐
+│  Agent Web Gateway   │
+│                      │
+│ acquire              │
+│ normalize            │
+│ filter               │
+│ verify               │
+│ rank                 │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│ canonical result URL │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│   Original website   │
+│                      │
+│ human + agent inspect│
+│ the real page        │
+└──────────────────────┘
+```
+
+The human stays in a natural conversation.
+
+The agent gets structured capabilities.
+
+The gateway handles deterministic web work.
+
+The website still gets the user.
+
+---
+
+## Why this exists
+
+WebMCP gives websites a way to expose structured capabilities directly to AI agents.
+
+That is the ideal direction for the web.
+
+But adoption will be uneven.
+
+Today, an agent using an ordinary website often has to repeatedly decide:
+
+```text
+which page?
+which route?
+which result set?
+how do I paginate?
+which fields are reliable?
+is this a room or a whole property?
+is this actually in stock?
+does "2 bedrooms" mean exactly 2 or at least 2?
+have I searched enough to claim "cheapest"?
+should I trust this search card or inspect the detail page?
+```
+
+Those are mechanical, site-specific decisions.
+
+They consume model context and create opportunities for plausible-looking mistakes.
+
+Agent Web Gateway asks:
+
+> **What if those repetitive web decisions were moved out of the model and into deterministic software?**
+
+The model can focus on the user's goal.
+
+The gateway can focus on acquiring, normalizing, filtering, ranking, and verifying the web data needed to answer it.
+
+---
+
+## Co-browsing without replacing the website
+
+The project began as a WebMCP compatibility layer.
+
+The browser-last workflow adds an important second idea:
+
+> **Structured agent work should lead back to the real web whenever the result is something worth seeing.**
+
+For a result-oriented task:
+
+```text
+Agent Web Gateway
+        ↓
+finds the answer efficiently
+        ↓
+returns the selected canonical page
+        ↓
+agent opens that page
+        ↓
+user sees the site's own interface, photos, maps, content and context
+```
+
+The browser does **not** repeat the search.
+
+It opens the winner.
+
+This keeps a useful division of labour:
+
+### The gateway is good at
+
+- traversing bounded result sets
+- normalizing inconsistent records
+- applying hard constraints
+- ranking candidates
+- verifying finalists
+- deciding whether a global claim is justified
+
+### The browser is good at
+
+- showing the real website
+- letting the user see rich visual context
+- exposing the site's own interface
+- catching obvious last-mile changes
+- letting the human and agent continue together
+
+This is deliberately different from proxying, mirroring, or replacing third-party websites.
+
+---
+
+## Native WebMCP still comes first
+
+Agent Web Gateway is not intended to replace a strong first-party WebMCP implementation.
+
+The preferred path is:
+
+```text
+native WebMCP
+      ↓
+official / first-party public interface
+      ↓
+platform-family interface
+      ↓
+structured public data
+      ↓
+bounded compatibility fallback
+```
+
+The human-facing gateway includes a WebMCP checker to help make that distinction visible.
+
+Conceptually:
+
+```text
+Does this site already expose WebMCP?
+        ↓
+   ┌────┴────┐
+   │         │
+  YES      NO SIGNAL
+   │         │
+   ▼         ▼
+use native  use Agent Web Gateway
+WebMCP      where compatible
+```
+
+A failed static check is not treated as proof that WebMCP is absent. Sites can register tools dynamically, so the checker distinguishes between detected support, possible support, no detected signal, disabled support, and an inability to check.
+
+The gateway is the bridge, not the destination.
+
+---
+
+## OpenRent: the flagship workflow
+
+OpenRent is the clearest demonstration because rental search looks simple until the constraints become real.
+
+Consider:
+
+> Find the cheapest available whole 2+ bedroom flat in Bromley, London under £2,000 that allows families.
+
+A browser agent can easily make subtle mistakes:
+
+```text
+2+ bedrooms        ≠ exactly 2 bedrooms
+flat               ≠ room in a shared flat
+room rent          ≠ whole-property rent
+max occupants      ≠ proof that families are allowed
+search card        ≠ verified listing detail
+last updated       ≠ newly listed
+partial search     ≠ proof of "cheapest"
+```
+
+Agent Web Gateway treats search results as candidates, not truth.
+
+The rental flow is approximately:
+
+```text
+search
+  ↓
+normalize candidates
+  ↓
+apply safe pre-filters
+  ↓
+inspect relevant listing details
+  ↓
+reconcile conflicting fields
+  ↓
+build canonical verified listings
+  ↓
+reapply every hard constraint
+  ↓
+rank verified matches
+  ↓
+return winner + canonical page
+  ↓
+browser opens the actual OpenRent listing
+```
+
+That last step turns a structured answer into a co-browsing experience.
+
+The user can immediately see the listing photos, description and context on OpenRent itself.
+
+---
+
+## One WebMCP entry point for normal tasks
+
+The default agent-facing tool is:
+
+```text
+gateway_task
+```
+
+It accepts the user's ordinary read-only goal and lets the gateway choose the appropriate workflow.
+
+Example:
+
+```json
+{
+  "goal": "Find the cheapest available whole 2+ bedroom flat in Bromley, London under £2,000 that allows families on OpenRent."
+}
+```
+
+The agent does not need to plan provider routes, inspect manifests, manage pagination, or understand the internal connector architecture.
+
+For normal tasks:
+
+```text
+user goal
+   ↓
+gateway_task
+   ↓
+deterministic route selection
+   ↓
+semantic workflow
+   ↓
+answer-ready result
+```
+
+Specialist commerce, jobs, and rental tools remain available when explicit control is useful.
+
+---
+
+## Gateway-first, browser-last
+
+For an answer-ready concrete result, the response can include an additive presentation hint:
+
+```json
+{
+  "answer_ready": true,
+  "agent_action": "answer",
+  "presentation": {
+    "action": "open_result",
+    "url": "https://www.example.com/the-selected-result",
+    "title": "Selected result",
+    "reason": "Top verified match"
+  }
+}
+```
+
+The intended agent behavior is:
+
+```text
+gateway says answer-ready
+        ↓
+stop gateway discovery
+        ↓
+presentation.action = open_result?
+        ↓
+YES
+        ↓
+open the selected URL once
+        ↓
+briefly inspect the live page
+        ↓
+answer the user
+```
+
+The agent should **not** independently repeat the search in the browser.
+
+If browser navigation is unavailable, the same gateway result remains answer-ready and the agent can simply answer in chat.
+
+Presentation is additive, not required for correctness.
+
+---
+
+## What makes the gateway different?
+
+### 1. It works with websites that do not control the integration
+
+The target website does not need:
+
+- repository access
+- a plugin
+- a script tag
+- a local MCP server
+- a merchant integration
+- a developer integration
+- a code change
+
+Agent Web Gateway is externally operated compatibility infrastructure for public, read-only web tasks.
+
+### 2. It exposes semantic tasks, not browsing primitives
+
+The agent asks for outcomes such as:
+
+```text
+find products
+find jobs
+find rental properties
+get a verified detail record
+```
+
+It does not receive a remote mouse and a pile of DOM primitives.
+
+### 3. It keeps large working sets out of the model context
+
+Instead of:
+
+```text
+hundreds of records
+       ↓
+      model
+       ↓
+model filters, compares and ranks
+```
+
+the intended flow is:
+
+```text
+hundreds of records
+       ↓
+Agent Web Gateway
+normalize → filter → verify → rank
+       ↓
+small answer-ready result
+       ↓
+      model
+```
+
+### 4. It fails closed
+
+If the gateway cannot justify a hard constraint, it does not silently convert uncertainty into a match.
+
+### 5. It brings the user back to the original site
+
+The gateway helps the agent find the right page.
+
+It does not try to become that page.
+
+---
+
+## Reliability model
+
+The core principle is:
+
+> **False confidence is worse than honest failure.**
+
+Hard constraints are handled with semantics equivalent to:
+
+```text
+MATCH
+NO_MATCH
+UNKNOWN
+```
+
+`UNKNOWN` does not silently become `MATCH`.
+
+For global claims such as **cheapest**, the gateway separately asks:
+
+```text
+Did we acquire enough of the relevant result space?
+        +
+Was the acquisition scope appropriate?
+        +
+Were the records interpreted reliably?
+        +
+Were the finalists verified?
+        ↓
+Can we safely make the claim?
+```
+
+This prevents failures such as:
+
+```text
+completely searching the wrong product collection
+        ↓
+incorrectly claiming no matching product exists
+```
+
+or:
+
+```text
+search card looks like a flat
+        ↓
+detail page reveals it is a room
+        ↓
+incorrectly treating it as a whole-property match
+```
+
+The system prefers an explicit partial or unsupported state over a confident-looking invention.
+
+---
+
+## Current scope
+
+The project is intentionally transparent about maturity.
+
+| Area | Role | Current maturity |
+|---|---|---|
+| **OpenRent** | Flagship rental workflow | **Verified direct-site path** |
+| OnTheMarket | Secondary rental source | Partial / upstream-dependent |
+| Shopify-compatible storefronts | Reusable commerce compatibility | Experimental / site-dependent |
+| WooCommerce-compatible storefronts | Reusable commerce compatibility | Experimental / site-dependent |
+| IKEA UK | Commerce source | Working read-only search/detail path |
+| Argos UK | Commerce source | Working read-only search/detail path |
+| Amazon UK | Commerce experiment | Degraded / upstream-dependent |
+| John Lewis | Commerce source | Partial |
+| Greenhouse | Reusable jobs adapter | Experimental |
+| Lever | Reusable jobs adapter | Experimental |
+
+These are not allowlists for the architecture.
+
+Where dynamic targeting is supported, previously untested compatible public sites can be attempted within bounded rules.
+
+Upstream sites can change at any time.
+
+**Unsupported is a valid state.**
+
+---
 
 ## WebMCP surface
 
-The live page registers tools with the imperative WebMCP API:
+The public page exposes a fixed, atomically registered WebMCP surface for normal agent use.
 
-```js
-document.modelContext.registerTool(tool, { signal });
-```
-
-The same page exposes the discovery and invocation contract through
-`document.modelContext.getTools()` and `document.modelContext.executeTool()`.
-All contracts come from the single `TOOL_DEFINITIONS` registry, but exactly ten
-stable contracts register atomically at client-module bootstrap. The retained
-implementation registry contains dormant adapters and specialist operations;
-those do not consume normal model context. Advanced contracts are found
-deterministically by `gateway_find_tool` and invoked through the strict
-`gateway_call_tool` escape hatch. `script#agent-webmcp-registry` and
-`script#agent-webmcp-runtime` provide machine-readable contract and runtime
-diagnostics for compatible agents.
-
-Static contracts start at client-module bootstrap before UI hydration and
-operational health loading. The fixed registration order starts with the
-one-shot default:
-
-- `gateway_task`
-- `gateway_capabilities`
-- `gateway_find_tool`, `gateway_call_tool`
-- `commerce_search_products`, `commerce_get_product`
-- `jobs_search`, `jobs_get_listing`
-- `rentals_search_properties`, `rentals_get_listing`
-
-The full registry remains available at `GET /api/manifest`; the compact
-default manifest is `GET /api/manifest?surface=semantic`. This is a visibility
-tier, not a deletion of advanced provider and diagnostic tools. Use
-`gateway_find_tool` for a scoped metadata search, then `gateway_call_tool` with
-the exact returned operation when an integration task explicitly needs an
-advanced contract. The legacy page-scoped `gateway_expand_tools` definition is
-retained only as a deprecated compatibility marker; it is not part of normal
-registration or discovery.
-
-The full registry also includes:
-
-- gateway diagnostics/planning: `gateway_echo`, `gateway_status`, `gateway_manifest`, `gateway_capabilities`, `gateway_find_tool`, `gateway_call_tool`, `gateway_expand_tools` (deprecated), `commerce_platform_diagnostics`
-- IKEA UK: `ikea_search_products`, `ikea_get_product`, `ikea_check_availability`
-- Amazon UK: `amazon_search_products`, `amazon_get_product`
-- Argos UK: `argos_search_products`, `argos_get_product`
-- John Lewis UK: `johnlewis_search_products`, `johnlewis_get_product`
-- unified commerce: `commerce_search_products`, `commerce_get_product`
-- unified UK rentals: `rentals_search_properties`, `rentals_get_listing`
-- unified jobs: `jobs_search`, `jobs_get_listing`
-
-Every connector contract is read-only, strict, bounded, and backed by
-provider-specific semantic validation. External text is data and is returned
-with `source.trust: "external_untrusted"`; it is never an instruction.
-
-## Execution and response contract
-
-The implementation execution endpoint is:
+The core tools are:
 
 ```text
-POST /api/execute
+gateway_task
+gateway_capabilities
+gateway_find_tool
+gateway_call_tool
+
+commerce_search_products
+commerce_get_product
+
+jobs_search
+jobs_get_listing
+
+rentals_search_properties
+rentals_get_listing
 ```
 
-```json
-{
-  "provider": "ikea | amazon | argos | johnlewis | commerce | rentals | jobs",
-  "tool": "search_products",
-  "arguments": {}
-}
-```
-
-The caller does not choose the execution route. Successful responses include
-`meta`, `coverage`, `execution.mode`, timestamps, semantic-validation status,
-route provenance, source freshness, bounded data, and declarative
-`actions.detail` links when a search result can be chained. For an answer-ready
-verified result, the response may also include a generic `presentation` hint
-with the selected canonical page URL; otherwise it is `{ "action": "none" }`.
-Errors carry the same decision trace and machine-readable provider coverage.
-
-The default one-shot task is available at `POST /api/task`:
-
-```json
-{
-  "goal": "Find the cheapest green men's sweater on https://www.tentree.com/"
-}
-```
-
-It routes deterministically into the existing commerce, jobs, or rentals
-workflow; it does not add an internal model or arbitrary web proxy.
-
-Normal search responses return up to three records by default (five when
-requested) and are concise and decision-ready: route diagnostics and
-variants are omitted by default, and the result includes `response_format`, `answer_state`,
-`exact_matches`, optional `closest_matches`, `failed_constraints`,
-`verification_status`, `answer_ready`, `next_action`, and, for ranked storefront
-`agent_action`, and, for ranked storefront searches, `search_objective`,
-`coverage_level`, `coverage_confidence`, and
-`coverage_sufficient_for_superlative`. A caller can pass
-`response_format: "detailed"` for richer bounded fields or
-`response_format: "diagnostic"` (equivalent to `include_diagnostics: true`)
-when bounded route evidence is needed for QA. Detail tools retain deeper
-product, listing, and job fields. Commerce detail accepts bounded `include`
-sections such as `sizes`, `colors`, `materials`, `description`, `images`, and
-`provenance`; search results expose `details_available` so agents can request
-only what is needed.
-
-Canonical agent workflow:
-
-1. After one native WebMCP discovery, call `gateway_task` with the user's
-   normal-language request in `goal`. It deterministically chooses commerce,
-   jobs, or rentals, extracts a supplied URL and obvious constraints, and
-   routes to the existing workflow. For a specific compatible Shopify or
-   WooCommerce storefront, a URL in `goal` or `site` is targeted directly.
-2. When `agent_action` is `answer`, stop additional gateway discovery. If
-   `presentation.action` is `open_result` and the client can navigate, open
-   that selected canonical URL once for final inspection and presentation,
-   then answer; otherwise answer directly. For `report_partial`, explain the
-   safe limitation without restarting the same search. If it is
-   `follow_next_action`, execute the supplied `next_action` exactly. The
-   underlying semantic call performs bounded acquisition, filtering, ranking,
-   currency checks, snapshot projection, and finalist verification.
-3. Use the relevant semantic search tool directly when explicit specialist
-   control is useful. Use `gateway_capabilities` only when the goal is broad
-   or ambiguous.
-4. If the task explicitly needs route or compatibility diagnostics, call
-   `gateway_find_tool` once with a narrow scope, then call `gateway_call_tool`
-   with the exact registered operation and its existing schema-shaped arguments.
-
-The one-shot task response includes a compact deterministic summary, an
-optional first-result capsule, extracted routing data, `answer_ready`, and one
-of `answer`, `follow_next_action`, `clarify`, or `report_partial`.
-
-The gateway finds and verifies the result; a browser-capable agent can then
-show the selected page on the original website:
+The normal path is deliberately simple:
 
 ```text
-ask → Agent Web Gateway (find + filter + verify)
-    → selected canonical page → original website
+discover once
+   ↓
+gateway_task
+   ↓
+answer / clarify / follow next action / report partial
 ```
 
-The presentation hint is additive. It never makes the gateway a browser or
-asks the agent to repeat discovery on the source site.
+Advanced provider and diagnostic operations remain behind the deterministic `gateway_find_tool` → `gateway_call_tool` path rather than consuming the normal agent's context.
 
-Do not pre-inspect the manifest or provider catalog for ordinary tasks, and do
-not infer zero results from an unavailable provider.
-The equivalent read-only HTTP planning route is
-`GET /api/capabilities?capability=commerce`.
+The same core contract is designed to work across compatible WebMCP clients including ChatGPT and OpenClaw.
 
-Use `include_diagnostics: true` only when inspecting a route or eval; normal
-agents should use the compact result plus `coverage` and `actions.detail`.
+---
 
-Execution modes currently used are `cache`, `public_http`,
-`first_party_api`, and `mixed`. The public gateway works with no setup.
+## Human view + agent view
 
-Explicit error codes include `INPUT_INVALID`, `PROVIDER_UNSUPPORTED`,
-`UNSUPPORTED_SITE`, `PLATFORM_DETECTED_ROUTE_UNAVAILABLE`,
-`UPSTREAM_TIMEOUT`, `UPSTREAM_BLOCKED`, `UPSTREAM_CHANGED`,
-`PROVIDER_RESTRICTED`, `NO_VALID_RESULTS`, `NOT_FOUND`, `RATE_LIMITED`, and
-`ROUTE_BLOCKED`, `PLATFORM_PROBE_FAILED`, `SITE_UNREACHABLE`,
-`RUNTIME_EGRESS_BLOCKED`, and `INTERNAL_ERROR`.
+The same public URL serves two audiences.
 
-`gateway_find_tool` searches only registered metadata and returns a few
-operation names and short purposes; it never returns every schema. The
-`gateway_call_tool` dispatcher rejects unknown operations and cannot proxy
-arbitrary URLs, methods, headers, code, shell, or filesystem requests.
+### Humans see
 
-`gateway_status` reports the live gateway, observed connector health, bounded
-metrics, and the last execution mode for each tool. `gateway_manifest` reports
-each tool's current status, usable execution modes, completeness hints, and a
-concise reason when a route is unavailable. With `site` and `query`, its
-advanced route diagnostic performs one bounded read-only compatibility probe.
-WebMCP status diagnostics include the fixed-core registry invariant and a
-page-runtime TTFSI field (time to first successful semantic invocation);
-client/CDP target-loss errors are classified separately as
-`CLIENT_INTEROP_TARGET_LIFECYCLE`.
-The homepage is a concise human landing page. Its non-rendered machine-facing
-manual is available in `script#agent-web-gateway-manual` and at `/agent.json`;
-both are generated from the same source object. The page's fixed WebMCP
-bootstrap remains independent of the visual landing content.
+- a simple explanation of the compatibility-layer idea
+- a WebMCP support checker
+- a one-click starter prompt
+- useful continuation paths when native support is not detected
+- a clear explanation of what the gateway can help with
 
-## Provider notes
+### Agents receive
 
-- IKEA search and detail use the live first-party catalogue route and strict
-  product validation. Availability remains conservative and does not infer
-  stock from generic product text.
-- Amazon uses an explicitly identifying `Agent/AgentWebGateway` public HTTP
-  route for UK catalogue search and detail. Product pages and search pages are
-  classified before parsing; challenge, interstitial, generic, and incomplete
-  pages cannot become successful product results. ASINs and Amazon URLs chain
-  through the detail tool.
-- Argos uses a bounded, identified, robots-compliant public HTTP route. Search
-  cards and product detail are validated separately and stable Argos IDs chain
-  between the two tools.
-- John Lewis uses identified public HTTP with robots compliance and bounded
-  embedded catalogue-state extraction. Stable product IDs, prices, ratings,
-  and canonical URLs are retained only when present in the source.
-- Commerce combines validated IKEA, Amazon UK, Argos, and John Lewis results
-  behind one search/detail contract and adds a bounded compatibility catalog.
-  Provider failures are partial diagnostics; `coverage` makes those outcomes
-  explicit, and a blocked or generic page never becomes a product.
-  `commerce_search_products` also accepts an optional public `site` for
-  dynamically detected compatible Shopify or WooCommerce storefronts. The
-  site may be previously untested; the gateway only
-  generates bounded platform routes, normalizes variants, and applies strict
-  audience/color/size/availability constraints; unsupported sites fail with a
-  structured diagnostic. Dynamic discovery records the robots check, homepage
-  signal, Shopify predictive-search probe, Shopify catalogue-signal probe, and
-  WooCommerce REST-index probe independently. A valid Shopify search payload can
-  establish the platform even when the homepage is challenged; selected search
-  payloads are reused for the same request and product handles chain through
-  `/products/{handle}.js`.
-- Rentals combines OnTheMarket and OpenRent into a common property record. It
-  normalizes monthly/effective cost, bills, furnishing, availability, and
- whole-property eligibility, then verifies only the top finalists. Search
- results expose declarative detail actions for finalist verification.
-- Jobs combines public Greenhouse and Lever postings into a common job record.
-  One shared adapter normalizes titles, companies, locations, remote signals,
-  departments, employment types, structured salary fields, dates, canonical
-  URLs, and stable composite IDs. Search results expose declarative detail
-  actions, and a failing board does not poison results from the other platform.
-- Sources with no usable zero-setup public route are not included in the public
-  connector registry. Their dormant adapters may remain in the codebase for
-  future revalidation, but they are not advertised through WebMCP, manifests,
-  capabilities, status, or the page registry.
+- WebMCP tool definitions
+- concise operating guidance
+- strict input schemas
+- structured answer states
+- coverage information
+- verification state
+- continuation signals
+- optional presentation hints for browser-capable clients
 
-### Rental acquisition policy
+The human should not need to learn the machine contract.
 
-The rental adapters use an identifying `Agent/AgentWebGateway` User-Agent,
-check each provider's current `robots.txt`, and use read-only server-rendered
-pages only. No challenge circumvention, identity rotation, or write action is
-used.
+The agent should not need the human interface explained to it.
 
-## Platform compatibility and bounded discovery
+---
 
-The gateway has a reusable, deterministic page-state layer for modern
-server-rendered and framework-backed sites. It detects Next.js, Nuxt, React,
-SvelteKit, Angular, Remix, Shopify, Apollo/GraphQL, and generic SSR/CSR
-signals, then parses bounded `application/ld+json`, `__NEXT_DATA__`, Next RSC /
-Flight payloads, Apollo, Redux/preloaded, Nuxt, SvelteKit, Angular
-TransferState, and generic JSON script payloads. Scripts are parsed as data;
-downloaded JavaScript is never executed.
+## The WebMCP checker
 
-The compatibility layer uses the same deterministic code for tested Shopify
-examples, caller-supplied Shopify/WooCommerce storefronts, Next.js/hydration
-pages, and structured SSR/JSON-LD catalogue pages. It selects routes in this
-order:
-Shopify, WooCommerce, Next.js state, Algolia clues, structured Product data,
-then a known recipe. Product records must have a stable identifier, a
-canonical HTTPS URL, and a non-generic title; missing prices remain explicitly
-partial.
+The landing page can inspect a public website for detectable WebMCP support.
 
-For caller-supplied Shopify/WooCommerce domains, platform acquisition uses a
-small known-route probe set rather than making the homepage a prerequisite.
-Each probe reports its requested route, HTTP status, redirect chain,
-classification, and elapsed time without retaining the upstream response body.
-Route-level blocks, site-level unreachability, and platform-probe failures are
-kept distinct in the structured error details.
+The checker is intentionally evidence-based rather than absolute.
 
-Same-origin bundle inspection is a bounded reconnaissance aid. It can inspect
-a small number of public HTTPS bundles for read-only route clues without
-blindly probing every candidate. Successful strategies are represented in the
-in-memory recipe registry so healthy production calls remain deterministic; a
-stateless isolate may rediscover a recipe after it is recycled. The manifest
-and status metrics report engine family, site observations, framework/state
-findings, field completeness, ID chaining, and false-success counts.
+Possible outcomes include:
 
-No provider is enabled merely because a bundle contains a URL-looking string;
-the connector still needs a reproducible read-only route and strict semantic
-validation.
-
-The same state layer feeds `lib/extraction-benchmark.ts`, which records
-framework detection, embedded-state kinds, field completeness, stable-ID
-chaining, latency, and false-success counts. Its summary is available inside
-the status metrics.
-
-The point-in-time compatibility benchmark is available at
-`GET /api/compatibility`. It reports site-level search/detail chaining across
-10 Shopify targets, 10 WooCommerce targets, five Greenhouse boards, and five
-Lever boards, plus reconnaissance for Booking.com, Argos, Currys, and John
-Lewis. It also records the canonical commerce, rentals, jobs, and Amazon
-sample queries, framework/state findings, bounded API clues, failure classes,
-and formal maturity (`verified`, `partial`, `experimental`, or `unavailable`).
-Benchmark targets are fixed public HTTPS samples and do not become an
-unrestricted URL proxy or default unified-routing providers.
-
-The targeted v0.11.1 live probe is recorded in
-`data/targeted-site-benchmark-v0.11.1.json`; run it with
-`npm run benchmark:targeted`. Its dynamic-site targets are reconnaissance
-inputs only and are not eligibility gates or default unified-routing providers.
-
-The v0.11.2 fresh-Shopify matrix can be run against the public deployment with
-`npm run benchmark:shopify-matrix`; pass an output path as the first argument
-when the report should be kept outside the repository.
-
-## WebMCP recognition checker
-
-The human-facing homepage includes a bounded, no-autorun WebMCP check. It
-combines independent static inspection of the requested page (including a
-small same-origin bundle budget) with the Agent Web Gateway catalog. A catalog
-match is reported as verified even when the target page is blocked or its
-registration is runtime-only; an unlisted site continues through the
-independent scan and is never treated as proven unsupported. Results keep
-catalog and live-scan provenance separate, show cataloged tool names and page
-hints, and retain the distinction between detected, possible, no signal,
-disabled, and unable to check.
-
-The checker recognizes current `document.modelContext` registration,
-bracket/aliased and legacy compatibility forms, bounded declarative WebMCP
-forms, and the current MCP-B polyfill registration signal. It does not execute
-downloaded JavaScript, use browser automation, follow arbitrary third-party
-scripts, or expose upstream response bodies. The gateway's existing fixed
-WebMCP registry and connector behavior are unchanged.
-
-Run the catalog coverage benchmark with:
-
-```bash
-npm run benchmark:webmcp-corpus -- /tmp/webmcp-corpus-report.json
+```text
+WebMCP detected
+Possible WebMCP
+No WebMCP signal detected
+WebMCP disabled
+Unable to check
 ```
 
-It fetches a temporary live-site sample, tests the root and bounded tool pages,
-and reports catalog-assisted recall separately from independent static-scan
-recall. It intentionally does not claim runtime verification; use Chrome's
-[WebMCP Tool Inspector](https://developer.chrome.com/docs/ai/webmcp) for that
-development-only oracle when available.
+When native support cannot be confirmed, the page gives the human a simple starter prompt such as:
 
-## Agent-native quality report
+> Use https://agent-web-gateway.djrookie99.chatgpt.site/ to help you access https://openrent.co.uk/ more naturally. I’ll tell you what I want to do.
 
-`GET /api/agent-evals` exposes the permanent golden-journey suite, deterministic
-contract-fixture checks, the full-versus-default serialized schema comparison,
-progressive-disclosure checks, annotation policy, and the status of repeated
-model-backed trials. It deliberately keeps model results separate from
-deterministic and live compatibility evidence.
+That turns a technical compatibility problem into a one-sentence handoff.
 
-The development runner is:
+---
 
-```bash
-npm run benchmark:agent-evals -- data/agent-evals-v0.13.0.json
+## Acquisition strategy
+
+The gateway prefers the strongest bounded read-only source available.
+
+Conceptually:
+
+```text
+native WebMCP
+      ↓
+official / first-party public API
+      ↓
+platform-family API
+      ↓
+known public route
+      ↓
+embedded structured state
+      ↓
+public HTML
+      ↓
+honest failure
 ```
 
-Set `AGENT_EVAL_MODELS=GPT-5.6-Luna=model-a,DeepSeek-V4-Flash=model-b`,
-`AGENT_EVAL_MODEL_ENDPOINT`, and `AGENT_EVAL_API_KEY` (where required) to run
-five repeated trials per journey and across the legacy/full, lean-tools,
-lean-deterministic, and lean-deterministic-advanced interface variants. The
-runner records model turns, first correct semantic call, tool errors, gateway
-execution time, output size, token usage when supplied, and context overflow.
-It uses the read-only gateway API and never adds model-specific behavior to
-production.
+The caller does not choose the acquisition route.
 
-## Caching and metrics
+That decision stays in deterministic gateway code.
 
-The stateless runtime keeps a bounded per-isolate cache for safe public IKEA,
-Amazon, Argos, John Lewis, unified commerce, rental, and jobs responses. Dynamic
-storefront product answers are fetched live; only route and collection knowledge
-is retained structurally. Responses expose `source.retrieved_at`, `source.freshness`, and
-`source.cache_age_seconds` when applicable.
-Dynamic snapshot reuse is scope-aware and reports `hit_exact`, `hit_superset`,
-`hit_insufficient`, `miss`, or `stale`; incomplete cache entries are upgraded
-before a completeness-sensitive answer.
+---
 
-The status response keeps bounded metrics with provider, tool, latency, HTTP
-attempt and outcome, semantic-validation outcome, selected mode, and error
-code. Tool health is updated from observed calls and records
-`last_success_at`, `last_failure_at`, `last_error_code`, and
-`last_execution_mode`.
+## Platform-family compatibility
 
-## Safety boundaries
+Rather than building every site as an unrelated one-off scraper, the project experiments with reusable compatibility families.
 
-- public information retrieval only;
-- no accounts, carts, purchases, reservations, payments, messages, saved
-  sessions, personal data, or write actions;
-- no arbitrary URLs, arbitrary code execution, CAPTCHA solving, proxy
-  rotation, or challenge circumvention;
-- result count, body size, execution time, cache, and retained metrics are
-  bounded;
-- empty/invalid results and upstream failures cannot cross the semantic success
-  boundary.
+Current examples include:
 
-## Local development
+```text
+Shopify
+WooCommerce
+Greenhouse
+Lever
+```
 
-Prerequisites: Node.js `>=22.13.0` and a Linux environment with `flock`,
-`curl`, and GNU `timeout`.
+The architecture can:
+
+```text
+detect compatible platform
+        ↓
+use known bounded public surfaces
+        ↓
+normalize provider-specific data
+        ↓
+return common semantic records
+```
+
+This is the direction of the project:
+
+> **platform compatibility rather than endless site-specific prompting.**
+
+---
+
+## Safety
+
+Agent Web Gateway is intentionally **read-only**.
+
+It supports:
+
+- search
+- retrieval
+- filtering
+- comparison
+- ranking
+- verification
+- result presentation
+
+It does not currently perform:
+
+- purchases
+- payments
+- bookings
+- job applications
+- arbitrary form submissions
+- authenticated account actions
+
+The design also avoids relying on:
+
+- CAPTCHA bypass
+- fingerprint spoofing
+- residential proxy rotation
+- stealth-browser infrastructure
+- arbitrary HTTP proxying
+
+Public dynamic targets are constrained to bounded HTTPS acquisition with URL safety checks.
+
+---
+
+## Testing philosophy
+
+The gateway is tested at several levels.
+
+### Deterministic tests
+
+Cover areas such as:
+
+```text
+normalization
+filtering
+ranking
+route selection
+semantic validation
+coverage logic
+cache behavior
+URL safety
+false-success prevention
+```
+
+### WebMCP interoperability
+
+Tests focus on:
+
+```text
+registration
+discovery
+invocation
+cold-start behavior
+stable contracts
+cross-client behavior
+```
+
+### Golden journeys
+
+Real end-to-end tasks are retained as regression cases.
+
+The flagship is the multi-constraint OpenRent journey because it tests:
+
+```text
+provider acquisition
+semantic normalization
+hard constraints
+detail verification
+ranking
+canonical URLs
+presentation
+browser-last behavior
+```
+
+### Recognition corpus
+
+The human-facing WebMCP checker is also tested against known-positive implementations and controlled negative fixtures so that improvements in recall do not quietly create false positives.
+
+---
+
+## What Agent Web Gateway is not
+
+The project is not trying to become:
+
+- a universal scraper
+- a stealth-browser platform
+- an unrestricted remote browser
+- an arbitrary HTTP proxy
+- a replacement for a strong first-party WebMCP implementation
+- a transactional autonomous agent
+
+The project is exploring a narrower question:
+
+> **Can a compatibility layer make the existing public web meaningfully easier and more reliable for browser agents while keeping the human connected to the original website?**
+
+---
+
+## Architecture
+
+```text
+┌─────────────────────────────────────────┐
+│              Human + agent              │
+└───────────────────┬─────────────────────┘
+                    │ natural-language goal
+                    ▼
+┌─────────────────────────────────────────┐
+│                WebMCP                   │
+│        fixed semantic tool surface      │
+└───────────────────┬─────────────────────┘
+                    │
+                    ▼
+┌─────────────────────────────────────────┐
+│           Agent Web Gateway             │
+│                                         │
+│  normalize intent                       │
+│  select acquisition strategy            │
+│  acquire bounded public data            │
+│  build canonical records                │
+│  apply hard constraints                 │
+│  verify finalists                       │
+│  rank qualifying results                │
+│  select canonical presentation URL      │
+└───────────────────┬─────────────────────┘
+                    │
+        ┌───────────┴───────────┐
+        │                       │
+        ▼                       ▼
+ answer-ready data      canonical result page
+        │                       │
+        └───────────┬───────────┘
+                    ▼
+┌─────────────────────────────────────────┐
+│              AI agent                   │
+│      answers + opens selected page      │
+└───────────────────┬─────────────────────┘
+                    ▼
+┌─────────────────────────────────────────┐
+│          Original public website        │
+│       human + agent inspect result      │
+└─────────────────────────────────────────┘
+```
+
+---
+
+## Design principles
+
+1. **Native WebMCP first**
+2. **Semantic tasks over browsing primitives**
+3. **Deterministic mechanics over repeated model interpretation**
+4. **Platform families over endless one-off scripts**
+5. **Hard constraints fail closed**
+6. **False success is worse than honest failure**
+7. **Verify before making global claims**
+8. **Keep large working sets outside model context**
+9. **One stable WebMCP contract across compatible agents**
+10. **Gateway first, browser last**
+11. **Return the human to the real website**
+12. **Read-only by default**
+
+---
+
+## Run locally
+
+Requires **Node.js >= 22.13.0**.
 
 ```bash
-npm run install:ci
+git clone https://github.com/danemcgibbon-bit/agent-web-gateway.git
+cd agent-web-gateway
+
+npm install
+npm run dev
+```
+
+Useful commands:
+
+```bash
+npm run build
 npm test
-npm run test:live
+npm run lint
 ```
 
-The Site is built with vinext for a lightweight Cloudflare-compatible
-deployment and works as a normal public web application with no setup.
+The project is primarily TypeScript/JavaScript and uses WebMCP, TypeScript, React, Next.js/Vinext, Vite, Zod, and ordinary web primitives such as `fetch`, parsing, filtering, sorting, bounded concurrency, and caching.
 
-## Sources
+---
 
-- [WebMCP and AI agents](https://developer.chrome.com/docs/ai/agents)
-- [WebMCP imperative API](https://developer.chrome.com/docs/ai/webmcp/imperative-api)
-- [OnTheMarket Terms of Use](https://www.onthemarket.com/terms/)
-- [OpenRent robots.txt](https://www.openrent.co.uk/robots.txt)
+## Deployment
+
+The live gateway is:
+
+**https://agent-web-gateway.djrookie99.chatgpt.site/**
+
+No local MCP server, browser extension, VPS, Docker runtime, or user-side helper is required for the normal public experience.
+
+---
+
+## Project status
+
+Agent Web Gateway is an experimental open-source project, not a production guarantee for the entire web.
+
+The current flagship is:
+
+> **OpenRent multi-constraint rental search with verification, canonical result selection, and browser-last presentation.**
+
+The broader architecture is being explored across commerce, jobs, platform-family compatibility, WebMCP recognition, cross-client interoperability, and co-browsing-style handoff.
+
+Useful contributions include:
+
+- compatibility testing against public site families
+- parser and normalizer fixtures
+- WebMCP interoperability tests
+- false-success regression cases
+- direct-browsing vs gateway comparisons
+- platform-family coverage improvements
+- browser-last presentation testing
+
+For compatibility reports, include:
+
+```text
+target public URL
+user goal
+observed result
+expected result
+WebMCP consumer
+whether the gateway selected the correct canonical page
+whether the browser opened the selected result
+```
+
+Do not include credentials or authenticated session data.
+
+---
+
+## License
+
+MIT © 2026 Dane McGibbon
+
+See [`LICENSE`](./LICENSE).
+
+---
+
+## Closing
+
+Native WebMCP is the destination.
+
+Agent Web Gateway explores what happens during the transition.
+
+```text
+heterogeneous existing web
+        ↓
+compatibility + normalization
+        ↓
+structured agent workflow
+        ↓
+verified canonical result
+        ↓
+original website
+        ↓
+human + agent together
+```
+
+The goal is not to make agents better at scraping.
+
+**The goal is to make scraping-like reasoning increasingly unnecessary.**
+
+And when the answer is something worth seeing:
+
+> **The gateway finds it. The browser shows it.**
