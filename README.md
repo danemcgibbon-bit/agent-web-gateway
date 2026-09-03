@@ -6,7 +6,7 @@
 
 **[Live gateway](https://agent-web-gateway.djrookie99.chatgpt.site/)** · **[Source](https://github.com/danemcgibbon-bit/agent-web-gateway)**
 
-Agent Web Gateway helps AI agents use ordinary public websites through a consistent, read-only WebMCP interface — without requiring the target website to install anything, change its code, or integrate with the gateway.
+Agent Web Gateway helps AI agents use ordinary public websites through a consistent, read-only WebMCP interface, without requiring the target website to install anything, change its code, or integrate with the gateway.
 
 The key idea is simple:
 
