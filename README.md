@@ -2,229 +2,171 @@
 
 > **A WebMCP compatibility layer for the existing web.**
 
-### Let the gateway find it. Experience it on the real site.
+### The gateway finds it. The browser shows it.
 
 **[Live gateway](https://agent-web-gateway.djrookie99.chatgpt.site/)** · **[Source](https://github.com/danemcgibbon-bit/agent-web-gateway)**
 
-Agent Web Gateway helps AI agents use ordinary public websites through a consistent, read-only WebMCP interface, without requiring the target website to install anything, change its code, or integrate with the gateway.
+WebMCP is a better way for AI agents to use websites. But most of the web is not there yet.
 
-The key idea is simple:
+**Agent Web Gateway bridges that gap.**
 
-```text
-the agent should reason about what you want
-the gateway should handle the repetitive web mechanics
-the original website should remain the place you experience the result
-```
-
-That produces a **gateway-first, browser-last** workflow:
+A user gives their agent a website and a goal. The gateway handles the repetitive search, filtering, ranking and verification through WebMCP. When it finds the best verified result, a browser-capable agent opens the real page so the human and agent can continue there together.
 
 ```text
-you ask
-   ↓
+Human asks
+    ↓
 AI agent
-   ↓
+    ↓ WebMCP
 Agent Web Gateway
 find → normalize → filter → rank → verify
-   ↓
-best verified canonical result
-   ↓
-agent opens the real webpage
-   ↓
-you + your agent inspect it together
+    ↓
+selected canonical page
+    ↓
+original website
+    ↓
+Human + agent inspect it together
 ```
 
 The gateway does not try to replace the web.
 
-It helps the agent get you to the right part of it.
+**It helps the agent get you to the right part of it.**
 
 ---
 
 ## Quickstart
 
-### 1. Open Agent Web Gateway
+Open:
 
 **https://agent-web-gateway.djrookie99.chatgpt.site/**
 
-You can first check whether the website you want to use already exposes detectable native WebMCP support.
-
-If strong native WebMCP is available, prefer the site's own tools.
-
-If not, Agent Web Gateway can provide the compatibility path.
-
-### 2. Give your agent one simple starter prompt
-
-For OpenRent:
+If you want to use OpenRent, give your agent this:
 
 > **Use https://agent-web-gateway.djrookie99.chatgpt.site/ to help you access https://openrent.co.uk/ more naturally. I’ll tell you what I want to do.**
 
-That is the whole handshake.
-
-You do not need to know tool names, schemas, APIs, or provider routes.
-
-### 3. Tell your agent what you actually want
-
-For example:
+Then simply say what you want:
 
 > **Find the cheapest available whole 2+ bedroom flat in Bromley, London under £2,000 that allows families.**
 
-The agent can then use the gateway's WebMCP tools to do the structured work.
+That is the handshake.
 
-### 4. Continue on the real website
+The human does not need to know tool names, schemas, provider routes or gateway internals.
 
-For a concrete answer-ready result, the gateway can return the selected canonical page as a presentation hint.
+For a concrete answer-ready result, the gateway can return the selected canonical page. A browser-capable agent can open it once for final inspection before answering.
 
-A browser-capable agent can open that page once for final inspection and show it to you before answering.
+The intended experience is:
 
-So instead of ending at:
-
-```text
-"Here is a URL."
-```
-
-the intended experience is:
-
-```text
-"I found the best verified match — I've opened it for you."
-```
+> **“I found the best verified match — I’ve opened it for you.”**
 
 ---
 
-## The handshake
+## Why WebMCP matters here
 
-Agent Web Gateway is designed around a very small handoff between human, agent, gateway, and website.
-
-```text
-┌───────────────┐
-│     Human     │
-│ "Help me use  │
-│  this site."  │
-└───────┬───────┘
-        │
-        ▼
-┌───────────────┐
-│   AI agent    │
-│ discovers AWG │
-│ through WebMCP│
-└───────┬───────┘
-        │
-        ▼
-┌──────────────────────┐
-│  Agent Web Gateway   │
-│                      │
-│ acquire              │
-│ normalize            │
-│ filter               │
-│ verify               │
-│ rank                 │
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│ canonical result URL │
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│   Original website   │
-│                      │
-│ human + agent inspect│
-│ the real page        │
-└──────────────────────┘
-```
-
-The human stays in a natural conversation.
-
-The agent gets structured capabilities.
-
-The gateway handles deterministic web work.
-
-The website still gets the user.
-
----
-
-## Why this exists
-
-WebMCP gives websites a way to expose structured capabilities directly to AI agents.
-
-That is the ideal direction for the web.
-
-But adoption will be uneven.
-
-Today, an agent using an ordinary website often has to repeatedly decide:
+Without a structured interface, a browser agent may repeatedly have to decide:
 
 ```text
 which page?
-which route?
-which result set?
+how do I search?
 how do I paginate?
 which fields are reliable?
-is this a room or a whole property?
-is this actually in stock?
-does "2 bedrooms" mean exactly 2 or at least 2?
+what counts as a match?
 have I searched enough to claim "cheapest"?
-should I trust this search card or inspect the detail page?
+should I trust this card or inspect the detail page?
 ```
 
-Those are mechanical, site-specific decisions.
+Those are mechanical, site-specific decisions. They consume model context and create opportunities for plausible-looking mistakes.
 
-They consume model context and create opportunities for plausible-looking mistakes.
+Agent Web Gateway moves as much of that work as practical into deterministic software.
 
-Agent Web Gateway asks:
+### Without the gateway
 
-> **What if those repetitive web decisions were moved out of the model and into deterministic software?**
+```text
+Human → Agent → interpret + navigate + compare + verify → maybe answer
+```
 
-The model can focus on the user's goal.
+### With Agent Web Gateway
 
-The gateway can focus on acquiring, normalizing, filtering, ranking, and verifying the web data needed to answer it.
+```text
+Human → Agent → WebMCP → Gateway → verified result → real webpage
+```
+
+Without WebMCP, this could be exposed as an API.
+
+**With WebMCP, a browser agent can discover the gateway in-page, invoke semantic tools without a separate integration setup, and then return the human to the real website.**
+
+That interaction is the point.
 
 ---
 
-## Co-browsing without replacing the website
+## Gateway-first, browser-last
 
-The project began as a WebMCP compatibility layer.
-
-The browser-last workflow adds an important second idea:
-
-> **Structured agent work should lead back to the real web whenever the result is something worth seeing.**
-
-For a result-oriented task:
+Agent Web Gateway uses a simple co-browsing pattern:
 
 ```text
-Agent Web Gateway
+gateway does the mechanical work
         ↓
-finds the answer efficiently
+gateway selects one canonical result
         ↓
-returns the selected canonical page
+browser opens that real page
         ↓
-agent opens that page
-        ↓
-user sees the site's own interface, photos, maps, content and context
+human + agent inspect it together
 ```
 
 The browser does **not** repeat the search.
 
 It opens the winner.
 
-This keeps a useful division of labour:
+That creates a useful division of labour:
 
-### The gateway is good at
+| Gateway | Browser |
+|---|---|
+| Traverse bounded result sets | Show the real site |
+| Normalize inconsistent records | Show images, maps and layout |
+| Apply hard constraints | Catch obvious last-mile changes |
+| Rank candidates | Let the user stay in control |
+| Verify finalists | Continue the browsing experience |
 
-- traversing bounded result sets
-- normalizing inconsistent records
-- applying hard constraints
-- ranking candidates
-- verifying finalists
-- deciding whether a global claim is justified
+This is deliberately different from proxying, mirroring or replacing third-party websites.
 
-### The browser is good at
+---
 
-- showing the real website
-- letting the user see rich visual context
-- exposing the site's own interface
-- catching obvious last-mile changes
-- letting the human and agent continue together
+## OpenRent: the flagship workflow
 
-This is deliberately different from proxying, mirroring, or replacing third-party websites.
+Rental search looks simple until the constraints become real:
+
+```text
+2+ bedrooms        ≠ exactly 2 bedrooms
+flat               ≠ room in a shared flat
+room rent          ≠ whole-property rent
+max occupants      ≠ proof that families are allowed
+search card        ≠ verified listing detail
+partial search     ≠ proof of "cheapest"
+```
+
+For the flagship query, the gateway follows a flow like:
+
+```text
+search
+  ↓
+normalize candidates
+  ↓
+apply safe pre-filters
+  ↓
+verify relevant listing details
+  ↓
+reapply every hard constraint
+  ↓
+rank verified matches
+  ↓
+return winner + canonical URL
+  ↓
+browser opens the actual OpenRent listing
+```
+
+Search results are candidates, not truth.
+
+A listing cannot become an exact match if its verified detail fails a hard constraint.
+
+The final step matters too: the user sees the real OpenRent page, not a gateway-generated imitation of it.
 
 ---
 
@@ -246,91 +188,25 @@ structured public data
 bounded compatibility fallback
 ```
 
-The human-facing gateway includes a WebMCP checker to help make that distinction visible.
+The human-facing gateway includes a WebMCP checker to make that distinction visible.
 
-Conceptually:
+If native WebMCP is detected, use it.
 
-```text
-Does this site already expose WebMCP?
-        ↓
-   ┌────┴────┐
-   │         │
-  YES      NO SIGNAL
-   │         │
-   ▼         ▼
-use native  use Agent Web Gateway
-WebMCP      where compatible
-```
+If native support cannot be confirmed, Agent Web Gateway can provide the compatibility path where supported.
 
-A failed static check is not treated as proof that WebMCP is absent. Sites can register tools dynamically, so the checker distinguishes between detected support, possible support, no detected signal, disabled support, and an inability to check.
-
-The gateway is the bridge, not the destination.
-
----
-
-## OpenRent: the flagship workflow
-
-OpenRent is the clearest demonstration because rental search looks simple until the constraints become real.
-
-Consider:
-
-> Find the cheapest available whole 2+ bedroom flat in Bromley, London under £2,000 that allows families.
-
-A browser agent can easily make subtle mistakes:
-
-```text
-2+ bedrooms        ≠ exactly 2 bedrooms
-flat               ≠ room in a shared flat
-room rent          ≠ whole-property rent
-max occupants      ≠ proof that families are allowed
-search card        ≠ verified listing detail
-last updated       ≠ newly listed
-partial search     ≠ proof of "cheapest"
-```
-
-Agent Web Gateway treats search results as candidates, not truth.
-
-The rental flow is approximately:
-
-```text
-search
-  ↓
-normalize candidates
-  ↓
-apply safe pre-filters
-  ↓
-inspect relevant listing details
-  ↓
-reconcile conflicting fields
-  ↓
-build canonical verified listings
-  ↓
-reapply every hard constraint
-  ↓
-rank verified matches
-  ↓
-return winner + canonical page
-  ↓
-browser opens the actual OpenRent listing
-```
-
-That last step turns a structured answer into a co-browsing experience.
-
-The user can immediately see the listing photos, description and context on OpenRent itself.
+A static miss is not treated as proof that WebMCP is absent: the checker keeps **detected**, **possible**, **no signal**, **disabled**, and **unable to check** distinct.
 
 ---
 
 ## One WebMCP entry point for normal tasks
 
-The default agent-facing tool is:
+The default tool is:
 
 ```text
 gateway_task
 ```
 
-It accepts the user's ordinary read-only goal and lets the gateway choose the appropriate workflow.
-
-Example:
+It accepts the user's normal-language read-only goal and lets the gateway choose the appropriate semantic workflow.
 
 ```json
 {
@@ -338,29 +214,9 @@ Example:
 }
 ```
 
-The agent does not need to plan provider routes, inspect manifests, manage pagination, or understand the internal connector architecture.
+The agent does not need to manage provider routing, pagination, acquisition strategy or cache behavior.
 
-For normal tasks:
-
-```text
-user goal
-   ↓
-gateway_task
-   ↓
-deterministic route selection
-   ↓
-semantic workflow
-   ↓
-answer-ready result
-```
-
-Specialist commerce, jobs, and rental tools remain available when explicit control is useful.
-
----
-
-## Gateway-first, browser-last
-
-For an answer-ready concrete result, the response can include an additive presentation hint:
+For a concrete answer-ready result, the response may include:
 
 ```json
 {
@@ -375,105 +231,19 @@ For an answer-ready concrete result, the response can include an additive presen
 }
 ```
 
-The intended agent behavior is:
+A browser-capable agent can then open `presentation.url` once, briefly inspect the live page, and answer.
 
-```text
-gateway says answer-ready
-        ↓
-stop gateway discovery
-        ↓
-presentation.action = open_result?
-        ↓
-YES
-        ↓
-open the selected URL once
-        ↓
-briefly inspect the live page
-        ↓
-answer the user
-```
-
-The agent should **not** independently repeat the search in the browser.
-
-If browser navigation is unavailable, the same gateway result remains answer-ready and the agent can simply answer in chat.
-
-Presentation is additive, not required for correctness.
+If no browser is available, the same result remains answer-ready.
 
 ---
 
-## What makes the gateway different?
-
-### 1. It works with websites that do not control the integration
-
-The target website does not need:
-
-- repository access
-- a plugin
-- a script tag
-- a local MCP server
-- a merchant integration
-- a developer integration
-- a code change
-
-Agent Web Gateway is externally operated compatibility infrastructure for public, read-only web tasks.
-
-### 2. It exposes semantic tasks, not browsing primitives
-
-The agent asks for outcomes such as:
-
-```text
-find products
-find jobs
-find rental properties
-get a verified detail record
-```
-
-It does not receive a remote mouse and a pile of DOM primitives.
-
-### 3. It keeps large working sets out of the model context
-
-Instead of:
-
-```text
-hundreds of records
-       ↓
-      model
-       ↓
-model filters, compares and ranks
-```
-
-the intended flow is:
-
-```text
-hundreds of records
-       ↓
-Agent Web Gateway
-normalize → filter → verify → rank
-       ↓
-small answer-ready result
-       ↓
-      model
-```
-
-### 4. It fails closed
-
-If the gateway cannot justify a hard constraint, it does not silently convert uncertainty into a match.
-
-### 5. It brings the user back to the original site
-
-The gateway helps the agent find the right page.
-
-It does not try to become that page.
-
----
-
-## Reliability model
+## Reliability over plausible answers
 
 The core principle is:
 
 > **False confidence is worse than honest failure.**
 
-Hard constraints are handled with semantics equivalent to:
+Hard constraints use semantics equivalent to:
 
 ```text
 MATCH
@@ -486,42 +256,24 @@ UNKNOWN
 For global claims such as **cheapest**, the gateway separately asks:
 
 ```text
-Did we acquire enough of the relevant result space?
+enough of the relevant result space acquired?
         +
-Was the acquisition scope appropriate?
+scope appropriate?
         +
-Were the records interpreted reliably?
+records interpreted reliably?
         +
-Were the finalists verified?
+finalists verified?
         ↓
-Can we safely make the claim?
+safe to make the claim?
 ```
 
-This prevents failures such as:
+This prevents failures such as completely searching the wrong collection and then confidently claiming no matching product exists.
 
-```text
-completely searching the wrong product collection
-        ↓
-incorrectly claiming no matching product exists
-```
-
-or:
-
-```text
-search card looks like a flat
-        ↓
-detail page reveals it is a room
-        ↓
-incorrectly treating it as a whole-property match
-```
-
-The system prefers an explicit partial or unsupported state over a confident-looking invention.
+When the gateway cannot justify a result, it returns an explicit partial, unsupported or no-match state instead of inventing certainty.
 
 ---
 
 ## Current scope
-
-The project is intentionally transparent about maturity.
 
 | Area | Role | Current maturity |
 |---|---|---|
@@ -529,28 +281,55 @@ The project is intentionally transparent about maturity.
 | OnTheMarket | Secondary rental source | Partial / upstream-dependent |
 | Shopify-compatible storefronts | Reusable commerce compatibility | Experimental / site-dependent |
 | WooCommerce-compatible storefronts | Reusable commerce compatibility | Experimental / site-dependent |
-| IKEA UK | Commerce source | Working read-only search/detail path |
-| Argos UK | Commerce source | Working read-only search/detail path |
+| IKEA UK | Commerce | Working read-only search/detail |
+| Argos UK | Commerce | Working read-only search/detail |
 | Amazon UK | Commerce experiment | Degraded / upstream-dependent |
-| John Lewis | Commerce source | Partial |
+| John Lewis | Commerce | Partial |
 | Greenhouse | Reusable jobs adapter | Experimental |
 | Lever | Reusable jobs adapter | Experimental |
 
-These are not allowlists for the architecture.
+These are evidence of the architecture, not a claim that the entire web is supported.
 
-Where dynamic targeting is supported, previously untested compatible public sites can be attempted within bounded rules.
-
-Upstream sites can change at any time.
+Where dynamic targeting exists, previously untested compatible public sites can be attempted within bounded rules.
 
 **Unsupported is a valid state.**
 
 ---
 
+## Beyond individual websites
+
+The longer-term architecture is not “one scraper per site.”
+
+The gateway experiments with reusable platform families including:
+
+```text
+Shopify
+WooCommerce
+Greenhouse
+Lever
+```
+
+The pattern is:
+
+```text
+detect compatible platform
+        ↓
+use bounded known public surfaces
+        ↓
+normalize provider-specific data
+        ↓
+return a common semantic record
+```
+
+OpenRent is the clearest proof of the experience.
+
+Platform-family normalization is the broader direction.
+
+---
+
 ## WebMCP surface
 
-The public page exposes a fixed, atomically registered WebMCP surface for normal agent use.
-
-The core tools are:
+The public page exposes a fixed ten-tool WebMCP surface:
 
 ```text
 gateway_task
@@ -568,7 +347,7 @@ rentals_search_properties
 rentals_get_listing
 ```
 
-The normal path is deliberately simple:
+The normal path is intentionally small:
 
 ```text
 discover once
@@ -578,9 +357,19 @@ gateway_task
 answer / clarify / follow next action / report partial
 ```
 
-Advanced provider and diagnostic operations remain behind the deterministic `gateway_find_tool` → `gateway_call_tool` path rather than consuming the normal agent's context.
+Advanced provider and diagnostic operations remain behind `gateway_find_tool` → `gateway_call_tool` rather than consuming the normal agent's context.
 
-The same core contract is designed to work across compatible WebMCP clients including ChatGPT and OpenClaw.
+The same core contract is designed for compatible clients including ChatGPT and OpenClaw.
+
+---
+
+## What makes it different?
+
+- **No target-site integration required.** Compatible public tasks do not require repository access, a plugin, a script tag, code changes or a local MCP server.
+- **Semantic tasks, not browser primitives.** The agent asks for outcomes such as finding products, rentals or jobs rather than operating a remote mouse.
+- **Large working sets stay outside model context.** The gateway filters and verifies before returning a compact result.
+- **Hard constraints fail closed.** Uncertain evidence does not silently become a match.
+- **The original site remains the destination.** The gateway finds the right page; the browser shows it.
 
 ---
 
@@ -588,111 +377,23 @@ The same core contract is designed to work across compatible WebMCP clients incl
 
 The same public URL serves two audiences.
 
-### Humans see
+Humans get:
 
-- a simple explanation of the compatibility-layer idea
+- a simple explanation of the idea
 - a WebMCP support checker
 - a one-click starter prompt
 - useful continuation paths when native support is not detected
-- a clear explanation of what the gateway can help with
 
-### Agents receive
+Agents get:
 
 - WebMCP tool definitions
 - concise operating guidance
 - strict input schemas
-- structured answer states
-- coverage information
-- verification state
-- continuation signals
-- optional presentation hints for browser-capable clients
+- answer and coverage states
+- verification information
+- optional browser presentation hints
 
 The human should not need to learn the machine contract.
-
-The agent should not need the human interface explained to it.
-
----
-
-## The WebMCP checker
-
-The landing page can inspect a public website for detectable WebMCP support.
-
-The checker is intentionally evidence-based rather than absolute.
-
-Possible outcomes include:
-
-```text
-WebMCP detected
-Possible WebMCP
-No WebMCP signal detected
-WebMCP disabled
-Unable to check
-```
-
-When native support cannot be confirmed, the page gives the human a simple starter prompt such as:
-
-> Use https://agent-web-gateway.djrookie99.chatgpt.site/ to help you access https://openrent.co.uk/ more naturally. I’ll tell you what I want to do.
-
-That turns a technical compatibility problem into a one-sentence handoff.
-
----
-
-## Acquisition strategy
-
-The gateway prefers the strongest bounded read-only source available.
-
-Conceptually:
-
-```text
-native WebMCP
-      ↓
-official / first-party public API
-      ↓
-platform-family API
-      ↓
-known public route
-      ↓
-embedded structured state
-      ↓
-public HTML
-      ↓
-honest failure
-```
-
-The caller does not choose the acquisition route.
-
-That decision stays in deterministic gateway code.
-
----
-
-## Platform-family compatibility
-
-Rather than building every site as an unrelated one-off scraper, the project experiments with reusable compatibility families.
-
-Current examples include:
-
-```text
-Shopify
-WooCommerce
-Greenhouse
-Lever
-```
-
-The architecture can:
-
-```text
-detect compatible platform
-        ↓
-use known bounded public surfaces
-        ↓
-normalize provider-specific data
-        ↓
-return common semantic records
-```
-
-This is the direction of the project:
-
-> **platform compatibility rather than endless site-specific prompting.**
 
 ---
 
@@ -700,171 +401,89 @@ This is the direction of the project:
 
 Agent Web Gateway is intentionally **read-only**.
 
-It supports:
+It supports search, retrieval, filtering, comparison, ranking, verification and result presentation.
 
-- search
-- retrieval
-- filtering
-- comparison
-- ranking
-- verification
-- result presentation
+It does not currently perform purchases, payments, bookings, job applications, arbitrary form submissions or authenticated account actions.
 
-It does not currently perform:
-
-- purchases
-- payments
-- bookings
-- job applications
-- arbitrary form submissions
-- authenticated account actions
-
-The design also avoids relying on:
-
-- CAPTCHA bypass
-- fingerprint spoofing
-- residential proxy rotation
-- stealth-browser infrastructure
-- arbitrary HTTP proxying
-
-Public dynamic targets are constrained to bounded HTTPS acquisition with URL safety checks.
+The project also avoids CAPTCHA bypass, fingerprint spoofing, residential proxy rotation, stealth-browser infrastructure and unrestricted HTTP proxying.
 
 ---
 
-## Testing philosophy
+## Testing
 
-The gateway is tested at several levels.
+Testing focuses on complete agent journeys.
 
-### Deterministic tests
+**Deterministic tests** cover normalization, filtering, ranking, route selection, semantic validation, coverage logic, cache behavior, URL safety and false-success prevention.
 
-Cover areas such as:
+**WebMCP tests** cover registration, discovery, invocation, cold-start behavior, stable contracts and cross-client behavior.
 
-```text
-normalization
-filtering
-ranking
-route selection
-semantic validation
-coverage logic
-cache behavior
-URL safety
-false-success prevention
-```
+**Golden journeys** include the OpenRent multi-constraint flow from acquisition through verification, canonical URL selection and browser-last presentation.
 
-### WebMCP interoperability
-
-Tests focus on:
-
-```text
-registration
-discovery
-invocation
-cold-start behavior
-stable contracts
-cross-client behavior
-```
-
-### Golden journeys
-
-Real end-to-end tasks are retained as regression cases.
-
-The flagship is the multi-constraint OpenRent journey because it tests:
-
-```text
-provider acquisition
-semantic normalization
-hard constraints
-detail verification
-ranking
-canonical URLs
-presentation
-browser-last behavior
-```
-
-### Recognition corpus
-
-The human-facing WebMCP checker is also tested against known-positive implementations and controlled negative fixtures so that improvements in recall do not quietly create false positives.
-
----
-
-## What Agent Web Gateway is not
-
-The project is not trying to become:
-
-- a universal scraper
-- a stealth-browser platform
-- an unrestricted remote browser
-- an arbitrary HTTP proxy
-- a replacement for a strong first-party WebMCP implementation
-- a transactional autonomous agent
-
-The project is exploring a narrower question:
-
-> **Can a compatibility layer make the existing public web meaningfully easier and more reliable for browser agents while keeping the human connected to the original website?**
+**Recognition tests** use known-positive WebMCP implementations plus controlled negative fixtures so improvements in recall do not quietly create false positives.
 
 ---
 
 ## Architecture
 
 ```text
-┌─────────────────────────────────────────┐
-│              Human + agent              │
-└───────────────────┬─────────────────────┘
-                    │ natural-language goal
-                    ▼
-┌─────────────────────────────────────────┐
-│                WebMCP                   │
-│        fixed semantic tool surface      │
-└───────────────────┬─────────────────────┘
-                    │
-                    ▼
-┌─────────────────────────────────────────┐
-│           Agent Web Gateway             │
-│                                         │
-│  normalize intent                       │
-│  select acquisition strategy            │
-│  acquire bounded public data            │
-│  build canonical records                │
-│  apply hard constraints                 │
-│  verify finalists                       │
-│  rank qualifying results                │
-│  select canonical presentation URL      │
-└───────────────────┬─────────────────────┘
-                    │
-        ┌───────────┴───────────┐
-        │                       │
-        ▼                       ▼
- answer-ready data      canonical result page
-        │                       │
-        └───────────┬───────────┘
-                    ▼
-┌─────────────────────────────────────────┐
-│              AI agent                   │
-│      answers + opens selected page      │
-└───────────────────┬─────────────────────┘
-                    ▼
-┌─────────────────────────────────────────┐
-│          Original public website        │
-│       human + agent inspect result      │
-└─────────────────────────────────────────┘
+Human + agent
+     │
+     │ natural-language goal
+     ▼
+WebMCP
+     │
+     ▼
+Agent Web Gateway
+     │
+     ├─ normalize intent
+     ├─ acquire bounded public data
+     ├─ apply hard constraints
+     ├─ verify finalists
+     ├─ rank qualifying results
+     └─ choose canonical presentation URL
+     │
+     ▼
+answer-ready data + selected page
+     │
+     ▼
+AI agent
+     │
+     ├─ answer
+     └─ open selected page
+     │
+     ▼
+Original website
+     │
+     ▼
+Human + agent continue together
 ```
 
 ---
 
 ## Design principles
 
-1. **Native WebMCP first**
-2. **Semantic tasks over browsing primitives**
-3. **Deterministic mechanics over repeated model interpretation**
-4. **Platform families over endless one-off scripts**
-5. **Hard constraints fail closed**
-6. **False success is worse than honest failure**
-7. **Verify before making global claims**
-8. **Keep large working sets outside model context**
-9. **One stable WebMCP contract across compatible agents**
-10. **Gateway first, browser last**
-11. **Return the human to the real website**
-12. **Read-only by default**
+1. Native WebMCP first
+2. Semantic tasks over browsing primitives
+3. Deterministic mechanics over repeated model interpretation
+4. Platform families over endless one-off scripts
+5. Hard constraints fail closed
+6. False success is worse than honest failure
+7. Verify before making global claims
+8. Keep large working sets outside model context
+9. One stable WebMCP contract across compatible agents
+10. Gateway first, browser last
+11. Return the human to the real website
+12. Read-only by default
+
+---
+
+## What this is not
+
+Agent Web Gateway is not trying to become a universal scraper, stealth-browser platform, unrestricted remote browser, arbitrary HTTP proxy, transactional autonomous agent, or replacement for strong native WebMCP.
+
+The project is exploring a narrower question:
+
+> **Can a compatibility layer make today's public web meaningfully easier and more reliable for browser agents while keeping the human connected to the original website?**
 
 ---
 
@@ -875,7 +494,6 @@ Requires **Node.js >= 22.13.0**.
 ```bash
 git clone https://github.com/danemcgibbon-bit/agent-web-gateway.git
 cd agent-web-gateway
-
 npm install
 npm run dev
 ```
@@ -888,17 +506,17 @@ npm test
 npm run lint
 ```
 
-The project is primarily TypeScript/JavaScript and uses WebMCP, TypeScript, React, Next.js/Vinext, Vite, Zod, and ordinary web primitives such as `fetch`, parsing, filtering, sorting, bounded concurrency, and caching.
+The project is primarily TypeScript/JavaScript and uses WebMCP, TypeScript, React, Next.js/Vinext, Vite and Zod.
 
 ---
 
 ## Deployment
 
-The live gateway is:
+Live gateway:
 
 **https://agent-web-gateway.djrookie99.chatgpt.site/**
 
-No local MCP server, browser extension, VPS, Docker runtime, or user-side helper is required for the normal public experience.
+No local MCP server, browser extension, VPS, Docker runtime or user-side helper is required for the normal public experience.
 
 ---
 
@@ -908,33 +526,11 @@ Agent Web Gateway is an experimental open-source project, not a production guara
 
 The current flagship is:
 
-> **OpenRent multi-constraint rental search with verification, canonical result selection, and browser-last presentation.**
+> **OpenRent multi-constraint rental search with verification, canonical result selection and browser-last presentation.**
 
-The broader architecture is being explored across commerce, jobs, platform-family compatibility, WebMCP recognition, cross-client interoperability, and co-browsing-style handoff.
+The broader architecture is being explored across commerce, jobs, platform-family compatibility, WebMCP recognition, cross-client interoperability and co-browsing-style handoff.
 
-Useful contributions include:
-
-- compatibility testing against public site families
-- parser and normalizer fixtures
-- WebMCP interoperability tests
-- false-success regression cases
-- direct-browsing vs gateway comparisons
-- platform-family coverage improvements
-- browser-last presentation testing
-
-For compatibility reports, include:
-
-```text
-target public URL
-user goal
-observed result
-expected result
-WebMCP consumer
-whether the gateway selected the correct canonical page
-whether the browser opened the selected result
-```
-
-Do not include credentials or authenticated session data.
+Useful contributions include compatibility testing, parser/normalizer fixtures, WebMCP interoperability tests, false-success regressions, platform-family coverage improvements and browser-last presentation testing.
 
 ---
 
@@ -946,14 +542,14 @@ See [`LICENSE`](./LICENSE).
 
 ---
 
-## Closing Thoughts
+## Closing
 
 Native WebMCP is the destination.
 
 Agent Web Gateway explores what happens during the transition.
 
 ```text
-heterogeneous existing web
+existing public web
         ↓
 compatibility + normalization
         ↓
@@ -966,10 +562,10 @@ original website
 human + agent together
 ```
 
+**WebMCP is the ideal future, but most of the web isn't there yet. Agent Web Gateway gives agents a structured way through today's web — then brings people back to the real site.**
+
 The goal is not to make agents better at scraping.
 
 **The goal is to make scraping-like reasoning increasingly unnecessary.**
-
-And when the answer is something worth seeing:
 
 > **The gateway finds it. The browser shows it.**
